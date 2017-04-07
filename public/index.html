@@ -13,19 +13,54 @@
       work correctly both with client-side routing and a non-root public URL.
       Learn how to configure a non-root public URL by running `npm run build`.
     -->
-    <title>React App</title>
+    <title>Monitor</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/vis/4.19.1/vis.min.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/vis/4.19.1/vis.min.css" rel="stylesheet" type="text/css" />
   </head>
   <body>
-    test
-    <!--
-      This HTML file is a template.
-      If you open it directly in the browser, you will see an empty page.
+  <div id="root"></div>
+  <div id="visualization"></div>
 
-      You can add webfonts, meta tags, or analytics to this file.
-      The build step will place the bundled scripts into the <body> tag.
+    <script type="text/javascript">
+      // DOM element where the Timeline will be attached
+      var container = document.getElementById('visualization');
 
-      To begin the development, run `npm start`.
-      To create a production bundle, use `npm run build`.
-    -->
+      // Create a DataSet (allows two way data-binding)
+      var items = new vis.DataSet([
+        {id: 1, content: 'Kibana', title: 'http://www.neco.cz/admin', type: 'range', start: new Date(2017, 04, 06, 3, 24, 0), end: new Date(2017, 04, 06, 6, 24, 0) },
+        {id: 2, content: 'CheckMK', title: 'http://www.neco.com/admin2', start: new Date(2017, 04, 06, 7, 24, 0), end: new Date(2017, 04, 06, 23, 0, 0) },
+        {id: 3, content: 'CheckMK', title: 'http://www.neco.com/admin2', start: new Date(2017, 04, 06, 6, 24, 1), end: new Date(2017, 04, 06, 7, 23, 59) },
+        {id: 4, content: 'Performance tests', title: 'MEQUA', type: 'background', start: new Date(2017, 04, 06, 6, 24, 0), end: new Date(2017, 04, 06, 7, 13, 0) }
+      ]);
+
+      // Configuration for the Timeline
+      var options = {
+        width: '100%',
+        margin: {
+          item: 240 // v pripade background eventu
+        },
+        autoResize: true,
+        clickToUse: false,
+        max: new Date(2017, 04, 06, 23, 59, 59),
+        end: new Date(2017, 04, 06, 23, 59, 59),
+        start: new Date(2017, 04, 06, 00, 00, 00),
+        min: new Date(2017, 04, 06, 00, 00, 00),
+        stack: false,
+        showCurrentTime: true,
+        template: function (item, element, data) {
+          return '<h1>' + item.content + '</h1><p>' + item.title + '</p>';
+        }
+      };
+
+      // Create a Timeline
+      var timeline = new vis.Timeline(container, items, options);
+
+      function onSelect (properties) {
+        console.log(properties);
+      }
+
+      // add event listener
+      timeline.on('select', onSelect);
+    </script>
   </body>
 </html>
