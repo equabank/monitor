@@ -1,3 +1,21 @@
+# MONITOR
+
+## Slot doc
+
+```
+{
+    "from": "07:06:59",
+    "to": "07:06:59",
+    "color": "336699",
+    "title": "Todo1",
+    "type": "box",
+    "uri": "http://",
+    "duration": 0,
+    "pause": false
+}
+```
+
+
 This project was bootstrapped with [Create React App](https://github.com/facebookincubator/create-react-app).
 
 Below you will find some information on how to perform common tasks.<br>
