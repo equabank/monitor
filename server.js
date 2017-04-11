@@ -3,12 +3,18 @@ import bodyParser from 'body-parser';
 import morgan from 'morgan';
 import elasticsearch from 'elasticsearch';
 import {getSlots, getSlot, addSlot, deleteSlot, deleteAllSlots} from './app/slots';
+import tv4 from 'tv4';
+import schema from './app/schema';
 
 const elasticUri = process.env.ELASTIC_URI || 'http://localhost:9200';
 
 let client = new elasticsearch.Client({
   host: elasticUri,
-  log: 'trace',
+  log: {
+    type: 'file',
+    level: 'trace',
+    path: './logs/elasticsearch.log'
+  },
   apiVersion: '5.0',
   requestTimeout: 10000,
   keepAlive: true,
@@ -20,8 +26,6 @@ client.ping({
 }, function (error) {
   if (error) {
     console.trace('[Elasticsearch] cluster is down!');
-  } else {
-    console.log('[Elasticsearch] Successful connection');
   }
 });
 
@@ -30,8 +34,11 @@ const port = process.env.PORT || 3001;
 
 // Body parser and Morgan middleware
 app.use(bodyParser.urlencoded({ extended: true}));
-app.use(bodyParser.json());
-app.use(morgan('dev'));
+app.use(bodyParser.json({ type: 'application/json'}));
+
+if(process.env.NODE_ENV !== 'test') {
+  app.use(morgan('dev'));
+}
 
 // We tell express where to find static assets
 app.use(express.static(__dirname + '/client/dist'));
@@ -50,8 +57,17 @@ router.get('/', function(req, res) {
   res.json({ message: 'Api is live!' });
 });
 
-router.route('/slot')
+router.route('/slots')
   .post((req, res) => {
+
+    let valid = tv4.validateResult(req.body,schema);
+
+    if (!valid.valid) return res.status(500).send({
+        message: valid.error.message,
+        dataPath: valid.error.dataPath,
+        params: valid.error.params
+    });
+
     addSlot(client, req.body, (error, response) => {
       if (error) return res.send(error);
       res.json({
@@ -78,7 +94,7 @@ router.route('/slot')
     })
   })
 
-router.route('/slot/:slot_id')
+router.route('/slots/:slot_id')
 
   .get((req, res) => {
     getSlot(client, req.params.slot_id, (error, response) => {
@@ -107,3 +123,5 @@ app.route("*").get((req, res) => {
 app.listen(port);
 
 console.log(`listening on port ${port}`);
+
+module.exports = app;
