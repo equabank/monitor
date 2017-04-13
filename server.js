@@ -36,7 +36,7 @@ const port = process.env.PORT || 3001;
 app.use(bodyParser.urlencoded({ extended: true}));
 app.use(bodyParser.json({ type: 'application/json'}));
 
-if(process.env.NODE_ENV !== 'test') {
+if(process.env.NODE_ENV !== 'test' || process.env.NODE_ENV !== 'fillData') {
   app.use(morgan('dev'));
 }
 

@@ -4,63 +4,24 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="shortcut icon" href="%PUBLIC_URL%/favicon.ico">
-    <!--
-      Notice the use of %PUBLIC_URL% in the tag above.
-      It will be replaced with the URL of the `public` folder during the build.
-      Only files inside the `public` folder can be referenced from the HTML.
-
-      Unlike "/favicon.ico" or "favicon.ico", "%PUBLIC_URL%/favicon.ico" will
-      work correctly both with client-side routing and a non-root public URL.
-      Learn how to configure a non-root public URL by running `npm run build`.
-    -->
     <title>Monitor</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/vis/4.19.1/vis.min.js"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/vis/4.19.1/vis.min.css" rel="stylesheet" type="text/css" />
   </head>
   <body>
   <div id="root"></div>
-  <div id="visualization"></div>
-
-    <script type="text/javascript">
-      // DOM element where the Timeline will be attached
-      var container = document.getElementById('visualization');
-
-      // Create a DataSet (allows two way data-binding)
-      var items = new vis.DataSet([
-        {id: 1, content: 'Kibana', title: 'http://www.neco.cz/admin', type: 'range', start: new Date(2017, 04, 06, 3, 24, 0), end: new Date(2017, 04, 06, 6, 24, 0) },
-        {id: 2, content: 'CheckMK', title: 'http://www.neco.com/admin2', start: new Date(2017, 04, 06, 7, 24, 0), end: new Date(2017, 04, 06, 23, 0, 0) },
-        {id: 3, content: 'CheckMK', title: 'http://www.neco.com/admin2', start: new Date(2017, 04, 06, 6, 24, 1), end: new Date(2017, 04, 06, 7, 23, 59) },
-        {id: 4, content: 'Performance tests', title: 'MEQUA', type: 'background', start: new Date(2017, 04, 06, 6, 24, 0), end: new Date(2017, 04, 06, 7, 13, 0) }
-      ]);
-
-      // Configuration for the Timeline
-      var options = {
-        width: '100%',
-        margin: {
-          item: 240 // v pripade background eventu
-        },
-        autoResize: true,
-        clickToUse: false,
-        max: new Date(2017, 04, 06, 23, 59, 59),
-        end: new Date(2017, 04, 06, 23, 59, 59),
-        start: new Date(2017, 04, 06, 00, 00, 00),
-        min: new Date(2017, 04, 06, 00, 00, 00),
-        stack: false,
-        showCurrentTime: true,
-        template: function (item, element, data) {
-          return '<h1>' + item.content + '</h1><p>' + item.title + '</p>';
-        }
+    <script>
+      var WebFontConfig = {
+        google: { families: [ 'Roboto:400,300,500:latin' ] }
       };
-
-      // Create a Timeline
-      var timeline = new vis.Timeline(container, items, options);
-
-      function onSelect (properties) {
-        console.log(properties);
-      }
-
-      // add event listener
-      timeline.on('select', onSelect);
+      (function() {
+        var wf = document.createElement('script');
+        wf.src = 'https://ajax.googleapis.com/ajax/libs/webfont/1/webfont.js';
+        wf.type = 'text/javascript';
+        wf.async = 'true';
+        var s = document.getElementsByTagName('script')[0];
+        s.parentNode.insertBefore(wf, s);
+      })();
     </script>
   </body>
 </html>
