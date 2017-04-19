@@ -2,9 +2,13 @@ import React, {Component} from 'react';
 import {Card, CardHeader, CardActions, CardText} from 'material-ui/Card';
 import vis from '../../node_modules/vis/dist/vis-timeline-graph2d.min.js';
 import moment from 'moment';
-import RaisedButton from 'material-ui/RaisedButton';
+import SlotDialog from './timeline/SlotDialog';
 
 export default class Timeline extends Component {
+
+  constructor(props) {
+    super(props)
+  }
 
   componentWillReceiveProps( props ) {
     let _slots = props.slots;
@@ -31,7 +35,6 @@ export default class Timeline extends Component {
         slotsContainer.push(slot);
       }
     }
-    console.log(slotsContainer);
     const container = document.getElementById('timelineBox');
 
     let items = new vis.DataSet(slotsContainer);
@@ -67,7 +70,7 @@ export default class Timeline extends Component {
           title="Timeline"
         />
         <CardActions>
-          <RaisedButton label="Create Slot" primary={true} />
+          <SlotDialog />
         </CardActions>
         <CardText expandable={false}>
           <div id="timelineBox"></div>

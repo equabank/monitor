@@ -25,9 +25,9 @@ let getDateTime = {
 let slotPayload = {
   "from": "06:11:00",
   "to": "06:20:00",
-  "color": "336699",
+  "color": "green",
   "title": "Application ",
-  "type": "box",
+  "type": "range",
   "uri": "http://",
   "duration": 0,
   "pause": false
