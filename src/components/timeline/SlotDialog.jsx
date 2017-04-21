@@ -10,6 +10,7 @@ import Visibility from 'material-ui/svg-icons/action/visibility';
 import VisibilityOff from 'material-ui/svg-icons/action/visibility-off';
 import {RadioButton, RadioButtonGroup} from 'material-ui/RadioButton';
 import {Card, CardHeader, CardText} from 'material-ui/Card';
+import {colors} from './libs/Colors';
 
 
 export default class AddSlotDialog extends Component {
@@ -26,7 +27,7 @@ export default class AddSlotDialog extends Component {
       pause: false,
       type: "range",
       duration: 0,
-      color: "green",
+      color: "default",
       progress: {
         show: false,
         type: "none",
@@ -186,18 +187,6 @@ export default class AddSlotDialog extends Component {
       },
       radioButton: {
         marginBottom: 16
-      },
-      radioButtonLabelGreen: {
-        color: '#8BC34A'
-      },
-      radioButtonLabelPink: {
-        color: '#E91E63'
-      },
-      radioButtonLabelCyan: {
-        color: '#00BCD4'
-      },
-      radioButtonLabelOrange: {
-        color: '#FF5722'
       }
     };
 
@@ -282,31 +271,37 @@ export default class AddSlotDialog extends Component {
                 name="color"
                 labelPosition="right"
                 style={styles.block}
-                defaultSelected="green"
+                defaultSelected="default"
                 onChange={(e) => this.handleColorRadiobutton(e)}
               >
                 <RadioButton
+                  value="default"
+                  label="Default"
+                  labelStyle={colors.default}
+                  style={styles.radioButton}
+                />
+                <RadioButton
                   value="green"
                   label="Green"
-                  labelStyle={styles.radioButtonLabelGreen}
+                  labelStyle={colors.green}
                   style={styles.radioButton}
                 />
                 <RadioButton
                   value="pink"
                   label="Pink"
-                  labelStyle={styles.radioButtonLabelPink}
+                  labelStyle={colors.pink}
                   style={styles.radioButton}
                 />
                 <RadioButton
                   value="cyan"
                   label="Cyan"
-                  labelStyle={styles.radioButtonLabelCyan}
+                  labelStyle={colors.cyan}
                   style={styles.radioButton}
                 />
                 <RadioButton
                   value="orange"
                   label="Orange"
-                  labelStyle={styles.radioButtonLabelOrange}
+                  labelStyle={colors.orange}
                   style={styles.radioButton}
                 />
               </RadioButtonGroup>

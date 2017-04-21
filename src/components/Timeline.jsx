@@ -20,13 +20,20 @@ export default class Timeline extends Component {
         _i++;
         let from = _slot._source.from.split(":");
         let to = _slot._source.to.split(":");
+        let _start = moment().hours(from[0]).minutes(from[1]).seconds(from[2]).format("YYYY-MM-DD HH:mm:ss");
+        let _end = moment().hours(to[0]).minutes(to[1]).seconds(to[2]).format("YYYY-MM-DD HH:mm:ss");
         let slot = {
           id: _i,
-          start: moment().hours(from[0]).minutes(from[1]).seconds(from[2]).format("YYYY-MM-DD HH:mm:ss"),
-          end: moment().hours(to[0]).minutes(to[1]).seconds(to[2]).format("YYYY-MM-DD HH:mm:ss"),
+          start: _start,
+          end: _end,
           content: _slot._source.title,
           type: _slot._source.type,
-          title: _slot._source.uri
+          title: "<b>" + _slot._source.title + "</b><br />" + moment(_start).format("HH:mm:ss") + " - " + moment(_end).format("HH:mm:ss") + "<br/>" +_slot._source.uri,
+          body: {
+            range:moment(_start).format("HH:mm:ss") + " - " + moment(_end).format("HH:mm:ss"),
+            uri: _slot._source.uri
+          },
+          className: "slot-material-" + _slot._source.color
         }
         slotsContainer.push(slot);
       }
@@ -39,7 +46,7 @@ export default class Timeline extends Component {
     let options = {
       width: '100%',
       margin: {
-        item: 240 // v pripade background eventu
+        item: 40 // v pripade background eventu
       },
       autoResize: true,
       clickToUse: false,
@@ -50,7 +57,10 @@ export default class Timeline extends Component {
       stack: false,
       showCurrentTime: true,
       template: function (item, element, data) {
-        return '<h1>' + item.content + '</h1><p>' + item.title + '</p>';
+        return '' +
+          '<span id="slot-'+item.id+'" class="slotTitle">' + item.content + '</span><br/>' +
+          '<span id="slot-'+item.id+'" class="slotRange">' + item.body.range + '</span><br/>' +
+          '<a id="slot-'+item.id+'" class="slotUri" href="'+item.body.uri+'" target="_blank">' + item.body.uri + '</a>';
       }
     };
 

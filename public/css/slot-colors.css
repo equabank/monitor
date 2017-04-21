@@ -1,0 +1,89 @@
+.vis-item.vis-background {
+    background-color: #F8BBD0;
+    border-color: #F8BBD0;
+    height: 80px;
+    border-radius: 2px;
+    top: 0px;
+}
+
+.slot-material-default {
+    background-color: #64B5F6;
+    border-color: #64B5F6;
+    height: 80px;
+    border-radius: 2px;
+    top: 0px;
+}
+
+.slot-material-green {
+    background-color: #8BC34A;
+    border-color: #8BC34A;
+    height: 80px;
+    border-radius: 2px;
+    top: 0px;
+}
+
+.slot-material-pink {
+    background-color: #E91E63;
+    border-color: #E91E63;
+    height: 80px;
+    border-radius: 2px;
+    top: 0px;
+}
+
+.slot-material-cyan {
+    background-color: #00BCD4;
+    border-color: #00BCD4;
+    height: 80px;
+    border-radius: 2px;
+    top: 0px;
+}
+
+.slot-material-orange {
+    background-color: #FF5722;
+    border-color: #FF5722;
+    height: 80px;
+    border-radius: 2px;
+    top: 0px;
+}
+
+.slotTitle {
+    position: relative;
+    opacity: 1;
+    font-size: 18px;
+    letter-spacing: 0px;
+    font-weight: 500;
+    margin: 0px;
+    user-select: none;
+    padding-left: 16px;
+    padding-right: 16px;
+    color: aliceblue;
+    font-family: 'Roboto', sans-serif;
+}
+
+.slotRange {
+    position: relative;
+    opacity: 1;
+    font-size: 14px;
+    letter-spacing: 0px;
+    font-weight: 100;
+    margin: 0px;
+    user-select: none;
+    padding-left: 16px;
+    padding-right: 16px;
+    color: aliceblue;
+    font-family: 'Roboto', sans-serif;
+}
+
+.slotUri {
+    position: relative;
+    opacity: 1;
+    font-size: 12px;
+    letter-spacing: 0px;
+    font-weight: 100;
+    margin: 0px;
+    user-select: none;
+    padding-left: 16px;
+    padding-right: 16px;
+    color: aliceblue;
+    font-family: 'Roboto', sans-serif;
+}

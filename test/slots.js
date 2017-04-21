@@ -25,7 +25,7 @@ let getDateTime = {
 let slotPayload = {
   "from": "06:11:00",
   "to": "06:20:00",
-  "color": "green",
+  "color": "default",
   "title": "Application ",
   "type": "range",
   "uri": "http://",
@@ -93,7 +93,8 @@ describe('Slots', () => {
         slotPayload.title = "Application " + slotCounter++;
         slotPayload.from = getDateTime.from();
         slotPayload.to = getDateTime.to();
-        slotPayload.type = increment.type
+        slotPayload.type = increment.type;
+        slotPayload.color = ( increment.type == "range" ? 'default' : 'background');
         chai.request(server)
           .post('/api/slots')
           .send(slotPayload)
