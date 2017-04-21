@@ -103,8 +103,15 @@ export default class AddSlotDialog extends Component {
     })
       .then(response => response.json())
       .then(data => {
-        console.log(data.elastic)
-        if (data.elastic.created === undefined) {
+        if ( data.message !== undefined) {
+          this.setState({
+            progress: {
+              show: true,
+              type: "failed",
+              message: `Elasticsearch ${data.message}`
+            }
+          });
+        } else if (data.elastic.created === undefined) {
           this.setState({
             progress: {
               show: true,
