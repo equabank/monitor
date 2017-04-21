@@ -35,10 +35,6 @@ export default class AddSlotDialog extends Component {
     }
   }
 
-  componentDidMount() {
-    this.setState({openDialog: true});
-  }
-
   toggleOpenModal = () => {
     this.setState({openDialog: true});
   };
@@ -76,7 +72,6 @@ export default class AddSlotDialog extends Component {
     this.setState({uri: document.getElementById('uri').value});
     this.setState({from: document.getElementById('from').value + ":00"});
     this.setState({to: document.getElementById('to').value + ":00"});
-    console.log(this.state)
   }
 
 
@@ -108,6 +103,7 @@ export default class AddSlotDialog extends Component {
     })
       .then(response => response.json())
       .then(data => {
+        console.log(data.elastic)
         if (data.elastic.created === undefined) {
           this.setState({
             progress: {

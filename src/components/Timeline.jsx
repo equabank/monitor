@@ -6,10 +6,6 @@ import SlotDialog from './timeline/SlotDialog';
 
 export default class Timeline extends Component {
 
-  constructor(props) {
-    super(props)
-  }
-
   componentWillReceiveProps( props ) {
     let _slots = props.slots;
     if ( _slots.length > 0 ) {
@@ -59,8 +55,6 @@ export default class Timeline extends Component {
     };
 
     new vis.Timeline(container, items, options);
-
-
   }
 
   render() {
