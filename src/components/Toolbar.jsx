@@ -4,8 +4,7 @@ import IconButton from 'material-ui/IconButton';
 import NavigationExpandMoreIcon from 'material-ui/svg-icons/navigation/expand-more';
 import MenuItem from 'material-ui/MenuItem';
 import DropDownMenu from 'material-ui/DropDownMenu';
-import RaisedButton from 'material-ui/RaisedButton';
-import {Toolbar, ToolbarGroup, ToolbarSeparator, ToolbarTitle} from 'material-ui/Toolbar';
+import {Toolbar, ToolbarGroup, ToolbarTitle} from 'material-ui/Toolbar';
 
 export default class ToolbarExamplesSimple extends React.Component {
 
@@ -28,8 +27,6 @@ export default class ToolbarExamplesSimple extends React.Component {
         </ToolbarGroup>
         <ToolbarGroup>
           <ToolbarTitle text="Monitor" />
-          <ToolbarSeparator />
-          <RaisedButton label="Create Slot" primary={true} />
           <IconMenu
             iconButtonElement={
               <IconButton touch={true}>
