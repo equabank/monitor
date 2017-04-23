@@ -7,6 +7,7 @@ import DeleteDialog from './timeline/DeleteDialog';
 import CreateSlotButton from './timeline/CreateSlotButton';
 import DeleteSlotButton from './timeline/DeleteSlotButton';
 import SnackSlotDiscard from './timeline/SnackSlotDiscard';
+import ShowUri from './timeline/ShowUri';
 
 export default class Timeline extends Component {
 
@@ -24,7 +25,8 @@ export default class Timeline extends Component {
       openDeleteDialog: false,
       showNotification: false,
       notificationMessage: "",
-      stateDiscard: true
+      stateDiscard: true,
+      slotUri: ""
     }
 
   }
@@ -130,6 +132,11 @@ export default class Timeline extends Component {
     let timeline = new vis.Timeline(container, items, options);
 
     timeline.on('click', (prop) => {
+      for (var _slot of slotsContainer) {
+        if ( _slot.id === prop.item ) {
+          this.setState({ slotUri: _slot.body.uri});
+        }
+      }
       this.setState({ selectedSlotId: prop.item});
     });
 
@@ -144,6 +151,9 @@ export default class Timeline extends Component {
         <CardActions>
           <CreateSlotButton toggleOpenModal={ this.toggleOpenModal } />
           <DeleteSlotButton selectedSlotId={ this.state.selectedSlotId } openDeleteDialog={ this.openDeleteDialog } />
+          { this.state.selectedSlotId !== null &&
+            <ShowUri slotUri={ this.state.slotUri }/>
+          }
           <SlotDialog openSlotDialog={ this.state.openSlotDialog } closeSlotDialog={ this.closeDialogs } />
           <DeleteDialog openDeleteDialog={ this.state.openDeleteDialog } closeDeleteDialog={ this.closeDialogs } discardSlot={ this.discardSlot } />
           <SnackSlotDiscard stateDiscard={ this.state.stateDiscard } notificationMessage={ this.state.notificationMessage } showNotification={ this.state.showNotification } closeNotificationHandle={ this.closeNotificationHandle } />
