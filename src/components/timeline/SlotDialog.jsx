@@ -3,7 +3,6 @@ import FlatButton from 'material-ui/FlatButton';
 import Dialog from 'material-ui/Dialog';
 import TextField from 'material-ui/TextField';
 import TimePicker from 'material-ui/TimePicker';
-import CreateSlotButton from './CreateSlotButton';
 import SaveProgress from './SaveProgress';
 import Checkbox from 'material-ui/Checkbox';
 import Visibility from 'material-ui/svg-icons/action/visibility';
@@ -13,13 +12,11 @@ import {Card, CardHeader, CardText} from 'material-ui/Card';
 import {colors} from './libs/Colors';
 
 
-export default class AddSlotDialog extends Component {
+export default class SlotDialog extends Component {
 
   constructor(props) {
     super(props)
-    this.toggleOpenModal = this.toggleOpenModal.bind(this);
     this.state = {
-      openDialog: false,
       title: "",
       uri: "",
       from: "",
@@ -36,14 +33,8 @@ export default class AddSlotDialog extends Component {
     }
   }
 
-  toggleOpenModal = () => {
-    this.setState({openDialog: true});
-  };
-
   handleClose = () => {
-    this.setState({
-      openDialog: false
-    });
+    this.props.closeSlotDialog();
     this.setState({
       progress: {
         show: false,
@@ -192,12 +183,11 @@ export default class AddSlotDialog extends Component {
 
     return (
       <div>
-        <CreateSlotButton toggleOpenModal={this.toggleOpenModal} />
         <Dialog
           title="CREATE SLOT"
           actions={actions}
           modal={false}
-          open={this.state.openDialog}
+          open={this.props.openSlotDialog}
           onRequestClose={this.handleClose}
           autoScrollBodyContent={true}
         >

@@ -4,7 +4,10 @@ import Timeline from '../components/Timeline';
 export default class TimelineContainer extends Component {
   constructor(props) {
     super(props);
-    this.state = {slots: []};
+
+    this.state = {
+      slots: []
+    };
   }
 
   componentDidMount() {

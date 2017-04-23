@@ -1,3 +1,12 @@
+.vis-item.vis-selected {
+    background-color: #8BC34A;
+    border-color: #ffffff;
+    border-style: dashed;
+    height: 80px;
+    border-radius: 2px;
+    top: 0px;
+}
+
 .vis-item.vis-background {
     background-color: #F8BBD0;
     border-color: #F8BBD0;
