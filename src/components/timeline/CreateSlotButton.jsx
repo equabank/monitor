@@ -1,11 +1,19 @@
 import React, {Component} from 'react';
 import RaisedButton from 'material-ui/RaisedButton';
+import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 
 export default class CreateSlotButton extends Component {
   render() {
-    const {toggleOpenModal} = this.props;
+
     return (
-      <RaisedButton label="Create Slot" primary={true} onTouchTap={toggleOpenModal} />
+      <MuiThemeProvider>
+        <RaisedButton
+          id="createSlotModalButton"
+          label="Create Slot"
+          primary={true}
+          onClick={this.props.toggleOpenModal}
+        />
+      </MuiThemeProvider>
     );
   }
 }
