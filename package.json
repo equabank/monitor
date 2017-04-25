@@ -6,6 +6,16 @@
   "homepage": "https://github.com/test-stack/monitor",
   "license": "MIT",
   "version": "0.1.0",
+  "jest": {
+    "verbose": true,
+    "bail": true,
+    "cacheDirectory": "./logs",
+    "coverageDirectory": "test/",
+    "collectCoverageFrom" : ["**/*.{js,jsx}", "!**/node_modules/**"],
+    "collectCoverage": true,
+    "coverageReporters": "text",
+    "notify": true
+  },
   "dependencies": {
     "body-parser": "1.17.1",
     "elasticsearch": "13.0.0-rc2",
