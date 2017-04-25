@@ -2,6 +2,7 @@ import React from 'react';
 import Snackbar from 'material-ui/Snackbar';
 import FontIcon from 'material-ui/FontIcon';
 import {lightGreen500, deepOrangeA400} from 'material-ui/styles/colors';
+import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 
 export default class SnackSlotDiscard extends React.Component {
 
@@ -22,7 +23,7 @@ export default class SnackSlotDiscard extends React.Component {
     }
 
     let _message =
-      <div id="discardSuccess">
+      <div id="discardNotification">
         <FontIcon
           className="material-icons"
           style={iconStyles} color={_s === true ? lightGreen500 : deepOrangeA400}>{_s === true ? "favorite_border" : "pan_tool"}
@@ -34,14 +35,17 @@ export default class SnackSlotDiscard extends React.Component {
 
     return (
       <div>
-        <Snackbar
-          open={this.props.showNotification}
-          message={_message}
-          autoHideDuration={4000}
-          onRequestClose={this.props.closeNotificationHandle}
-          contentStyle={styleSnack}
-          bodyStyle={styleSnack}
-        />
+        <MuiThemeProvider>
+          <Snackbar
+            id="snackNotification"
+            open={this.props.showNotification}
+            message={_message}
+            autoHideDuration={4000}
+            onRequestClose={this.props.closeNotificationHandle}
+            contentStyle={styleSnack}
+            bodyStyle={styleSnack}
+          />
+        </MuiThemeProvider>
       </div>
     );
   }
