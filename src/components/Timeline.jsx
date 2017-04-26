@@ -8,6 +8,7 @@ import CreateSlotButton from './timeline/CreateSlotButton';
 import DeleteSlotButton from './timeline/DeleteSlotButton';
 import SnackSlotDiscard from './timeline/SnackSlotDiscard';
 import ShowUri from './timeline/ShowUri';
+import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 
 export default class Timeline extends Component {
 
@@ -144,24 +145,26 @@ export default class Timeline extends Component {
 
   render() {
     return (
-      <Card>
-        <CardHeader
-          title="Timeline"
-        />
-        <CardActions>
-          <CreateSlotButton toggleOpenModal={ this.toggleOpenModal } />
-          <DeleteSlotButton selectedSlotId={ this.state.selectedSlotId } openDeleteDialog={ this.openDeleteDialog } />
-          { this.state.selectedSlotId !== null &&
-            <ShowUri slotUri={ this.state.slotUri }/>
-          }
-          <SlotDialog openSlotDialog={ this.state.openSlotDialog } closeSlotDialog={ this.closeDialogs } />
-          <DeleteDialog openDeleteDialog={ this.state.openDeleteDialog } closeDeleteDialog={ this.closeDialogs } discardSlot={ this.discardSlot } />
-          <SnackSlotDiscard stateDiscard={ this.state.stateDiscard } notificationMessage={ this.state.notificationMessage } showNotification={ this.state.showNotification } closeNotificationHandle={ this.closeNotificationHandle } />
-        </CardActions>
-        <CardText expandable={false}>
-          <div id="timelineBox"></div>
-        </CardText>
-      </Card>
+      <MuiThemeProvider>
+        <Card>
+          <CardHeader
+            title="Timeline"
+          />
+          <CardActions>
+            <CreateSlotButton toggleOpenModal={ this.toggleOpenModal } />
+            <DeleteSlotButton selectedSlotId={ this.state.selectedSlotId } openDeleteDialog={ this.openDeleteDialog } />
+            { this.state.selectedSlotId !== null &&
+              <ShowUri slotUri={ this.state.slotUri }/>
+            }
+            <SlotDialog openSlotDialog={ this.state.openSlotDialog } closeSlotDialog={ this.closeDialogs } />
+            <DeleteDialog openDeleteDialog={ this.state.openDeleteDialog } closeDeleteDialog={ this.closeDialogs } discardSlot={ this.discardSlot } />
+            <SnackSlotDiscard stateDiscard={ this.state.stateDiscard } notificationMessage={ this.state.notificationMessage } showNotification={ this.state.showNotification } closeNotificationHandle={ this.closeNotificationHandle } />
+          </CardActions>
+          <CardText expandable={false}>
+            <div id="timelineBox"></div>
+          </CardText>
+        </Card>
+      </MuiThemeProvider>
     );
   }
 }
