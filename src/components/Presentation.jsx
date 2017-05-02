@@ -1,0 +1,25 @@
+import React, {Component} from 'react';
+import getMuiTheme from 'material-ui/styles/getMuiTheme';
+import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
+
+const styles = {
+  container: {
+    paddingTop: 0,
+  }
+};
+
+const muiTheme = getMuiTheme();
+
+export default class Presentation extends Component {
+  render() {
+    return (
+      <MuiThemeProvider muiTheme={muiTheme}>
+        <div style={styles.container}>
+          <div id="presentationContainer">
+            <iframe src={this.props.uri} frameBorder="0" id="iframe" sandbox="allow-same-origin allow-scripts allow-popups allow-forms"></iframe>
+          </div>
+        </div>
+      </MuiThemeProvider>
+    );
+  }
+}
