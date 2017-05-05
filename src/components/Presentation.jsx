@@ -15,6 +15,14 @@ export default class Presentation extends Component {
     return (
       <MuiThemeProvider muiTheme={muiTheme}>
         <div style={styles.container}>
+          { (this.props.showBanner) &&
+            <div id="presentationTitleBanner">
+              <div id="presentationTitleBannerContent">
+                <p id="presentationTitleBannerTitleApp">{this.props.bannerTitle}</p>
+                <p id="presentationTitleBannerUriApp">{this.props.bannerUri}</p>
+              </div>
+            </div>
+          }
           <div id="presentationContainer">
             <iframe src={this.props.uri} frameBorder="0" id="iframe" sandbox="allow-same-origin allow-scripts allow-popups allow-forms"></iframe>
           </div>

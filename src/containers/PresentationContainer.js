@@ -12,35 +12,64 @@ export default class PresentationContainer extends Component {
     this.state = {
       slots: [],
       uri: "",
-      usedSlotId: 0
+      usedSlotId: 0,
+      showBanner: false,
+      bannerUri: null,
+      bannerTitle: null
     };
   }
 
   componentDidMount() {
     this.getSlots();
+
+    let showSlotRangeType = true;
+    let backgroundEndTime = null;
     setInterval( () => {
       this.getSlots();
       let slotAvailable = false;
-      this.state.slots.forEach( slot => {
-        let from = slot._source.from.split(":");
-        let _from = moment().hours(from[0]).minutes(from[1]).seconds(from[2]);
-        let to = slot._source.to.split(":");
-        let _to = moment().hours(to[0]).minutes(to[1]).seconds(to[2]);
-        let _now = moment();
-        let range = moment.range(_from,_to);
 
-        if (_now.within(range) && (slot._id !== this.state.usedSlotId)) {
-          this.setState({uri: slot._source.uri});
-          this.setState({usedSlotId: slot._id});
+      if ( showSlotRangeType ) {
+        this.state.slots.forEach(slot => {
+          let from = slot._source.from.split(":");
+          let _from = moment().hours(from[0]).minutes(from[1]).seconds(from[2]);
+          let to = slot._source.to.split(":");
+          let _to = moment().hours(to[0]).minutes(to[1]).seconds(to[2]);
+          let _now = moment();
+          let range = moment.range(_from, _to);
+
+          if (_now.within(range) && ( slot._id !== this.state.usedSlotId )) {
+            this.setState({uri: slot._source.uri});
+            this.setState({usedSlotId: slot._id});
+
+            if (slot._source.type === "background") {
+              backgroundEndTime = _to;
+              showSlotRangeType = false;
+            }
+
+            this.setState({bannerTitle:slot._source.title});
+            this.setState({bannerUri: slot._source.uri});
+            this.setState({showBanner: true});
+          }
+          if (_now.within(range)) {
+            slotAvailable = true;
+          }
+        });
+
+        if (!slotAvailable) {
+          this.setState({uri: "http://localhost:3000/#/pause-page"});
+          this.setState({usedSlotId: 0});
         }
-        if (_now.within(range)) { slotAvailable = true; }
-      });
-
-      if (!slotAvailable) {
-        this.setState({ uri: "http://localhost:3000/#/pause-page" });
-        this.setState({usedSlotId: 0});
+      } else {
+        let _diff = backgroundEndTime.diff(moment(), 'seconds');
+        if ( (_diff === 0) || (_diff < 0) ) {
+          showSlotRangeType = true;
+        }
       }
     }, 1000);
+
+    setInterval( () => {
+      this.setState({showBanner: false});
+    }, 3000);
   }
 
   getSlots() {
@@ -60,7 +89,12 @@ export default class PresentationContainer extends Component {
   render() {
     return (
       <div>
-       <Presentation uri={this.state.uri} />
+       <Presentation
+         uri={this.state.uri}
+         showBanner={this.state.showBanner}
+         bannerUri={this.state.bannerUri}
+         bannerTitle={this.state.bannerTitle}
+       />
       </div>
     );
   }
