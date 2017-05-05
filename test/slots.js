@@ -10,14 +10,14 @@ let should = chai.should();
 let slot = null;
 let slotCounter = 1;
 let lastMinutes = 0;
-const startDateTime = moment().hours(6).minutes(0).seconds(0).format("YYYY-MM-DD HH:mm:ss")
+const startDateTime = moment().hours(0).minutes(0).seconds(0).format("YYYY-MM-DD HH:mm:ss")
 
 let getDateTime = {
     from: () => {
       return moment(startDateTime).add(lastMinutes, 'minutes').format('HH:mm:ss');
     },
     to: () => {
-      lastMinutes = 10 + lastMinutes;
+      lastMinutes = 1 + lastMinutes;
       return moment(startDateTime).add(lastMinutes, 'minutes').format('HH:mm:ss');
     }
   }
@@ -32,69 +32,58 @@ let slotPayload = {
   "duration": 0,
   "pause": false
 };
+
+let colors = [
+  "green",
+  "pink",
+  "cyan",
+  "orange",
+  "default"
+];
+
 const ELASTIC_INDEX_NAME = "monitor-slots";
 
 chai.use(chaiHttp);
+
+let generateRandomSlots = () => {
+  let dataProvider = [], uris = [
+    {
+      title: "App",
+      uri: "http://"
+    }
+  ], urisPointer = 0, colorPointer = 0;
+  for (let i=0; i<=10; i++) {
+    dataProvider.push({
+      order: i,
+      type: "range",
+      uri: uris[urisPointer].uri,
+      title: uris[urisPointer].title,
+      color: colors[colorPointer]
+    })
+
+    urisPointer++;
+    if ( urisPointer == uris.length ) { urisPointer = 0; }
+
+    colorPointer++;
+    if ( colorPointer == colors.length ) { colorPointer = 0; }
+  }
+  return dataProvider;
+}
 
 describe('Slots', () => {
 
   describe('POST /api/slots', () => {
 
-    let dataProvider = [
-      {order: 1, type: "range"},
-      {order: 2, type: "range"},
-      {order: 3, type: "range"},
-      {order: 4, type: "range"},
-      {order: 5, type: "background"},
-      {order: 6, type: "range"},
-      {order: 7, type: "background"},
-      {order: 8, type: "range"},
-      {order: 9, type: "range"},
-      {order: 10, type: "range"},
-      {order: 11, type: "background"},
-      {order: 12, type: "range"},
-      {order: 13, type: "range"},
-      {order: 14, type: "range"},
-      {order: 15, type: "range"},
-      {order: 16, type: "background"},
-      {order: 17, type: "range"},
-      {order: 18, type: "background"},
-      {order: 19, type: "range"},
-      {order: 20, type: "range"},
-      {order: 21, type: "range"},
-      {order: 22, type: "background"},
-      {order: 23, type: "range"},
-      {order: 24, type: "range"},
-      {order: 25, type: "range"},
-      {order: 26, type: "range"},
-      {order: 27, type: "background"},
-      {order: 28, type: "range"},
-      {order: 29, type: "background"},
-      {order: 30, type: "range"},
-      {order: 31, type: "range"},
-      {order: 32, type: "range"},
-      {order: 33, type: "background"},
-      {order: 34, type: "range"},
-      {order: 35, type: "range"},
-      {order: 36, type: "range"},
-      {order: 37, type: "range"},
-      {order: 38, type: "background"},
-      {order: 39, type: "range"},
-      {order: 40, type: "background"},
-      {order: 41, type: "range"},
-      {order: 42, type: "range"},
-      {order: 43, type: "range"},
-      {order: 44, type: "background"},
-    ];
-
-    dataProvider.forEach( (increment) => {
+    generateRandomSlots().forEach( (increment) => {
       it(`POST a slot ${increment.order} and type ${increment.type}`, (done) => {
 
-        slotPayload.title = "Application " + slotCounter++;
+        slotPayload.title = increment.title + " " + slotCounter++;
         slotPayload.from = getDateTime.from();
         slotPayload.to = getDateTime.to();
         slotPayload.type = increment.type;
         slotPayload.color = ( increment.type == "range" ? 'default' : 'background');
+        slotPayload.uri = increment.uri;
+        slotPayload.color = increment.color;
         chai.request(server)
           .post('/api/slots')
           .send(slotPayload)
