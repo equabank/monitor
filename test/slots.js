@@ -10,15 +10,27 @@ let should = chai.should();
 let slot = null;
 let slotCounter = 1;
 let lastMinutes = 0;
-const startDateTime = moment().hours(0).minutes(0).seconds(0).format("YYYY-MM-DD HH:mm:ss")
+const startDateTime = moment().hours(moment().format("HH")).minutes(moment().format("mm")).seconds(0).format("YYYY-MM-DD HH:mm:ss")
 
 let getDateTime = {
-    from: () => {
-      return moment(startDateTime).add(lastMinutes, 'minutes').format('HH:mm:ss');
+    from: (slotType) => {
+      let _seconds = 0;
+      if (slotType === "background") {
+        _seconds = 10;
+      } else {
+        _seconds = 0;
+      }
+      return moment(startDateTime).add(lastMinutes, 'minutes').add(_seconds, 'seconds').format('HH:mm:ss');
     },
-    to: () => {
-      lastMinutes = 1 + lastMinutes;
-      return moment(startDateTime).add(lastMinutes, 'minutes').format('HH:mm:ss');
+    to: (slotType) => {
+      let _seconds = 0;
+      if (slotType === "background") {
+        _seconds = 30;
+      } else {
+        _seconds = 0;
+        lastMinutes = 1 + lastMinutes;
+      }
+      return moment(startDateTime).add(lastMinutes, 'minutes').add(_seconds, 'seconds').format('HH:mm:ss');
     }
   }
 
@@ -48,17 +60,26 @@ chai.use(chaiHttp);
 let generateRandomSlots = () => {
   let dataProvider = [], uris = [
     {
-      title: "App",
-      uri: "http://"
+      title: "Application",
+      uri: "http://",
+      type: "range"
+    }, {
+      title: "Api ping",
+      uri: "https://",
+      type: "background"
+    }, {
+      title: "Application 2",
+      uri: "http://",
+      type: "range"
     }
   ], urisPointer = 0, colorPointer = 0;
-  for (let i=0; i<=10; i++) {
+  for (let i=0; i<=100; i++) {
     dataProvider.push({
       order: i,
-      type: "range",
       uri: uris[urisPointer].uri,
       title: uris[urisPointer].title,
-      color: colors[colorPointer]
+      color: colors[colorPointer],
+      type: uris[urisPointer].type
     })
 
     urisPointer++;
@@ -78,8 +99,8 @@ describe('Slots', () => {
       it(`POST a slot ${increment.order} and type ${increment.type}`, (done) => {
 
         slotPayload.title = increment.title + " " + slotCounter++;
-        slotPayload.from = getDateTime.from();
-        slotPayload.to = getDateTime.to();
+        slotPayload.from = getDateTime.from(increment.type);
+        slotPayload.to = getDateTime.to(increment.type);
         slotPayload.type = increment.type;
         slotPayload.color = ( increment.type == "range" ? 'default' : 'background');
         slotPayload.uri = increment.uri;
