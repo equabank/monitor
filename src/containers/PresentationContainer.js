@@ -24,6 +24,7 @@ export default class PresentationContainer extends Component {
 
     let showSlotRangeType = true;
     let backgroundEndTime = null;
+    let BreakException = {};
     setInterval( () => {
       this.getSlots();
       let slotAvailable = false;
@@ -38,6 +39,9 @@ export default class PresentationContainer extends Component {
           let range = moment.range(_from, _to);
 
           if (_now.within(range) && ( slot._id !== this.state.usedSlotId )) {
+
+            console.log("Title: " + slot._source.title + ", Time: " + from + "/" + to + " / " + _now.within(range));
+
             this.setState({uri: slot._source.uri});
             this.setState({usedSlotId: slot._id});
 
@@ -49,6 +53,7 @@ export default class PresentationContainer extends Component {
             this.setState({bannerTitle:slot._source.title});
             this.setState({bannerUri: slot._source.uri});
             this.setState({showBanner: true});
+            throw BreakException;
           }
           if (_now.within(range)) {
             slotAvailable = true;
