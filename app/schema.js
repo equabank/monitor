@@ -18,12 +18,9 @@ const schema = {
     },
     "duration": {
       "type": "integer"
-    },
-    "pause": {
-      "type": "boolean"
     }
   },
-  required: ["from", "to", "color", "title", "uri", "duration", "pause"]
+  required: ["from", "to", "color", "title", "uri", "duration"]
 };
 
 

@@ -4,9 +4,6 @@ import Dialog from 'material-ui/Dialog';
 import TextField from 'material-ui/TextField';
 import TimePicker from 'material-ui/TimePicker';
 import SaveProgress from './SaveProgress';
-import Checkbox from 'material-ui/Checkbox';
-import Visibility from 'material-ui/svg-icons/action/visibility';
-import VisibilityOff from 'material-ui/svg-icons/action/visibility-off';
 import {RadioButton, RadioButtonGroup} from 'material-ui/RadioButton';
 import {Card, CardHeader, CardText} from 'material-ui/Card';
 import {colors} from './libs/Colors';
@@ -21,7 +18,6 @@ export default class SlotDialog extends Component {
       uri: "",
       from: "",
       to: "",
-      pause: false,
       type: "range",
       duration: 0,
       color: "default",
@@ -43,13 +39,6 @@ export default class SlotDialog extends Component {
       }
     })
   };
-
-  handlePauseCheck(e) {
-    this.setSlotState({
-      element: "pause",
-      elementValue: e.target.value
-    })
-  }
 
   handleColorRadiobutton(e) {
     this.setSlotState({
@@ -80,7 +69,6 @@ export default class SlotDialog extends Component {
       uri: this.state.uri,
       from: this.state.from,
       to: this.state.to,
-      pause: this.state.pause,
       type: this.state.type,
       duration: this.state.duration,
       color: this.state.color
@@ -226,25 +214,6 @@ export default class SlotDialog extends Component {
                 hintText="To"
                 autoOk={true}
                 onChange={() => this.setSlotState()}
-              />
-            </CardText>
-          </Card>
-          <br/>
-          <Card>
-            <CardHeader
-              title="Pause"
-              actAsExpander={false}
-              showExpandableButton={false}
-            />
-            <CardText expandable={false}>
-              <Checkbox
-                id="pause"
-                label={ this.state.pause ? "Yes" : "No" }
-                checkedIcon={<Visibility />}
-                uncheckedIcon={<VisibilityOff />}
-                style={styles.checkbox}
-                onCheck={(e) => this.handlePauseCheck(e)}
-                disabled={true}
               />
             </CardText>
           </Card>
