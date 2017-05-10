@@ -40,9 +40,7 @@ let slotPayload = {
   "color": "default",
   "title": "Application ",
   "type": "range",
-  "uri": "http://",
-  "duration": 0,
-  "pause": false
+  "uri": "http://"
 };
 
 let colors = [
@@ -280,67 +278,6 @@ describe('Slots', () => {
             done();
           });
       });
-
-      it('label duration is integer', (done) => {
-        slotPayload.title = "Application " + slotCounter++;
-        let _slot = JSON.parse(JSON.stringify(slotPayload));
-        _slot.duration = "0"
-        chai.request(server)
-          .post('/api/slots')
-          .send(_slot)
-          .end((err, res) => {
-            res.should.have.status(500);
-            res.body.message.should.be.eql('Invalid type: string (expected integer)');
-            res.body.dataPath.should.be.eql('/duration');
-            res.body.params.should.be.eql({type: 'string', expected: 'integer'});
-            done();
-          });
-      });
-
-      it('label duration is required', (done) => {
-        slotPayload.title = "Application " + slotCounter++;
-        let _slot = JSON.parse(JSON.stringify(slotPayload));
-        delete _slot.duration
-        chai.request(server)
-          .post('/api/slots')
-          .send(_slot)
-          .end((err, res) => {
-            res.should.have.status(500);
-            res.body.message.should.be.eql('Missing required property: duration');
-            done();
-          });
-      });
-
-      it('label pause is boolean', (done) => {
-        slotPayload.title = "Application " + slotCounter++;
-        let _slot = JSON.parse(JSON.stringify(slotPayload));
-        _slot.pause = "0"
-        chai.request(server)
-          .post('/api/slots')
-          .send(_slot)
-          .end((err, res) => {
-            res.should.have.status(500);
-            res.body.message.should.be.eql('Invalid type: string (expected boolean)');
-            res.body.dataPath.should.be.eql('/pause');
-            res.body.params.should.be.eql({type: 'string', expected: 'boolean'});
-            done();
-          });
-      });
-
-      it('label pause is required', (done) => {
-        slotPayload.title = "Application " + slotCounter++;
-        let _slot = JSON.parse(JSON.stringify(slotPayload));
-        delete _slot.pause
-        chai.request(server)
-          .post('/api/slots')
-          .send(_slot)
-          .end((err, res) => {
-            res.should.have.status(500);
-            res.body.message.should.be.eql('Missing required property: pause');
-            done();
-          });
-      });
-
     });
   });
 

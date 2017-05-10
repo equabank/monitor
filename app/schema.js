@@ -15,12 +15,9 @@ const schema = {
     },
     "uri": {
       "type": "string"
-    },
-    "duration": {
-      "type": "integer"
     }
   },
-  required: ["from", "to", "color", "title", "uri", "duration"]
+  required: ["from", "to", "color", "title", "uri"]
 };
 
 
