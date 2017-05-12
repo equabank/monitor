@@ -10,11 +10,13 @@ const elasticUri = process.env.ELASTIC_URI || 'http://localhost:9200';
 
 let client = new elasticsearch.Client({
   host: elasticUri,
+  /*
   log: {
     type: 'file',
     level: 'trace',
     path: './logs/elasticsearch.log'
   },
+  */
   apiVersion: '5.0',
   requestTimeout: 10000,
   keepAlive: true,
