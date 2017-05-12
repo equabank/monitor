@@ -2,7 +2,7 @@ import express from 'express';
 import bodyParser from 'body-parser';
 import morgan from 'morgan';
 import elasticsearch from 'elasticsearch';
-import {getSlots, getSlot, addSlot, deleteSlot, deleteAllSlots} from './app/slots';
+import {deleteOldBackgroundSlots, getSlots, getSlot, addSlot, deleteSlot, deleteAllSlots} from './app/slots';
 import tv4 from 'tv4';
 import schema from './app/schema';
 
@@ -30,6 +30,13 @@ client.ping({
     console.trace('[Elasticsearch] cluster is down!');
   }
 });
+
+// Remove old background slots
+setInterval( () => {
+  deleteOldBackgroundSlots(client, (error, response) => {
+    if (error) { console.log(error); }
+  });
+}, 60000);
 
 const app = express();
 const port = process.env.PORT || 3001;

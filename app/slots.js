@@ -37,3 +37,30 @@ export const deleteAllSlots = (client, cb) => {
     index: 'monitor-slots'
   }, cb);
 }
+
+export const deleteOldBackgroundSlots = (client, cb) => {
+  client.deleteByQuery({
+    index: 'monitor-slots',
+    body: {
+      _source: false,
+      query: {
+        bool: {
+          must: [
+            {
+              term: {
+                type: "background"
+              }
+            },
+            {
+              range: {
+                timestamp: {
+                  lte: "now-1h"
+                }
+              }
+            }
+          ]
+        }
+      }
+    }
+  }, cb);
+}
