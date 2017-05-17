@@ -78,7 +78,9 @@ router.route('/slots')
     });
 
     addSlot(client, req.body, (error, response) => {
-      if (error) return res.send(error);
+      if (error) {
+        return res.status(500).end(JSON.stringify(error));
+      }
       res.json({
         elastic: response
       })
@@ -87,7 +89,9 @@ router.route('/slots')
 
   .get((req, res) => {
     getSlots(client, (error, response) => {
-      if (error) res.send(error);
+      if (error) {
+        return res.status(500).end(JSON.stringify(error));
+      }
       res.json({
         elastic: response
       })
@@ -96,7 +100,9 @@ router.route('/slots')
 
   .delete((req, res) => {
     deleteAllSlots(client, (error, response) => {
-      if (error) res.send(error);
+      if (error) {
+        return res.status(500).end(JSON.stringify(error));
+      }
       res.json({
         elastic: response
       })
@@ -107,7 +113,9 @@ router.route('/slots/:slot_id')
 
   .get((req, res) => {
     getSlot(client, req.params.slot_id, (error, response) => {
-      if (error) res.send(error);
+      if (error) {
+        return res.status(500).end(JSON.stringify(error));
+      }
       res.json({
         elastic: response
       })
@@ -116,7 +124,9 @@ router.route('/slots/:slot_id')
 
   .delete((req, res) => {
     deleteSlot(client, req.params.slot_id, (error, response) => {
-      if (error) res.send(error);
+      if (error) {
+        return res.status(500).end(JSON.stringify(error));
+      }
       res.json({
         elastic: response
       });
