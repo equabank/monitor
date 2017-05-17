@@ -28,8 +28,17 @@ spec:
             cpu: 1
         ports:
         - containerPort: 3000
-          name: http
+          name: client
           protocol: TCP
+        - containerPort: 3001
+          name: server
+          protocol: TCP
+        livenessProbe:
+          httpGet:
+            path: /
+            port: 3001
+          initialDelaySeconds: 20
+          periodSeconds: 5
 ---
 kind: Service
 apiVersion: v1
