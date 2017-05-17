@@ -14,11 +14,11 @@ spec:
       serviceAccount: monitor
       containers:
       - name: monitor
-        image: rdpanek/monitor:0.1.0
+        image: rdpanek/monitor:latest
         imagePullPolicy: Always
         env:
         - name: ELASTIC_URI
-          value: "http://tea.comm.equabank.loc:9200"
+          value: ""
         resources:
           requests:
             memory: 100Mi
@@ -33,12 +33,20 @@ spec:
         - containerPort: 3001
           name: server
           protocol: TCP
+        readinessProbe:
+          httpGet:
+            path: /api/slots
+            port: 3001
+          initialDelaySeconds: 5
+          periodSeconds: 5
+          timeoutSeconds: 5
         livenessProbe:
           httpGet:
-            path: /
+            path: /api/slots
             port: 3001
-          initialDelaySeconds: 20
+          initialDelaySeconds: 5
           periodSeconds: 5
+          failureThreshold: 1
 ---
 kind: Service
 apiVersion: v1
