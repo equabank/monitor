@@ -1,10 +1,21 @@
 import express from 'express';
 import bodyParser from 'body-parser';
+import fs from 'fs';
 import morgan from 'morgan';
+import path from 'path';
+import rfs from 'rotating-file-stream';
 import elasticsearch from 'elasticsearch';
 import {deleteOldBackgroundSlots, getSlots, getSlot, addSlot, deleteSlot, deleteAllSlots} from './app/slots';
 import tv4 from 'tv4';
 import schema from './app/schema';
+
+const logDirectory = path.join(__dirname, 'logs')
+fs.existsSync(logDirectory) || fs.mkdirSync(logDirectory)
+let accessLogStream = rfs('access.log', {
+  interval: '1d',
+  path: logDirectory,
+  maxFiles: 10
+})
 
 const elasticUri = process.env.ELASTIC_URI || 'http://localhost:9200';
 
@@ -46,7 +57,7 @@ app.use(bodyParser.urlencoded({ extended: true}));
 app.use(bodyParser.json({ type: 'application/json'}));
 
 if(process.env.NODE_ENV !== 'test' || process.env.NODE_ENV !== 'fillData') {
-  app.use(morgan('dev'));
+  app.use(morgan('dev', {stream: accessLogStream}));
 }
 
 // We tell express where to find static assets
