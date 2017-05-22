@@ -183,6 +183,8 @@ The form of this payload must remain unchanged. You can change only:
 
 The Background Time Slots has higgher priority than Time Slots. When is time to show Background Time Slot, is shown instead Time Slots.
 
+Response must contain property `created` with value `true`
+
 
 ## Elasticsearch
 
