@@ -7,6 +7,8 @@ import SaveProgress from './SaveProgress';
 import {RadioButton, RadioButtonGroup} from 'material-ui/RadioButton';
 import {Card, CardHeader, CardText} from 'material-ui/Card';
 import {colors} from './libs/Colors';
+import {timeRangeSlotValidate} from './libs/inputValidator';
+import Moment from 'moment';
 
 
 export default class SlotDialog extends Component {
@@ -16,8 +18,8 @@ export default class SlotDialog extends Component {
     this.state = {
       title: "",
       uri: "",
-      from: "",
-      to: "",
+      from: Moment().format('HH:mm'),
+      to: null,
       type: "range",
       duration: 0,
       color: "default",
@@ -57,6 +59,7 @@ export default class SlotDialog extends Component {
 
 
   saveSlot(e) {
+
     this.setState({
       progress: {
         show: true,
@@ -74,13 +77,16 @@ export default class SlotDialog extends Component {
       color: this.state.color
     };
 
-    fetch('/api/slots', {
-      headers: new Headers({
-        'Content-Type': 'application/json'
-      }),
-      method: 'POST',
-      body: JSON.stringify(slotPayload)
-    })
+
+    timeRangeSlotValidate(this.props.slots, slotPayload.from, slotPayload.to)
+    .then(() => {
+      fetch('/api/slots', {
+        headers: new Headers({
+          'Content-Type': 'application/json'
+        }),
+        method: 'POST',
+        body: JSON.stringify(slotPayload)
+      })
       .then(response => response.json())
       .then(data => {
         if ( data.message !== undefined) {
@@ -116,6 +122,15 @@ export default class SlotDialog extends Component {
           });
         }
       });
+    }).catch( err => {
+      this.setState({
+        progress: {
+          show: true,
+          type: "failed",
+          message: err.message
+        }
+      });
+    });
   }
 
 

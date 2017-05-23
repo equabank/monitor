@@ -156,7 +156,7 @@ export default class Timeline extends Component {
             { this.state.selectedSlotId !== null &&
               <ShowUri slotUri={ this.state.slotUri }/>
             }
-            <SlotDialog openSlotDialog={ this.state.openSlotDialog } closeSlotDialog={ this.closeDialogs } />
+            <SlotDialog openSlotDialog={ this.state.openSlotDialog } closeSlotDialog={ this.closeDialogs } slots={this.props.slots} />
             <DeleteDialog openDeleteDialog={ this.state.openDeleteDialog } closeDeleteDialog={ this.closeDialogs } discardSlot={ this.discardSlot } />
             <SnackSlotDiscard stateDiscard={ this.state.stateDiscard } notificationMessage={ this.state.notificationMessage } showNotification={ this.state.showNotification } closeNotificationHandle={ this.closeNotificationHandle } />
           </CardActions>

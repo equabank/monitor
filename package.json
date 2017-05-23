@@ -20,6 +20,7 @@
     "notify": true
   },
   "dependencies": {
+    "babel-polyfill": "6.23.0",
     "body-parser": "1.17.1",
     "elasticsearch": "13.0.0-rc2",
     "express": "4.15.2",
