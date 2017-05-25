@@ -91,6 +91,24 @@ let generateRandomSlots = () => {
 
 describe('Slots', () => {
 
+  before( (done) => {
+    chai.request(server)
+      .get('/api/slots')
+      .end((err, res) => {
+        res.should.have.status(200);
+        if ( res.body.elastic.responses[0].status !== 404 ) {
+          chai.request(server)
+            .delete('/api/slots/')
+            .end((err, res) => {
+              res.should.have.status(200);
+              done(err);
+            });
+        } else {
+          done(err);
+        }
+      });
+  });
+
   describe('POST /api/slots', () => {
 
     generateRandomSlots().forEach( (increment) => {
@@ -107,9 +125,9 @@ describe('Slots', () => {
           .post('/api/slots')
           .send(slotPayload)
           .end((err, res) => {
+            done(err);
             res.body.elastic.created.should.be.true;
             res.should.have.status(200);
-            done(err);
           });
       });
     });

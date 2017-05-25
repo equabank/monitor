@@ -8,6 +8,7 @@ import elasticsearch from 'elasticsearch';
 import {deleteOldBackgroundSlots, getSlots, getSlot, addSlot, deleteSlot, deleteAllSlots} from './app/slots';
 import tv4 from 'tv4';
 import schema from './app/schema';
+import {timeRangeSlotValidate} from './src/components/timeline/libs/inputValidator';
 
 const logDirectory = path.join(__dirname, 'logs')
 fs.existsSync(logDirectory) || fs.mkdirSync(logDirectory)
@@ -86,13 +87,38 @@ router.route('/slots')
         params: valid.error.params
     });
 
-    addSlot(client, req.body, (error, response) => {
+    getSlots(client, (error, elastic) => {
       if (error) {
         return res.status(500).end(JSON.stringify(error));
       }
-      res.json({
-        elastic: response
-      })
+
+      // if exists any timeslot
+      if (elastic.responses[0].hits !== undefined && elastic.responses[0].hits.hits.length !== 0) {
+        timeRangeSlotValidate(elastic.responses[0].hits.hits, req.body.from, req.body.to)
+        .then(() => {
+          addSlot(client, req.body, (error, response) => {
+            if (error) {
+              return res.status(500).end(JSON.stringify(error));
+            }
+            res.json({
+              elastic: response
+            })
+          })
+        }).catch( err => {
+          return res.status(500).end(JSON.stringify(err));
+        });
+
+      // if don't exist timeslot
+      } else {
+        addSlot(client, req.body, (error, response) => {
+          if (error) {
+            return res.status(500).end(JSON.stringify(error));
+          }
+          res.json({
+            elastic: response
+          })
+        })
+      }
     })
   })
 
