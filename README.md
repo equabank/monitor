@@ -1,4 +1,4 @@
-# MONITOR 0.1.2
+# MONITOR 0.1.3
 
 Dockerized application for planned of switching between another diagnostic web applications.
 
