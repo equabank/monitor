@@ -10,7 +10,17 @@ let should = chai.should();
 let slot = null;
 let slotCounter = 1;
 let lastMinutes = 0;
+const numberSlotsGenerated = 100;
 const startDateTime = moment().hours(moment().format("HH")).minutes(moment().format("mm")).seconds(0).format("YYYY-MM-DD HH:mm:ss")
+
+const clone = (obj) => {
+  if (null == obj || "object" != typeof obj) return obj;
+  var copy = obj.constructor();
+  for (var attr in obj) {
+    if (obj.hasOwnProperty(attr)) copy[attr] = obj[attr];
+  }
+  return copy;
+}
 
 let getDateTime = {
     from: (slotType) => {
@@ -43,6 +53,8 @@ let slotPayload = {
   "uri": "http://"
 };
 
+let clonedSlotPayload = clone(slotPayload);
+
 let colors = [
   "green",
   "pink",
@@ -71,7 +83,7 @@ let generateRandomSlots = () => {
       type: "range"
     }
   ], urisPointer = 0, colorPointer = 0;
-  for (let i=0; i<=100; i++) {
+  for (let i=0; i<=numberSlotsGenerated; i++) {
     dataProvider.push({
       order: i,
       uri: uris[urisPointer].uri,
@@ -121,13 +133,14 @@ describe('Slots', () => {
         slotPayload.color = ( increment.type == "range" ? 'default' : 'background');
         slotPayload.uri = increment.uri;
         slotPayload.color = increment.color;
+
         chai.request(server)
           .post('/api/slots')
           .send(slotPayload)
           .end((err, res) => {
-            done(err);
             res.body.elastic.created.should.be.true;
             res.should.have.status(200);
+            done(err);
           });
       });
     });
@@ -144,6 +157,30 @@ describe('Slots', () => {
           done(err);
         });
     });
+
+    describe('Validate input', () => {
+      it('two same time-range response statusCode 500', (done) => {
+        chai.request(server)
+          .post('/api/slots')
+          .send(clonedSlotPayload)
+          .end((err, res) => {
+            res.body.elastic.created.should.be.true;
+            res.should.have.status(200);
+
+            setTimeout(function () {
+              chai.request(server)
+                .post('/api/slots')
+                .send(clonedSlotPayload)
+                .end((err, res) => {
+                  let errorMessage = JSON.parse(res.text);
+                  errorMessage.message.should.be.eql('TimeRangeSlotValidate: The time range is occupied or its beginning or ending interferes with the existing time slot');
+                  res.should.have.status(500);
+                  done();
+                });
+            }, 3000);
+          });
+      });
+    })
 
     describe('json-payload is validated against json-schema', () => {
 
@@ -364,6 +401,7 @@ describe('Slots', () => {
 
 
     });
+
   }
 
 });
