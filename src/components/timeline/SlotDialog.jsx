@@ -78,7 +78,7 @@ export default class SlotDialog extends Component {
     };
 
 
-    timeRangeSlotValidate(this.props.slots, slotPayload.from, slotPayload.to)
+    timeRangeSlotValidate(this.props.slots, slotPayload.from, slotPayload.to, slotPayload.type)
     .then(() => {
       fetch('/api/slots', {
         headers: new Headers({
