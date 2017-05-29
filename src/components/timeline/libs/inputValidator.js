@@ -1,14 +1,15 @@
+// @flow
 import Moment from 'moment';
 import { extendMoment } from 'moment-range';
 import "babel-polyfill";
 
 const moment = extendMoment(Moment);
 
-export let timeRangeSlotValidate = (slots=[], slotFrom=null, slotTo=null, slotType=null) => {
+export let timeRangeSlotValidate = (slots: [] = [], slotFrom: String, slotTo: String, slotType: String) => {
 
   let result = {
     freeSlotAvailable: false,
-    message: null
+    message: String
   }
 
   return new Promise((resolve, reject) => {
