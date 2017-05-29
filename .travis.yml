@@ -22,3 +22,7 @@ notifications:
 branches:
   only:
     - develop
+    - release
+    - master
+notifications:
+  slack: rdpanek:Ta3417bF4MUUX3XRAelZleFQ
