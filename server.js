@@ -94,7 +94,7 @@ router.route('/slots')
 
       // if exists any timeslot
       if (elastic.responses[0].hits !== undefined && elastic.responses[0].hits.hits.length !== 0) {
-        timeRangeSlotValidate(elastic.responses[0].hits.hits, req.body.from, req.body.to)
+        timeRangeSlotValidate(elastic.responses[0].hits.hits, req.body.from, req.body.to, req.body.type)
         .then(() => {
           addSlot(client, req.body, (error, response) => {
             if (error) {
