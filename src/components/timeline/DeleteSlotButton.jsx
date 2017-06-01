@@ -1,12 +1,10 @@
-import React, {Component} from 'react';
-import RaisedButton from 'material-ui/RaisedButton';
-import DeleteForever from 'material-ui/svg-icons/action/delete-forever';
-import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
+import React, { Component } from "react";
+import RaisedButton from "material-ui/RaisedButton";
+import DeleteForever from "material-ui/svg-icons/action/delete-forever";
+import MuiThemeProvider from "material-ui/styles/MuiThemeProvider";
 
 export default class DeleteSlotButton extends Component {
-
   render() {
-
     const styles = {
       button: {
         margin: 12

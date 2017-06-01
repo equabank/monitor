@@ -1,11 +1,11 @@
-import React, {Component} from 'react';
-import getMuiTheme from 'material-ui/styles/getMuiTheme';
-import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
-import Toolbar from './Toolbar';
+import React, { Component } from "react";
+import getMuiTheme from "material-ui/styles/getMuiTheme";
+import MuiThemeProvider from "material-ui/styles/MuiThemeProvider";
+import Toolbar from "./Toolbar";
 
 const styles = {
   container: {
-    paddingTop: 0,
+    paddingTop: 0
   }
 };
 

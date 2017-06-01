@@ -1,10 +1,10 @@
-import React, {Component} from 'react';
-import getMuiTheme from 'material-ui/styles/getMuiTheme';
-import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
+import React, { Component } from "react";
+import getMuiTheme from "material-ui/styles/getMuiTheme";
+import MuiThemeProvider from "material-ui/styles/MuiThemeProvider";
 
 const styles = {
   container: {
-    paddingTop: 0,
+    paddingTop: 0
   }
 };
 
@@ -20,9 +20,7 @@ export default class PausePage extends Component {
             <h2>
               Time slot isn't available.
             </h2>
-            <p>
-              
-            </p>
+            <p />
           </div>
         </div>
       </MuiThemeProvider>

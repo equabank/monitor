@@ -1,24 +1,22 @@
-import React, {Component} from 'react';
-import FlatButton from 'material-ui/FlatButton';
-import Dialog from 'material-ui/Dialog';
-import TextField from 'material-ui/TextField';
-import TimePicker from 'material-ui/TimePicker';
-import SaveProgress from './SaveProgress';
-import {RadioButton, RadioButtonGroup} from 'material-ui/RadioButton';
-import {Card, CardHeader, CardText} from 'material-ui/Card';
-import {colors} from './libs/Colors';
-import {timeRangeSlotValidate} from './libs/inputValidator';
-import Moment from 'moment';
-
+import React, { Component } from "react";
+import FlatButton from "material-ui/FlatButton";
+import Dialog from "material-ui/Dialog";
+import TextField from "material-ui/TextField";
+import TimePicker from "material-ui/TimePicker";
+import SaveProgress from "./SaveProgress";
+import { RadioButton, RadioButtonGroup } from "material-ui/RadioButton";
+import { Card, CardHeader, CardText } from "material-ui/Card";
+import { colors } from "./libs/Colors";
+import { timeRangeSlotValidate } from "./libs/inputValidator";
+import Moment from "moment";
 
 export default class SlotDialog extends Component {
-
   constructor(props) {
-    super(props)
+    super(props);
     this.state = {
       title: "",
       uri: "",
-      from: Moment().format('HH:mm'),
+      from: Moment().format("HH:mm"),
       to: null,
       type: "range",
       duration: 0,
@@ -28,7 +26,7 @@ export default class SlotDialog extends Component {
         type: "none",
         message: ""
       }
-    }
+    };
   }
 
   handleClose = () => {
@@ -39,27 +37,25 @@ export default class SlotDialog extends Component {
         type: "none",
         message: ""
       }
-    })
+    });
   };
 
   handleColorRadiobutton(e) {
     this.setSlotState({
       element: "color",
       elementValue: e.target.value
-    })
+    });
   }
 
   setSlotState(val = null) {
-    if ( val != null ) this.setState({[val.element]: val.elementValue});
-    this.setState({title: document.getElementById('title').value});
-    this.setState({uri: document.getElementById('uri').value});
-    this.setState({from: document.getElementById('from').value + ":00"});
-    this.setState({to: document.getElementById('to').value + ":00"});
+    if (val != null) this.setState({ [val.element]: val.elementValue });
+    this.setState({ title: document.getElementById("title").value });
+    this.setState({ uri: document.getElementById("uri").value });
+    this.setState({ from: document.getElementById("from").value + ":00" });
+    this.setState({ to: document.getElementById("to").value + ":00" });
   }
 
-
   saveSlot(e) {
-
     this.setState({
       progress: {
         show: true,
@@ -77,70 +73,72 @@ export default class SlotDialog extends Component {
       color: this.state.color
     };
 
-
-    timeRangeSlotValidate(this.props.slots, slotPayload.from, slotPayload.to, slotPayload.type)
-    .then(() => {
-      fetch('/api/slots', {
-        headers: new Headers({
-          'Content-Type': 'application/json'
-        }),
-        method: 'POST',
-        body: JSON.stringify(slotPayload)
+    timeRangeSlotValidate(
+      this.props.slots,
+      slotPayload.from,
+      slotPayload.to,
+      slotPayload.type
+    )
+      .then(() => {
+        fetch("/api/slots", {
+          headers: new Headers({
+            "Content-Type": "application/json"
+          }),
+          method: "POST",
+          body: JSON.stringify(slotPayload)
+        })
+          .then(response => response.json())
+          .then(data => {
+            if (data.message !== undefined) {
+              this.setState({
+                progress: {
+                  show: true,
+                  type: "failed",
+                  message: `Elasticsearch ${data.message}`
+                }
+              });
+            } else if (data.elastic.created === undefined) {
+              this.setState({
+                progress: {
+                  show: true,
+                  type: "failed",
+                  message: "Save slot failed"
+                }
+              });
+            } else if (data.elastic.created === true) {
+              this.setState({
+                progress: {
+                  show: true,
+                  type: "success"
+                }
+              });
+            } else {
+              this.setState({
+                progress: {
+                  show: true,
+                  type: "failed",
+                  message: "Save slot failed"
+                }
+              });
+            }
+          });
       })
-      .then(response => response.json())
-      .then(data => {
-        if ( data.message !== undefined) {
-          this.setState({
-            progress: {
-              show: true,
-              type: "failed",
-              message: `Elasticsearch ${data.message}`
-            }
-          });
-        } else if (data.elastic.created === undefined) {
-          this.setState({
-            progress: {
-              show: true,
-              type: "failed",
-              message: "Save slot failed"
-            }
-          });
-        } else if (data.elastic.created === true) {
-          this.setState({
-            progress: {
-              show: true,
-              type: "success"
-            }
-          });
-        } else {
-          this.setState({
-            progress: {
-              show: true,
-              type: "failed",
-              message: "Save slot failed"
-            }
-          });
-        }
+      .catch(err => {
+        this.setState({
+          progress: {
+            show: true,
+            type: "failed",
+            message: err.message
+          }
+        });
       });
-    }).catch( err => {
-      this.setState({
-        progress: {
-          show: true,
-          type: "failed",
-          message: err.message
-        }
-      });
-    });
   }
 
-
   render() {
-
     let actions = [];
     if (this.state.progress.show) {
-
       actions = [
-        <SaveProgress typeProgress={this.state.progress}/>,
+        <SaveProgress typeProgress={this.state.progress} />,
         <FlatButton
           id="dialogCloseButton"
           label="Close"
@@ -148,24 +146,21 @@ export default class SlotDialog extends Component {
           onTouchTap={this.handleClose}
         />
       ];
-
     } else {
-
-
       actions = [
         <FlatButton
           id="dialogCancelButton"
           label="Cancel"
           primary={true}
-          onTouchTap={(e) => this.handleClose(e)}
+          onTouchTap={e => this.handleClose(e)}
         />,
         <FlatButton
           id="dialogSaveButton"
           label="Save slot"
           primary={true}
           keyboardFocused={true}
-          onTouchTap={(e) => this.saveSlot(e)}
-        />,
+          onTouchTap={e => this.saveSlot(e)}
+        />
       ];
     }
 
@@ -177,7 +172,7 @@ export default class SlotDialog extends Component {
         marginBottom: 16
       },
       block: {
-        maxWidth: 250,
+        maxWidth: 250
       },
       radioButton: {
         marginBottom: 16
@@ -194,7 +189,7 @@ export default class SlotDialog extends Component {
           onRequestClose={this.handleClose}
           autoScrollBodyContent={true}
         >
-          <br/>
+          <br />
           <Card>
             <CardHeader
               title="Basic info"
@@ -207,14 +202,16 @@ export default class SlotDialog extends Component {
                 hintText="Title"
                 floatingLabelText="Title"
                 onChange={() => this.setSlotState()}
-              /><br />
+              />
+              <br />
               <TextField
                 id="uri"
                 hintText="URI"
                 floatingLabelText="URI"
                 defaultValue="http://"
                 onChange={() => this.setSlotState()}
-              /><br />
+              />
+              <br />
               <TimePicker
                 id="from"
                 format="24hr"
@@ -222,7 +219,8 @@ export default class SlotDialog extends Component {
                 autoOk={true}
                 defaultTime={new Date()}
                 onChange={() => this.setSlotState()}
-              /><br />
+              />
+              <br />
               <TimePicker
                 id="to"
                 format="24hr"
@@ -232,7 +230,7 @@ export default class SlotDialog extends Component {
               />
             </CardText>
           </Card>
-          <br/>
+          <br />
           <Card>
             <CardHeader
               title="Color"
@@ -246,7 +244,7 @@ export default class SlotDialog extends Component {
                 labelPosition="right"
                 style={styles.block}
                 defaultSelected="default"
-                onChange={(e) => this.handleColorRadiobutton(e)}
+                onChange={e => this.handleColorRadiobutton(e)}
               >
                 <RadioButton
                   value="default"

@@ -1,7 +1,7 @@
-import React, {Component} from 'react';
-import Presentation from '../components/Presentation';
-import Moment from 'moment';
-import { extendMoment } from 'moment-range';
+import React, { Component } from "react";
+import Presentation from "../components/Presentation";
+import Moment from "moment";
+import { extendMoment } from "moment-range";
 
 const moment = extendMoment(Moment);
 
@@ -25,11 +25,11 @@ export default class PresentationContainer extends Component {
     let showSlotRangeType = true;
     let backgroundEndTime = null;
     let BreakException = {};
-    setInterval( () => {
+    setInterval(() => {
       this.getSlots();
       let slotAvailable = false;
 
-      if ( showSlotRangeType ) {
+      if (showSlotRangeType) {
         this.state.slots.forEach(slot => {
           let from = slot._source.from.split(":");
           let _from = moment().hours(from[0]).minutes(from[1]).seconds(from[2]);
@@ -38,21 +38,29 @@ export default class PresentationContainer extends Component {
           let _now = moment();
           let range = moment.range(_from, _to);
 
-          if (_now.within(range) && ( slot._id !== this.state.usedSlotId )) {
+          if (_now.within(range) && slot._id !== this.state.usedSlotId) {
+            console.log(
+              "Title: " +
+                slot._source.title +
+                ", Time: " +
+                from +
+                "/" +
+                to +
+                " / " +
+                _now.within(range)
+            );
 
-            console.log("Title: " + slot._source.title + ", Time: " + from + "/" + to + " / " + _now.within(range));
-
-            this.setState({uri: slot._source.uri});
-            this.setState({usedSlotId: slot._id});
+            this.setState({ uri: slot._source.uri });
+            this.setState({ usedSlotId: slot._id });
 
             if (slot._source.type === "background") {
               backgroundEndTime = _to;
               showSlotRangeType = false;
             }
 
-            this.setState({bannerTitle:slot._source.title});
-            this.setState({bannerUri: slot._source.uri});
-            this.setState({showBanner: true});
+            this.setState({ bannerTitle: slot._source.title });
+            this.setState({ bannerUri: slot._source.uri });
+            this.setState({ showBanner: true });
             throw BreakException;
           }
           if (_now.within(range)) {
@@ -61,32 +69,32 @@ export default class PresentationContainer extends Component {
         });
 
         if (!slotAvailable) {
-          this.setState({uri: "http://localhost:3000/#/pause-page"});
-          this.setState({usedSlotId: 0});
+          this.setState({ uri: "http://localhost:3000/#/pause-page" });
+          this.setState({ usedSlotId: 0 });
         }
       } else {
-        let _diff = backgroundEndTime.diff(moment(), 'seconds');
-        if ( (_diff === 0) || (_diff < 0) ) {
+        let _diff = backgroundEndTime.diff(moment(), "seconds");
+        if (_diff === 0 || _diff < 0) {
           showSlotRangeType = true;
         }
       }
     }, 1000);
 
-    setInterval( () => {
-      this.setState({showBanner: false});
+    setInterval(() => {
+      this.setState({ showBanner: false });
     }, 3000);
   }
 
   getSlots() {
-    fetch('/api/slots', {
+    fetch("/api/slots", {
       headers: new Headers({
-        'Content-Type': 'application/json'
+        "Content-Type": "application/json"
       })
     })
       .then(response => response.json())
-      .then((data) => {
+      .then(data => {
         if (data.elastic.responses[0].hits !== undefined) {
-          this.setState({slots: data.elastic.responses[0].hits.hits});
+          this.setState({ slots: data.elastic.responses[0].hits.hits });
         }
       });
   }
@@ -94,12 +102,12 @@ export default class PresentationContainer extends Component {
   render() {
     return (
       <div>
-       <Presentation
-         uri={this.state.uri}
-         showBanner={this.state.showBanner}
-         bannerUri={this.state.bannerUri}
-         bannerTitle={this.state.bannerTitle}
-       />
+        <Presentation
+          uri={this.state.uri}
+          showBanner={this.state.showBanner}
+          bannerUri={this.state.bannerUri}
+          bannerTitle={this.state.bannerTitle}
+        />
       </div>
     );
   }

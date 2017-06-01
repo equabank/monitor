@@ -1,10 +1,9 @@
-import React from 'react';
-import Dialog from 'material-ui/Dialog';
-import FlatButton from 'material-ui/FlatButton';
-import DeleteForever from 'material-ui/svg-icons/action/delete-forever';
+import React from "react";
+import Dialog from "material-ui/Dialog";
+import FlatButton from "material-ui/FlatButton";
+import DeleteForever from "material-ui/svg-icons/action/delete-forever";
 
 export default class DeleteDialog extends React.Component {
-
   render() {
     const actions = [
       <FlatButton
@@ -17,7 +16,7 @@ export default class DeleteDialog extends React.Component {
         secondary={true}
         onClick={() => this.props.discardSlot()}
         icon={<DeleteForever />}
-      />,
+      />
     ];
 
     return (
