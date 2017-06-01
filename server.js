@@ -1,3 +1,4 @@
+// @flow
 import express from "express";
 import bodyParser from "body-parser";
 import fs from "fs";
@@ -107,7 +108,11 @@ router
 
     getSlots(client, (error, elastic) => {
       if (error) {
-        return res.status(500).end(JSON.stringify(error));
+        return res.status(500).end(
+          JSON.stringify({
+            elasticsearchError: { message: error.message }
+          })
+        );
       }
 
       // if exists any timeslot
@@ -124,7 +129,11 @@ router
           .then(() => {
             addSlot(client, req.body, (error, response) => {
               if (error) {
-                return res.status(500).end(JSON.stringify(error));
+                return res.status(500).end(
+                  JSON.stringify({
+                    elasticsearchError: { message: error.message }
+                  })
+                );
               }
               res.json({
                 elastic: response
@@ -139,7 +148,11 @@ router
       } else {
         addSlot(client, req.body, (error, response) => {
           if (error) {
-            return res.status(500).end(JSON.stringify(error));
+            return res.status(500).end(
+              JSON.stringify({
+                elasticsearchError: { message: error.message }
+              })
+            );
           }
           res.json({
             elastic: response
@@ -151,7 +164,11 @@ router
   .get((req, res) => {
     getSlots(client, (error, response) => {
       if (error) {
-        return res.status(500).end(JSON.stringify(error));
+        return res.status(500).end(
+          JSON.stringify({
+            elasticsearchError: { message: error.message }
+          })
+        );
       }
       res.json({
         elastic: response
@@ -161,7 +178,11 @@ router
   .delete((req, res) => {
     deleteAllSlots(client, (error, response) => {
       if (error) {
-        return res.status(500).end(JSON.stringify(error));
+        return res.status(500).end(
+          JSON.stringify({
+            elasticsearchError: { message: error.message }
+          })
+        );
       }
       res.json({
         elastic: response
@@ -174,7 +195,11 @@ router
   .get((req, res) => {
     getSlot(client, req.params.slot_id, (error, response) => {
       if (error) {
-        return res.status(500).end(JSON.stringify(error));
+        return res.status(500).end(
+          JSON.stringify({
+            elasticsearchError: { message: error.message }
+          })
+        );
       }
       res.json({
         elastic: response
@@ -184,7 +209,11 @@ router
   .delete((req, res) => {
     deleteSlot(client, req.params.slot_id, (error, response) => {
       if (error) {
-        return res.status(500).end(JSON.stringify(error));
+        return res.status(500).end(
+          JSON.stringify({
+            elasticsearchError: { message: error.message }
+          })
+        );
       }
       res.json({
         elastic: response
