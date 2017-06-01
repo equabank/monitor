@@ -58,8 +58,9 @@ export let timeRangeSlotValidate = (
               _to.within(rangeSlot))
           ) {
             result.freeSlotAvailable = false;
-            result.message =
-              "TimeRangeSlotValidate: The time range is occupied or its beginning or ending interferes with the existing time slot";
+            result.message = `TimeRangeSlotValidate: The time range is `;
+            result.message += `occupied or its beginning or ending interferes `;
+            result.message += `with the existing time slot`;
             reject(result);
           }
         }
