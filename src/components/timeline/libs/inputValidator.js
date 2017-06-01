@@ -13,7 +13,7 @@ export let timeRangeSlotValidate = (
 ) => {
   let result = {
     freeSlotAvailable: false,
-    message: String
+    message: ""
   };
 
   return new Promise((resolve, reject) => {
@@ -58,9 +58,9 @@ export let timeRangeSlotValidate = (
               _to.within(rangeSlot))
           ) {
             result.freeSlotAvailable = false;
-            result.message = `TimeRangeSlotValidate: The time range is `;
-            result.message += `occupied or its beginning or ending interferes `;
-            result.message += `with the existing time slot`;
+            result.message = "TimeRangeSlotValidate: The time range is ";
+            result.message += "occupied or its beginning or ending interferes ";
+            result.message += "with the existing time slot";
             reject(result);
           }
         }
