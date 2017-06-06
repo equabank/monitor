@@ -20,7 +20,6 @@ export default class ToolbarExamplesSimple extends React.Component {
     this.setState({ menuItem: value });
 
     if (value === 2) {
-      //browserHistory.push("/");
       hashHistory.push("/");
     }
   };
