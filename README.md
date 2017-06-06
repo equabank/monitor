@@ -1,4 +1,4 @@
-# MONITOR 0.1.4 [![Build Status](https://travis-ci.org/test-stack/monitor.svg?branch=develop)](https://travis-ci.org/test-stack/monitor)
+# MONITOR 0.1.5 [![Build Status](https://travis-ci.org/test-stack/monitor.svg?branch=develop)](https://travis-ci.org/test-stack/monitor)
 
 Dockerized application for planned of switching between another diagnostic web applications.
 
@@ -113,8 +113,8 @@ For development:
 
   1. `ELASTIC_URI=http://IP:9200 yarn server` - backend part
   2. `yarn client` - backend client
-  
-  
+
+
 For production use:
 
 - `yarn start`

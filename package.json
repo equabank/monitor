@@ -5,7 +5,7 @@
   "author": "Radim Daniel Panek",
   "homepage": "https://github.com/test-stack/monitor",
   "license": "MIT",
-  "version": "0.1.4",
+  "version": "0.1.5",
   "flow": "flow",
   "jest": {
     "verbose": true,
