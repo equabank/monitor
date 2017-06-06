@@ -13,7 +13,7 @@ export default class ToolbarExamplesSimple extends React.Component {
     super(props);
     this.state = {
       leftMenuItem: 1,
-      rightMenuItem: 1
+      rightMenuItem: 0
     };
   }
 
@@ -26,13 +26,15 @@ export default class ToolbarExamplesSimple extends React.Component {
   };
 
   rightMenuHandleChange = (event, index, value) => {
-    this.setState({ rightMenuItem: value });
-    if (index === 2) {
-      hashHistory.push("/about");
-    }
+    if (this.state.rightMenuItem !== index) {
+      this.setState({ rightMenuItem: index });
+      if (index === 2 && this.state.rightMenuItem !== index) {
+        hashHistory.push("/about");
+      }
 
-    if (index === 1) {
-      hashHistory.push("/admin");
+      if (index === 1) {
+        hashHistory.push("/admin");
+      }
     }
   };
 
