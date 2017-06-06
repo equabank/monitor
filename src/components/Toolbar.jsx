@@ -12,16 +12,29 @@ export default class ToolbarExamplesSimple extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      menuItem: 1
+      leftMenuItem: 1,
+      rightMenuItem: 0
     };
   }
 
-  handleChange = (event, index, value) => {
-    this.setState({ menuItem: value });
+  leftMenuHandleChange = (event, index, value) => {
+    this.setState({ leftMenuItem: value });
 
     if (value === 2) {
-      //browserHistory.push("/");
       hashHistory.push("/");
+    }
+  };
+
+  rightMenuHandleChange = (event, index, value) => {
+    if (this.state.rightMenuItem !== index) {
+      this.setState({ rightMenuItem: index });
+      if (index === 2 && this.state.rightMenuItem !== index) {
+        hashHistory.push("/about");
+      }
+
+      if (index === 1) {
+        hashHistory.push("/admin");
+      }
     }
   };
 
@@ -30,8 +43,8 @@ export default class ToolbarExamplesSimple extends React.Component {
       <Toolbar>
         <ToolbarGroup firstChild={true}>
           <DropDownMenu
-            value={this.state.menuItem}
-            onChange={this.handleChange}
+            value={this.state.leftMenuItem}
+            onChange={this.leftMenuHandleChange}
           >
             <MenuItem value={1} primaryText="Timeline" />
             <MenuItem value={2} primaryText="Show presentations" />
@@ -45,9 +58,11 @@ export default class ToolbarExamplesSimple extends React.Component {
                 <NavigationExpandMoreIcon />
               </IconButton>
             }
+            value={this.state.rightMenuItem}
+            onChange={this.rightMenuHandleChange}
           >
-            <MenuItem primaryText="Options" />
-            <MenuItem primaryText="About Monitor" />
+            <MenuItem value={1} primaryText="Admin" />
+            <MenuItem value={2} primaryText="About Monitor" />
           </IconMenu>
         </ToolbarGroup>
       </Toolbar>

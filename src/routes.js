@@ -1,6 +1,10 @@
 import React from "react";
 import { Router, Route, hashHistory, IndexRoute } from "react-router";
-import { PresentationContainer, TimelineContainer } from "./containers";
+import {
+  PresentationContainer,
+  TimelineContainer,
+  AboutContainer
+} from "./containers";
 import { Layout, PausePage } from "./components";
 
 // Use hashHistory for easier development
@@ -13,6 +17,9 @@ const routes = (
       <IndexRoute component={TimelineContainer} />
     </Route>
     <Route path="/pause-page" component={PausePage} />
+    <Route path="/about" component={Layout}>
+      <IndexRoute component={AboutContainer} />
+    </Route>
   </Router>
 );
 
