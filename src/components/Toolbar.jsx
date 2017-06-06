@@ -6,6 +6,7 @@ import NavigationExpandMoreIcon
 import MenuItem from "material-ui/MenuItem";
 import DropDownMenu from "material-ui/DropDownMenu";
 import { Toolbar, ToolbarGroup, ToolbarTitle } from "material-ui/Toolbar";
+import { hashHistory } from "react-router";
 
 export default class ToolbarExamplesSimple extends React.Component {
   constructor(props) {
@@ -15,7 +16,14 @@ export default class ToolbarExamplesSimple extends React.Component {
     };
   }
 
-  handleChange = (event, index, value) => this.setState({ value });
+  handleChange = (event, index, value) => {
+    this.setState({ menuItem: value });
+
+    if (value === 2) {
+      //browserHistory.push("/");
+      hashHistory.push("/");
+    }
+  };
 
   render() {
     return (
@@ -26,6 +34,7 @@ export default class ToolbarExamplesSimple extends React.Component {
             onChange={this.handleChange}
           >
             <MenuItem value={1} primaryText="Timeline" />
+            <MenuItem value={2} primaryText="Show presentations" />
           </DropDownMenu>
         </ToolbarGroup>
         <ToolbarGroup>
