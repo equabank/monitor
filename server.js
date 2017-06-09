@@ -15,10 +15,12 @@ import {
   deleteAllSlots
 } from "./app/slots";
 import tv4 from "tv4";
-import schema from "./app/schema";
+import slotSchema from "./app/slotSchema";
+import generatorSlotSchema from "./app/generatorSlotSchema";
 import {
   timeRangeSlotValidate
 } from "./src/components/timeline/libs/inputValidator";
+import Moment from "moment";
 
 const logDirectory = path.join(__dirname, "logs");
 fs.existsSync(logDirectory) || fs.mkdirSync(logDirectory);
@@ -94,10 +96,46 @@ router.get("/", function(req, res) {
   res.sendFile(path.join(__dirname, "build", "index.html"));
 });
 
+router.route("/slots/generator").post((req, res) => {
+  let timeSlots = req.body;
+  let validSlot = tv4.validateResult(timeSlots, generatorSlotSchema);
+
+  if (!validSlot.valid)
+    return res.status(500).send({
+      message: validSlot.error.message,
+      dataPath: validSlot.error.dataPath,
+      params: validSlot.error.params
+    });
+  /*
+  timeSlots.forEach(timeSlot => {
+
+  });
+  */
+  return res.json({
+    processingTime: 150,
+    timeSlots: [
+      {
+        duration: 10,
+        title: "Dashboard A",
+        uri: "http://",
+        status: true,
+        message: "The time slot was successfully created."
+      },
+      {
+        duration: 10,
+        title: "Dashboard B",
+        uri: "http://",
+        status: false,
+        message: "The time range 10:02:00 - 10:04:00 is occupied."
+      }
+    ]
+  });
+});
+
 router
   .route("/slots")
   .post((req, res) => {
-    let valid = tv4.validateResult(req.body, schema);
+    let valid = tv4.validateResult(req.body, slotSchema);
 
     if (!valid.valid)
       return res.status(500).send({
