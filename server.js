@@ -20,7 +20,7 @@ import generatorSlotSchema from "./app/generatorSlotSchema";
 import {
   timeRangeSlotValidate
 } from "./src/components/timeline/libs/inputValidator";
-import moment from "moment";
+import { slotsGenerator } from "./src/components/timeline/libs/slotsGenerator";
 
 const logDirectory = path.join(__dirname, "logs");
 fs.existsSync(logDirectory) || fs.mkdirSync(logDirectory);
@@ -97,8 +97,10 @@ router.get("/", function(req, res) {
 });
 
 router.route("/slots/generator").post((req, res) => {
-  let timeSlots = req.body;
-  let validSlot = tv4.validateResult(timeSlots, generatorSlotSchema);
+  let timeSlotsPayload = req.body;
+
+  // validation
+  let validSlot = tv4.validateResult(timeSlotsPayload, generatorSlotSchema);
 
   if (!validSlot.valid)
     return res.status(500).send({
@@ -107,13 +109,7 @@ router.route("/slots/generator").post((req, res) => {
       params: validSlot.error.params
     });
 
-  let endOfTimeSlots = moment().add(timeSlots.duration, "seconds");
-
-  /*
-  timeSlots.forEach(timeSlot => {
-
-  });
-  */
+  slotsGenerator(timeSlotsPayload);
   return res.json({
     processingTime: 150,
     timeSlots: [
