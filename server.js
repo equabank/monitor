@@ -20,7 +20,7 @@ import generatorSlotSchema from "./app/generatorSlotSchema";
 import {
   timeRangeSlotValidate
 } from "./src/components/timeline/libs/inputValidator";
-import Moment from "moment";
+import moment from "moment";
 
 const logDirectory = path.join(__dirname, "logs");
 fs.existsSync(logDirectory) || fs.mkdirSync(logDirectory);
@@ -106,6 +106,9 @@ router.route("/slots/generator").post((req, res) => {
       dataPath: validSlot.error.dataPath,
       params: validSlot.error.params
     });
+
+  let endOfTimeSlots = moment().add(timeSlots.duration, "seconds");
+
   /*
   timeSlots.forEach(timeSlot => {
 
