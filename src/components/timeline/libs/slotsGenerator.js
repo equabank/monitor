@@ -3,7 +3,7 @@ import "babel-polyfill";
 
 // clone time slot object
 const clone = (obj: Object) => {
-  if (null == obj || "object" != typeof obj) return obj;
+  if (null === obj || "object" !== typeof obj) return obj;
   let copy = obj.constructor();
   for (let attr in obj) {
     if (obj.hasOwnProperty(attr)) copy[attr] = obj[attr];

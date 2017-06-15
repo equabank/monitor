@@ -21,6 +21,7 @@ import {
   timeRangeSlotValidate
 } from "./src/components/timeline/libs/inputValidator";
 import { slotsGenerator } from "./src/components/timeline/libs/slotsGenerator";
+import "babel-polyfill";
 
 const logDirectory = path.join(__dirname, "logs");
 fs.existsSync(logDirectory) || fs.mkdirSync(logDirectory);
@@ -40,14 +41,14 @@ let client = new elasticsearch.Client({
     path: "./logs/elasticsearch.log"
   },
   apiVersion: "5.0",
-  requestTimeout: 1000,
+  requestTimeout: 5000,
   keepAlive: true,
   maxSockets: 10
 });
 
 client.ping(
   {
-    requestTimeout: 1000
+    requestTimeout: 5000
   },
   function(error) {
     if (error) {
@@ -109,26 +110,93 @@ router.route("/slots/generator").post((req, res) => {
       params: validSlot.error.params
     });
 
-  slotsGenerator(timeSlotsPayload);
-  return res.json({
-    processingTime: 150,
-    timeSlots: [
-      {
-        duration: 10,
-        title: "Dashboard A",
-        uri: "http://",
-        status: true,
-        message: "The time slot was successfully created."
-      },
-      {
-        duration: 10,
-        title: "Dashboard B",
-        uri: "http://",
-        status: false,
-        message: "The time range 10:02:00 - 10:04:00 is occupied."
+  new Promise((resolve, reject) => {
+    getSlots(client, (error, elasticResponse) => {
+      if (error) {
+        reject(error);
       }
-    ]
-  });
+      resolve(elasticResponse);
+    });
+  })
+    .then(timeSlots => {
+      let p0 = timeSlots;
+      let p1 = slotsGenerator(timeSlotsPayload);
+      return Promise.all([p0, p1]);
+    })
+    .then(data => {
+      if (
+        data[0].responses[0].hits !== undefined &&
+        data[0].responses[0].hits.hits.length !== 0
+      ) {
+        let promises = data[1].timeSlots.map(generatedSlot => {
+          return timeRangeSlotValidate(
+            data[0].responses[0].hits.hits,
+            generatedSlot.from,
+            generatedSlot.to,
+            "background"
+          )
+            .then(() => {
+              generatedSlot["timeRangeSlotValidator"] = true;
+              return generatedSlot;
+            })
+            .catch(err => {
+              generatedSlot["timeRangeSlotValidator"] = false;
+              generatedSlot["message"] = JSON.stringify(err);
+              return generatedSlot;
+            });
+        });
+        return Promise.all(promises);
+      } else {
+        let promises = data[1].timeSlots.map(generatedSlot => {
+          generatedSlot["timeRangeSlotValidator"] = true;
+          return generatedSlot;
+        });
+        return Promise.all(promises);
+      }
+    })
+    .then(promises => {
+      let _promises = promises.map(timeSlot => {
+        return new Promise((resolve, reject) => {
+          if (timeSlot.timeRangeSlotValidator === true) {
+            return addSlot(
+              client,
+              {
+                color: "background",
+                type: "background",
+                title: timeSlot.title,
+                uri: timeSlot.uri,
+                from: timeSlot.from,
+                to: timeSlot.to
+              },
+              (error, response) => {
+                if (error) {
+                  reject({
+                    timeSlot: timeSlot,
+                    saved: error
+                  });
+                }
+                resolve({
+                  timeSlot: timeSlot,
+                  saved: response
+                });
+              }
+            );
+          } else {
+            resolve({
+              timeSlot: timeSlot,
+              saved: false
+            });
+          }
+        });
+      });
+      return Promise.all(_promises);
+    })
+    .then(_promises => {
+      return res.json(_promises);
+    })
+    .catch(err => {
+      return res.status(500).end(JSON.stringify(err));
+    });
 });
 
 router
