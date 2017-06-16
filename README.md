@@ -131,7 +131,7 @@ Re-build Docker image:
 
 then run
 
-run image: `docker run --name monitor -d -e ELASTIC_URI=xxx.xxx.xxx.xxx:9200 -p 3000:3000 rdpanek/monitor:latest`
+run image: `docker run --name monitor -d -e ELASTIC_URI=xxx.xxx.xxx.xxx:9200 -p 3000:3000 -p 3001:3001 rdpanek/monitor:0.1.5`
 
 ### Kubernetes
 Fill `ELASTIC_URI` and run

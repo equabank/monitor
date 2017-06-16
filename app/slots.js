@@ -1,9 +1,11 @@
+let uniqueId = 1;
+
 export const addSlot = (client, slot, cb) => {
   client.create(
     {
       index: "monitor-slots",
       type: "monitor-slots",
-      id: new Date().getTime(),
+      id: new Date().getTime() + ++uniqueId,
       body: Object.assign({ timestamp: new Date().toISOString() }, slot)
     },
     cb
