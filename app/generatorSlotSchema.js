@@ -2,7 +2,8 @@ const schema = {
   type: "object",
   properties: {
     duration: {
-      type: "number"
+      type: "number",
+      maximum: 15000
     },
     timeSlots: {
       type: "array",
@@ -11,7 +12,8 @@ const schema = {
         type: "object",
         properties: {
           duration: {
-            type: "number"
+            type: "number",
+            minimum: 30
           },
           title: {
             type: "string"
