@@ -22,6 +22,7 @@ import {
 } from "./src/components/timeline/libs/inputValidator";
 import { slotsGenerator } from "./src/components/timeline/libs/slotsGenerator";
 import "babel-polyfill";
+import moment from "moment";
 
 const logDirectory = path.join(__dirname, "logs");
 fs.existsSync(logDirectory) || fs.mkdirSync(logDirectory);
@@ -99,6 +100,8 @@ router.get("/", function(req, res) {
 
 router.route("/slots/generator").post((req, res) => {
   let timeSlotsPayload = req.body;
+  let _endTime = "";
+  let startProcessing = moment();
 
   // validation
   let validSlot = tv4.validateResult(timeSlotsPayload, generatorSlotSchema);
@@ -124,6 +127,7 @@ router.route("/slots/generator").post((req, res) => {
       return Promise.all([p0, p1]);
     })
     .then(data => {
+      _endTime = data[1].endTime;
       if (
         data[0].responses[0].hits !== undefined &&
         data[0].responses[0].hits.hits.length !== 0
@@ -192,7 +196,13 @@ router.route("/slots/generator").post((req, res) => {
       return Promise.all(_promises);
     })
     .then(_promises => {
-      return res.json(_promises);
+      return res.json({
+        timeSlots: _promises,
+        endTime: _endTime,
+        processingTime: {
+          ms: moment().diff(startProcessing, "miliseconds")
+        }
+      });
     })
     .catch(err => {
       return res.status(500).end(JSON.stringify(err));

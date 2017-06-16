@@ -15,11 +15,11 @@ export let slotsGenerator = (timeSlotsPayload: Object) => {
   let generateNextTimeSlot = true;
   let generatorResponse = {
     timeSlots: [],
-    endOfTimeSlots: {}
+    endTime: {}
   };
 
   // generate unique time range
-  let endOfTimeSlots = moment().add(timeSlotsPayload.duration, "seconds");
+  let endTime = moment().add(timeSlotsPayload.duration, "seconds");
   let lastEndTimeOfTimeSlot = moment().format("HH:mm:ss");
   let _lastEndTimeOfTimeSlot = lastEndTimeOfTimeSlot.split(":");
   const startOfTimeSlots = moment()
@@ -42,9 +42,9 @@ export let slotsGenerator = (timeSlotsPayload: Object) => {
           .add(_timeSlot.duration, "seconds");
 
         // when end time is exceeded, is generating new time slots interrupted
-        if (endOfTimeSlots.diff(_timeSlot.to, "seconds") < 0) {
+        if (endTime.diff(_timeSlot.to, "seconds") < 0) {
           generateNextTimeSlot = false;
-          generatorResponse.endOfTimeSlots = endOfTimeSlots.format("HH:mm:ss");
+          generatorResponse.endTime = endTime.format("HH:mm:ss");
         }
 
         _timeSlot.to = _timeSlot.to.format("HH:mm:ss");
