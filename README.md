@@ -1,4 +1,4 @@
-# MONITOR 0.2.0 [![Build Status](https://travis-ci.org/test-stack/monitor.svg?branch=develop)](https://travis-ci.org/test-stack/monitor)
+# MONITOR 0.2.1 [![Build Status](https://travis-ci.org/test-stack/monitor.svg?branch=develop)](https://travis-ci.org/test-stack/monitor)
 
 Dockerized application for planned of switching between another diagnostic web applications.
 
