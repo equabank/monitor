@@ -160,9 +160,11 @@ Click on CREATE SLOT button show intuitive dialogue for create Time Slot. To fie
 
 ### API
 
+#### Create Single Time Slot
+
 REST-API is useful for sending command for show presentation from other tools., e.g. Show Kibana Dashboard with latests results of performance tests from now to 10min laters.
 
-You can use REST-API endpoint `IP:PORT/api/slots` and send this payload
+You can use REST-API endpoint `IP:3001/api/slots` and send this payload
 
 ```
 {
@@ -186,6 +188,194 @@ The Background Time Slots has higgher priority than Time Slots. When is time to 
 Response must contain property `created` with value `true`
 
 
+#### Create a Time Slots in bulk via generator endpoint
+
+Api contains endpoint `POST /api/slots/generator` for create lot of more Time Slots via generator definition in JSON format.
+
+You can use REST-API endpoint `IP:3001/api/slots/generator` and send this payload
+
+**Request**
+```
+{
+  "duration": 360,
+  "timeSlots": [{
+    "duration": 60,
+    "title": "Application A",
+    "uri": "http://"
+  },{
+    "duration": 60,
+    "title": "Application B",
+    "uri": "http://"
+  }]
+}
+```
+
+The form of this payload must remain unchanged. You can change only:
+
+- `duration` in seconds - is time range ( from now to +duration ) for all new time slots
+- `timeSlots.duration` in seconds - is time range ( from now to +duration ) for this time slot
+- `timeSlots.title` is useful for Presentation layer, when a banner is displayed with the name of the application to be displayed. Title is used in Timeline for name of Time Slots and Background Time Slots
+- `uri` Beware of `X-FRAME-OPTIONS` in headers.
+
+**Response**
+```
+{
+    "timeSlots": [
+        {
+            "timeSlot": {
+                "duration": 60,
+                "title": "Application A",
+                "uri": "http://",
+                "from": "14:01:35",
+                "to": "14:02:35",
+                "timeRangeSlotValidator": true
+            },
+            "saved": {
+                "_index": "monitor-slots",
+                "_type": "monitor-slots",
+                "_id": "1497873695687",
+                "_version": 1,
+                "result": "created",
+                "_shards": {
+                    "total": 2,
+                    "successful": 1,
+                    "failed": 0
+                },
+                "created": true
+            }
+        },
+        {
+            "timeSlot": {
+                "duration": 60,
+                "title": "Application B",
+                "uri": "http://",
+                "from": "14:02:35",
+                "to": "14:03:35",
+                "timeRangeSlotValidator": true
+            },
+            "saved": {
+                "_index": "monitor-slots",
+                "_type": "monitor-slots",
+                "_id": "1497873695688",
+                "_version": 1,
+                "result": "created",
+                "_shards": {
+                    "total": 2,
+                    "successful": 1,
+                    "failed": 0
+                },
+                "created": true
+            }
+        },
+        {
+            "timeSlot": {
+                "duration": 60,
+                "title": "Application A",
+                "uri": "http://",
+                "from": "14:03:35",
+                "to": "14:04:35",
+                "timeRangeSlotValidator": true
+            },
+            "saved": {
+                "_index": "monitor-slots",
+                "_type": "monitor-slots",
+                "_id": "1497873695689",
+                "_version": 1,
+                "result": "created",
+                "_shards": {
+                    "total": 2,
+                    "successful": 1,
+                    "failed": 0
+                },
+                "created": true
+            }
+        },
+        {
+            "timeSlot": {
+                "duration": 60,
+                "title": "Application B",
+                "uri": "http://",
+                "from": "14:04:35",
+                "to": "14:05:35",
+                "timeRangeSlotValidator": true
+            },
+            "saved": {
+                "_index": "monitor-slots",
+                "_type": "monitor-slots",
+                "_id": "1497873695690",
+                "_version": 1,
+                "result": "created",
+                "_shards": {
+                    "total": 2,
+                    "successful": 1,
+                    "failed": 0
+                },
+                "created": true
+            }
+        },
+        {
+            "timeSlot": {
+                "duration": 60,
+                "title": "Application A",
+                "uri": "http://",
+                "from": "14:05:35",
+                "to": "14:06:35",
+                "timeRangeSlotValidator": true
+            },
+            "saved": {
+                "_index": "monitor-slots",
+                "_type": "monitor-slots",
+                "_id": "1497873695691",
+                "_version": 1,
+                "result": "created",
+                "_shards": {
+                    "total": 2,
+                    "successful": 1,
+                    "failed": 0
+                },
+                "created": true
+            }
+        },
+        {
+            "timeSlot": {
+                "duration": 60,
+                "title": "Application B",
+                "uri": "http://",
+                "from": "14:06:35",
+                "to": "14:07:35",
+                "timeRangeSlotValidator": true
+            },
+            "saved": {
+                "_index": "monitor-slots",
+                "_type": "monitor-slots",
+                "_id": "1497873695692",
+                "_version": 1,
+                "result": "created",
+                "_shards": {
+                    "total": 2,
+                    "successful": 1,
+                    "failed": 0
+                },
+                "created": true
+            }
+        }
+    ],
+    "endTime": "14:07:35",
+    "processingTime": {
+        "ms": 566
+    }
+}
+```
+
+The reply contains the generator job report. Each time slot is completed in generator about some next labels:
+
+- `timeSlots.timeSlot.from` - from is `now` or value from label `to` from last time slot in one generator definition
+- `timeSlots.timeSlot.to` - is `(now + timeSlots.duration)` and this value is use in `from` in next time slot
+- `timeSlots.timeSlot.timeRangeSlotValidator` - each a new time slot with new time range `from` and `to` is passed through the time range validator. Result is `true` or `false` and completed in next label `message` with description of reason `{"freeSlotAvailable": false,"message": "TimeRangeSlotValidate: The time range is occupied or its beginning or ending interferes with the existing time slot"}`
+- `timeSlots.saved.created` is `true` if is save time slot is successful. If `timeSlots.timeSlot.timeRangeSlotValidator` is `false`, then `timeSlots.save` is also `false`
+
+The Time Slot Generator generate only Background Time Slots.
+
 ## Elasticsearch
 
-In elasticsearch is stored Time Slots and Background Time Slots in `monitor-slots` index. If not exist, it will be automatically created.
+Time Slots and Background Time Slots is stored in elasticsearch  in `monitor-slots` index. If not exist, it will be automatically created.
