@@ -19,6 +19,8 @@ spec:
         env:
         - name: ELASTIC_URI
           value: ""
+        - name: TZ
+          value: "Europe/Prague"
         resources:
           requests:
             memory: 100Mi

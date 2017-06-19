@@ -1,4 +1,6 @@
-import moment from "moment";
+import moment from "moment-timezone";
+const tz = process.env.TZ || "Europe/Prague";
+moment.tz.setDefault(tz);
 import "babel-polyfill";
 
 // clone time slot object

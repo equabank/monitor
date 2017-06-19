@@ -67,6 +67,7 @@ In nodeJS / Yarn environment:
 
 - `yarn client` run frontend part application
 - `ELASTIC_URI=http://IP:9200 yarn server` run backend part application
+- `TZ=Pacific/Bougainville` default: Europe/Prague
 - `yarn unit` run unit tests and watcher ( for development )
 - `yarn filldata` remove old slots from elasticsearch and create a new slots by counter. This is extended integration tests.
 - `yarn integration` run integration tests
@@ -131,7 +132,7 @@ Re-build Docker image:
 
 then run
 
-run image: `docker run --name monitor -d -e ELASTIC_URI=xxx.xxx.xxx.xxx:9200 -p 3000:3000 -p 3001:3001 rdpanek/monitor:0.1.5`
+run image: `docker run --name monitor -d -e TZ=Europe/Prague -e ELASTIC_URI=xxx.xxx.xxx.xxx:9200 -p 3000:3000 -p 3001:3001 rdpanek/monitor:0.1.5`
 
 ### Kubernetes
 Fill `ELASTIC_URI` and run
