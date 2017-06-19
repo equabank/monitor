@@ -14,7 +14,7 @@ spec:
       serviceAccount: monitor
       containers:
       - name: monitor
-        image: rdpanek/monitor:0.1.5
+        image: rdpanek/monitor:0.2.0
         imagePullPolicy: Always
         env:
         - name: ELASTIC_URI
