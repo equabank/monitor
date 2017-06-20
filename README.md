@@ -132,7 +132,7 @@ Re-build Docker image:
 
 then run
 
-run image: `docker run --name monitor -d -e TZ=Europe/Prague -e ELASTIC_URI=xxx.xxx.xxx.xxx:9200 -p 3000:3000 -p 3001:3001 rdpanek/monitor:0.1.5`
+run image: `docker run --name monitor -d -e TZ=Europe/Prague -e ELASTIC_URI=xxx.xxx.xxx.xxx:9200 -p 3000:3000 -p 3001:3001 rdpanek/monitor:0.2.1`
 
 ### Kubernetes
 Fill `ELASTIC_URI` and run
