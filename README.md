@@ -1,4 +1,4 @@
-# MONITOR 0.2.1 [![Build Status](https://travis-ci.org/test-stack/monitor.svg?branch=develop)](https://travis-ci.org/test-stack/monitor)
+# MONITOR 0.3.0 [![Build Status](https://travis-ci.org/test-stack/monitor.svg?branch=develop)](https://travis-ci.org/test-stack/monitor)
 
 Dockerized application for planned of switching between another diagnostic web applications.
 
@@ -132,7 +132,7 @@ Re-build Docker image:
 
 then run
 
-run image: `docker run --name monitor -d -e TZ=Europe/Prague -e ELASTIC_URI=xxx.xxx.xxx.xxx:9200 -p 3000:3000 -p 3001:3001 rdpanek/monitor:0.2.1`
+run image: `docker run --name monitor -d -e TZ=Europe/Prague -e ELASTIC_URI=xxx.xxx.xxx.xxx:9200 -p 3000:3000 -p 3001:3001 rdpanek/monitor:0.3.0`
 
 ### Kubernetes
 Fill `ELASTIC_URI` and run
