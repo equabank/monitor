@@ -204,6 +204,7 @@ You can use REST-API endpoint `IP:3001/api/slots/generator` and send this payloa
     "title": "Application A",
     "uri": "http://"
   },{
+    "delay": 120,
     "duration": 60,
     "title": "Application B",
     "uri": "http://"
@@ -214,6 +215,7 @@ You can use REST-API endpoint `IP:3001/api/slots/generator` and send this payloa
 The form of this payload must remain unchanged. You can change only:
 
 - `duration` in seconds - is time range ( from now to +duration ) for all new time slots
+- `timeSlots.delay` in seconds - is optional and shifts the start time ( now + delay )
 - `timeSlots.duration` in seconds - is time range ( from now to +duration ) for this time slot
 - `timeSlots.title` is useful for Presentation layer, when a banner is displayed with the name of the application to be displayed. Title is used in Timeline for name of Time Slots and Background Time Slots
 - `uri` Beware of `X-FRAME-OPTIONS` in headers.
@@ -247,6 +249,7 @@ The form of this payload must remain unchanged. You can change only:
         },
         {
             "timeSlot": {
+                "delay": 120,
                 "duration": 60,
                 "title": "Application B",
                 "uri": "http://",
@@ -293,6 +296,7 @@ The form of this payload must remain unchanged. You can change only:
         },
         {
             "timeSlot": {
+                "delay": 120,
                 "duration": 60,
                 "title": "Application B",
                 "uri": "http://",
@@ -339,6 +343,7 @@ The form of this payload must remain unchanged. You can change only:
         },
         {
             "timeSlot": {
+                "delay": 120,
                 "duration": 60,
                 "title": "Application B",
                 "uri": "http://",
