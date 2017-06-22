@@ -9,7 +9,7 @@ import injectTapEventPlugin from "react-tap-event-plugin";
 injectTapEventPlugin();
 
 describe("<DeleteSlotButton />", () => {
-  it("disabled openDeleteDialog button when not selected any slot", () => {
+  it("disabled openDeleteDialog button when not selected any slot", done => {
     const selectedSlotId = null;
     const openDeleteDialog = {};
     const button = mount(
@@ -22,9 +22,10 @@ describe("<DeleteSlotButton />", () => {
       .find("button#deleteSlotButton")
       .prop("disabled");
     expect(disabledButton).toBeTruthy();
+    done();
   });
 
-  it("openDeleteDialog when select any slot", () => {
+  it("openDeleteDialog when select any slot", done => {
     const selectedSlotId = 123;
     let openDeleteDialog = spy();
     const button = mount(
@@ -35,5 +36,6 @@ describe("<DeleteSlotButton />", () => {
     );
     button.find("button#deleteSlotButton").simulate("click");
     expect(openDeleteDialog.calledOnce).toBeTruthy();
+    done();
   });
 });

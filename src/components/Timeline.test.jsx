@@ -58,8 +58,9 @@ const slots = [
 ];
 
 describe("<Timeline />", () => {
-  it("exist", () => {
+  it("exist", done => {
     const wrapper = mount(<Timeline slots={slots} />);
     expect(wrapper.find("#timelineBox")).toBeTruthy();
+    done();
   });
 });

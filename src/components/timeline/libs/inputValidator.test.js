@@ -34,7 +34,7 @@ let slotTypeRange = "range";
 
 describe("InputValidator", () => {
   it("Successful validation - create new time slot outside existing time-range", () => {
-    timeRangeSlotValidate(
+    return timeRangeSlotValidate(
       slots,
       slotFrom,
       slotTo,
@@ -48,7 +48,12 @@ describe("InputValidator", () => {
   it("Failed validation - create new time slot, slotFrom in existing end time-range", () => {
     slotFrom = "01:00:00";
     slotTo = "01:03:00";
-    timeRangeSlotValidate(slots, slotFrom, slotTo, slotTypeRange).catch(err => {
+    return timeRangeSlotValidate(
+      slots,
+      slotFrom,
+      slotTo,
+      slotTypeRange
+    ).catch(err => {
       expect(err.freeSlotAvailable).toBeFalsy();
       expect(err.message).toBe(
         "TimeRangeSlotValidate: The time range is occupied or its beginning or ending interferes with the existing time slot"
@@ -59,7 +64,12 @@ describe("InputValidator", () => {
   it("Failed validation - create new time slot, slotFrom in existing start time-range", () => {
     slotFrom = "01:03:00";
     slotTo = "01:05:00";
-    timeRangeSlotValidate(slots, slotFrom, slotTo, slotTypeRange).catch(err => {
+    return timeRangeSlotValidate(
+      slots,
+      slotFrom,
+      slotTo,
+      slotTypeRange
+    ).catch(err => {
       expect(err.freeSlotAvailable).toBeFalsy();
       expect(err.message).toBe(
         "TimeRangeSlotValidate: The time range is occupied or its beginning or ending interferes with the existing time slot"

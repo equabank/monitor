@@ -6,7 +6,7 @@ import SnackSlotDiscard from "./SnackSlotDiscard";
 jest.useFakeTimers();
 
 describe("<SnackSlotDiscard />", () => {
-  it("show snack notification", () => {
+  it("show snack notification", done => {
     const stateDiscard = true;
     const notificationMessage = "Some message";
     const showNotification = true;
@@ -24,5 +24,6 @@ describe("<SnackSlotDiscard />", () => {
     );
     jest.runTimersToTime(4000);
     expect(closeNotificationHandle.calledOnce).toBeTruthy();
+    done();
   });
 });

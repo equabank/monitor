@@ -9,12 +9,13 @@ import injectTapEventPlugin from "react-tap-event-plugin";
 injectTapEventPlugin();
 
 describe("<CreateSlotButton />", () => {
-  it("toogleModal", () => {
+  it("toogleModal", done => {
     let toggleOpenModal = spy();
     const button = mount(
       <CreateSlotButton toggleOpenModal={toggleOpenModal} />
     );
     button.find("button#createSlotModalButton").simulate("click");
     expect(toggleOpenModal.calledOnce).toBeTruthy();
+    done();
   });
 });
