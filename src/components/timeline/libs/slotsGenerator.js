@@ -22,26 +22,27 @@ export let slotsGenerator = (timeSlotsPayload: Object) => {
 
   // generate unique time range
   let endTime = moment().add(timeSlotsPayload.duration, "seconds");
-  let lastEndTimeOfTimeSlot = moment().format("HH:mm:ss");
-  let _lastEndTimeOfTimeSlot = lastEndTimeOfTimeSlot.split(":");
-  const startOfTimeSlots = moment()
-    .hours(_lastEndTimeOfTimeSlot[0])
-    .minutes(_lastEndTimeOfTimeSlot[1])
-    .seconds(_lastEndTimeOfTimeSlot[2]);
+  let lastEndTimeOfTimeSlot = moment();
 
-  // time slots iterat
+  // time slots iteration
   return new Promise((resolve, reject) => {
     while (generateNextTimeSlot) {
       timeSlotsPayload.timeSlots.forEach(timeSlot => {
         let _timeSlot = clone(timeSlot);
-        _timeSlot["from"] = lastEndTimeOfTimeSlot;
 
-        let _lastEndTimeOfTimeSlot = lastEndTimeOfTimeSlot.split(":");
-        _timeSlot["to"] = moment()
-          .hours(_lastEndTimeOfTimeSlot[0])
-          .minutes(_lastEndTimeOfTimeSlot[1])
-          .seconds(_lastEndTimeOfTimeSlot[2])
-          .add(_timeSlot.duration, "seconds");
+        // if is apply delay
+        if (_timeSlot.delay !== undefined) {
+          lastEndTimeOfTimeSlot = lastEndTimeOfTimeSlot.add(
+            _timeSlot.delay,
+            "seconds"
+          );
+        }
+        _timeSlot["from"] = lastEndTimeOfTimeSlot.format("HH:mm:ss");
+
+        _timeSlot["to"] = lastEndTimeOfTimeSlot.add(
+          _timeSlot.duration,
+          "seconds"
+        );
 
         // when end time is exceeded, is generating new time slots interrupted
         if (endTime.diff(_timeSlot.to, "seconds") < 0) {
@@ -49,8 +50,8 @@ export let slotsGenerator = (timeSlotsPayload: Object) => {
           generatorResponse.endTime = endTime.format("HH:mm:ss");
         }
 
-        _timeSlot.to = _timeSlot.to.format("HH:mm:ss");
         lastEndTimeOfTimeSlot = _timeSlot.to;
+        _timeSlot.to = _timeSlot.to.format("HH:mm:ss");
 
         // save to result array
         if (generateNextTimeSlot) {

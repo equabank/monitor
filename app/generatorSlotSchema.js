@@ -11,6 +11,10 @@ const schema = {
       items: {
         type: "object",
         properties: {
+          delay: {
+            type: "number",
+            minimum: 1
+          },
           duration: {
             type: "number",
             minimum: 30

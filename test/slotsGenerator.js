@@ -34,6 +34,7 @@ const generatorPayload = JSON.stringify({
       uri: "http://"
     },
     {
+      delay: 120,
       duration: 30,
       title: "Application B",
       uri: "http://"
@@ -61,13 +62,13 @@ if (process.env.NODE_ENV !== "fillData") {
           }
         });
       });
-      it(`should be create 12 background time slots`, done => {
+      it(`should be create 4 background time slots`, done => {
         chai
           .request(server)
           .post("/api/slots/generator")
           .send(JSON.parse(generatorPayload))
           .end((err, res) => {
-            res.body.timeSlots.length.should.be.eql(12);
+            res.body.timeSlots.length.should.be.eql(4);
             res.should.have.status(200);
             done(err);
           });
@@ -150,6 +151,22 @@ if (process.env.NODE_ENV !== "fillData") {
                 type: "string",
                 expected: "number"
               });
+              done();
+            });
+        });
+
+        it(`delay in each time slot isn't required, but if is use, type is number`, done => {
+          let _generatorPayload = JSON.parse(generatorPayload);
+          _generatorPayload.timeSlots[1].delay = "string is wrong";
+          chai
+            .request(server)
+            .post("/api/slots/generator")
+            .send(_generatorPayload)
+            .end((err, res) => {
+              res.should.have.status(500);
+              res.body.message.should.be.eql(
+                "Invalid type: string (expected number)"
+              );
               done();
             });
         });
