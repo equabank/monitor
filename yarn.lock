@@ -3943,7 +3943,7 @@ moment-range@3.0.3:
   dependencies:
     es6-symbol "^3.1.0"
 
-moment-timezone@^0.5.13:
+moment-timezone@0.5.13:
   version "0.5.13"
   resolved "https://registry.yarnpkg.com/moment-timezone/-/moment-timezone-0.5.13.tgz#99ce5c7d827262eb0f1f702044177f60745d7b90"
   dependencies:
