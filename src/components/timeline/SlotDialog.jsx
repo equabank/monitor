@@ -185,8 +185,8 @@ export default class SlotDialog extends Component {
           title="CREATE SLOT"
           actions={actions}
           modal={false}
-          open={this.props.openSlotDialog}
-          onRequestClose={this.handleClose}
+          open={this.props.isSlotDialogOpen}
+          onRequestClose={this.props.closeSlotDialog}
           autoScrollBodyContent={true}
         >
           <br />

@@ -6,21 +6,37 @@ import {
   AboutContainer
 } from "./containers";
 import { Layout, PausePage } from "./components";
+import { Provider } from "react-redux";
+import { createStore, applyMiddleware } from "redux";
+import { createLogger } from "redux-logger";
+import thunk from "redux-thunk";
+import reducers from "./reducers";
+
+const middleware = [thunk];
+if (process.env.NODE_ENV !== "production") {
+  middleware.push(createLogger());
+}
+
+const store = createStore(reducers, applyMiddleware(...middleware));
+
+console.log(store.getState());
 
 // Use hashHistory for easier development
 const routes = (
-  <Router history={hashHistory}>
-    <Route path="/">
-      <IndexRoute component={PresentationContainer} />
-    </Route>
-    <Route path="/admin" component={Layout}>
-      <IndexRoute component={TimelineContainer} />
-    </Route>
-    <Route path="/pause-page" component={PausePage} />
-    <Route path="/about" component={Layout}>
-      <IndexRoute component={AboutContainer} />
-    </Route>
-  </Router>
+  <Provider store={store}>
+    <Router history={hashHistory}>
+      <Route path="/">
+        <IndexRoute component={PresentationContainer} />
+      </Route>
+      <Route path="/admin" component={Layout}>
+        <IndexRoute component={TimelineContainer} />
+      </Route>
+      <Route path="/pause-page" component={PausePage} />
+      <Route path="/about" component={Layout}>
+        <IndexRoute component={AboutContainer} />
+      </Route>
+    </Router>
+  </Provider>
 );
 
 export default routes;

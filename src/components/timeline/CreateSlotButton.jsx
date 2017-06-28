@@ -10,7 +10,7 @@ export default class CreateSlotButton extends Component {
           id="createSlotModalButton"
           label="Create Slot"
           primary={true}
-          onClick={() => this.props.toggleOpenModal()}
+          onClick={() => this.props.openSlotDialog()}
         />
       </MuiThemeProvider>
     );

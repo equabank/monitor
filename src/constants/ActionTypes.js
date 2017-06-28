@@ -1,0 +1,1 @@
+export const TOGGLE_SLOT_DIALOG = "TOGGLE_SLOT_DIALOG";
