@@ -11,12 +11,12 @@ export default class SaveProgress extends PureComponent {
 
     return (
       <div id="progressBar">
-        {this.props.typeProgress.type === "waitForSave" &&
+        {this.props.typeProgress.state === "waitForSave" &&
           <div id="progressWait">
             <CircularProgress size={30} thickness={2} /> Wait a moment
           </div>}
 
-        {this.props.typeProgress.type === "success" &&
+        {this.props.typeProgress.state === "success" &&
           <div id="progressSuccess">
             <FontIcon
               className="material-icons"
@@ -28,7 +28,7 @@ export default class SaveProgress extends PureComponent {
             Save successful
           </div>}
 
-        {this.props.typeProgress.type === "failed" &&
+        {this.props.typeProgress.state === "failed" &&
           <div id="progressFailed">
             <FontIcon
               className="material-icons"
@@ -37,9 +37,7 @@ export default class SaveProgress extends PureComponent {
             >
               pan_tool
             </FontIcon>
-            Save failed:
-            {" "}
-            {this.props.typeProgress.message}
+            Save failed: {this.props.typeProgress.message}
           </div>}
       </div>
     );

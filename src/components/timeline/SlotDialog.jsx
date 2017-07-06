@@ -1,4 +1,11 @@
 import React, { Component } from "react";
+import { connect } from "react-redux";
+import {
+  progressSlotDialogSuccess,
+  progressSlotDialogFailed,
+  progressSlotDialogWait
+} from "../../actions";
+import { getProgressSlotDialog } from "../../reducers";
 import FlatButton from "material-ui/FlatButton";
 import Dialog from "material-ui/Dialog";
 import TextField from "material-ui/TextField";
@@ -10,7 +17,7 @@ import { colors } from "./libs/Colors";
 import { timeRangeSlotValidate } from "./libs/inputValidator";
 import Moment from "moment";
 
-export default class SlotDialog extends Component {
+const SlotDialog = class SlotDialog extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -20,24 +27,12 @@ export default class SlotDialog extends Component {
       to: null,
       type: "range",
       duration: 0,
-      color: "default",
-      progress: {
-        show: false,
-        type: "none",
-        message: ""
-      }
+      color: "default"
     };
   }
 
   handleClose = () => {
     this.props.closeSlotDialog();
-    this.setState({
-      progress: {
-        show: false,
-        type: "none",
-        message: ""
-      }
-    });
   };
 
   handleColorRadiobutton(e) {
@@ -55,13 +50,9 @@ export default class SlotDialog extends Component {
     this.setState({ to: document.getElementById("to").value + ":00" });
   }
 
-  saveSlot(e) {
-    this.setState({
-      progress: {
-        show: true,
-        type: "waitForSave"
-      }
-    });
+  saveSlot = e => {
+    e.preventDefault();
+    this.props.progressSlotDialogWait();
 
     let slotPayload = {
       title: this.state.title,
@@ -90,55 +81,26 @@ export default class SlotDialog extends Component {
           .then(response => response.json())
           .then(data => {
             if (data.message !== undefined) {
-              this.setState({
-                progress: {
-                  show: true,
-                  type: "failed",
-                  message: `Elasticsearch ${data.message}`
-                }
-              });
+              this.props.progressSlotDialogSuccess(data.message);
             } else if (data.elastic.created === undefined) {
-              this.setState({
-                progress: {
-                  show: true,
-                  type: "failed",
-                  message: "Save slot failed"
-                }
-              });
+              this.props.progressSlotDialogSuccess("Save slot failed.");
             } else if (data.elastic.created === true) {
-              this.setState({
-                progress: {
-                  show: true,
-                  type: "success"
-                }
-              });
+              this.props.progressSlotDialogSuccess("Slot succesfull saved.");
             } else {
-              this.setState({
-                progress: {
-                  show: true,
-                  type: "failed",
-                  message: "Save slot failed"
-                }
-              });
+              this.props.progressSlotDialogFailed("Save slot failed.");
             }
           });
       })
       .catch(err => {
-        this.setState({
-          progress: {
-            show: true,
-            type: "failed",
-            message: err.message
-          }
-        });
+        this.props.progressSlotDialogFailed(err.message);
       });
-  }
+  };
 
   render() {
     let actions = [];
-    if (this.state.progress.show) {
+    if (this.props.progress.showProgress) {
       actions = [
-        <SaveProgress typeProgress={this.state.progress} />,
+        <SaveProgress typeProgress={this.props.progress} />,
         <FlatButton
           id="dialogCloseButton"
           label="Close"
@@ -152,7 +114,7 @@ export default class SlotDialog extends Component {
           id="dialogCancelButton"
           label="Cancel"
           primary={true}
-          onTouchTap={e => this.handleClose(e)}
+          onTouchTap={this.handleClose}
         />,
         <FlatButton
           id="dialogSaveButton"
@@ -283,4 +245,24 @@ export default class SlotDialog extends Component {
       </div>
     );
   }
-}
+};
+
+const mapStateToProps = state => ({
+  progress: getProgressSlotDialog(state)
+});
+
+const mapDispatchToProps = dispatch => {
+  return {
+    progressSlotDialogSuccess: message => {
+      dispatch(progressSlotDialogSuccess(message));
+    },
+    progressSlotDialogFailed: message => {
+      dispatch(progressSlotDialogFailed(message));
+    },
+    progressSlotDialogWait: () => {
+      dispatch(progressSlotDialogWait());
+    }
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(SlotDialog);
