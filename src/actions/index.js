@@ -38,6 +38,21 @@ const setProgressSlotDialogWait = () => ({
   message: "Wait for save"
 });
 
+export const selectSlotById = (slots, slotId) => dispatch => {
+  dispatch({
+    type: types.SELECT_SLOT_BY_ID,
+    slots: slots,
+    id: slotId
+  });
+};
+
+export const fetchSlotsFromServer = slots => dispatch => {
+  dispatch({
+    type: types.FETCH_SLOTS_FROM_SERVER,
+    slots: slots
+  });
+};
+
 export const openSlotDialog = () => dispatch => {
   dispatch(setShowSlotDialog());
 };

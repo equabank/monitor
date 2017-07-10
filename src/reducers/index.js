@@ -10,3 +10,7 @@ export const getStateSlotDialog = state => {
 export const getProgressSlotDialog = state => {
   return fromSlots.getProgressSlotDialog(state.slots.progressSlotDialog);
 };
+
+export const getSlots = state => {
+  return fromSlots.getSlots(state.slots.slots);
+};

@@ -4,7 +4,9 @@ import {
   PROGRESS_SLOT_DIALOG_SUCESS,
   PROGRESS_SLOT_DIALOG_FAILED,
   PROGRESS_SLOT_DIALOG_RESET,
-  PROGRESS_SLOT_DIALOG_WAIT
+  PROGRESS_SLOT_DIALOG_WAIT,
+  FETCH_SLOTS_FROM_SERVER,
+  SELECT_SLOT_BY_ID
 } from "../constants/ActionTypes";
 
 const initialState = {
@@ -13,7 +15,9 @@ const initialState = {
     showProgress: false,
     state: "none",
     message: ""
-  }
+  },
+  slots: [],
+  slot: {}
 };
 
 export const showTimeSlotDialog = (
@@ -45,6 +49,29 @@ export const progressSlotDialog = (state = initialState.progress, action) => {
   }
 };
 
+export const slots = (state = initialState.slots, action) => {
+  switch (action.type) {
+    case FETCH_SLOTS_FROM_SERVER:
+      return action.slots;
+    default:
+      return state;
+  }
+};
+
+export const selectSlotById = (state = initialState.slot, action) => {
+  switch (action.type) {
+    case SELECT_SLOT_BY_ID:
+      for (let slot of action.slots) {
+        if (slot.id === action.id) {
+          return Object.assign({}, state, slot);
+        }
+      }
+      return state;
+    default:
+      return state;
+  }
+};
+
 export const getStateSlotDialog = (state = initialState.showTimeSlotDialog) => {
   return state;
 };
@@ -53,7 +80,17 @@ export const getProgressSlotDialog = (state = initialState.progress) => {
   return state;
 };
 
+export const getSelectedSlot = (state = initialState.slot) => {
+  return state;
+};
+
+export const getSlots = (state = initialState.slots) => {
+  return state;
+};
+
 export default combineReducers({
   showTimeSlotDialog,
-  progressSlotDialog
+  progressSlotDialog,
+  selectSlotById,
+  slots
 });

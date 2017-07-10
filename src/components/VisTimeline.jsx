@@ -1,9 +1,11 @@
 import React, { Component } from "react";
+import { connect } from "react-redux";
+import { selectSlotById } from "../actions";
 import ReactDOM from "react-dom";
 import vis from "../../node_modules/vis/dist/vis-timeline-graph2d.min.js";
 import moment from "moment";
 
-export default class VisTimeline extends Component {
+const VisTimeline = class VisTimeline extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -24,57 +26,48 @@ export default class VisTimeline extends Component {
     }
   };
 
-  /*
-  shouldComponentUpdate(nextProps, nextState) {
-    console.log("should update");
-    return this.props === nextProps
-      ? true
-      : false || this.state === nextState ? true : false;
-  }
-  */
-
   drawTimeline = () => {
     const container = ReactDOM.findDOMNode(this.refs.timelineBox);
 
     let slotsContainer = [];
     for (var _slot of this.state.slots) {
-      if (_slot._source !== undefined) {
-        let from = _slot._source.from.split(":");
-        let to = _slot._source.to.split(":");
-        let _start = moment()
-          .hours(from[0])
-          .minutes(from[1])
-          .seconds(from[2])
-          .format("YYYY-MM-DD HH:mm:ss");
-        let _end = moment()
-          .hours(to[0])
-          .minutes(to[1])
-          .seconds(to[2])
-          .format("YYYY-MM-DD HH:mm:ss");
-        let slot = {
-          id: _slot._id,
-          start: _start,
-          end: _end,
-          content: _slot._source.title,
-          type: _slot._source.type,
-          title: "<b>" +
-            _slot._source.title +
-            "</b><br />" +
+      let from = _slot.from.split(":");
+      let to = _slot.to.split(":");
+      let _start = moment()
+        .hours(from[0])
+        .minutes(from[1])
+        .seconds(from[2])
+        .format("YYYY-MM-DD HH:mm:ss");
+      let _end = moment()
+        .hours(to[0])
+        .minutes(to[1])
+        .seconds(to[2])
+        .format("YYYY-MM-DD HH:mm:ss");
+      let slot = {
+        id: _slot.id,
+        start: _start,
+        end: _end,
+        content: _slot.title,
+        type: _slot.slotType,
+        title:
+          "<b>" +
+          _slot.title +
+          "</b><br />" +
+          moment(_start).format("HH:mm:ss") +
+          " - " +
+          moment(_end).format("HH:mm:ss") +
+          "<br/>" +
+          _slot.uri,
+        body: {
+          range:
             moment(_start).format("HH:mm:ss") +
             " - " +
-            moment(_end).format("HH:mm:ss") +
-            "<br/>" +
-            _slot._source.uri,
-          body: {
-            range: moment(_start).format("HH:mm:ss") +
-              " - " +
-              moment(_end).format("HH:mm:ss"),
-            uri: _slot._source.uri
-          },
-          className: "slot-material-" + _slot._source.color
-        };
-        slotsContainer.push(slot);
-      }
+            moment(_end).format("HH:mm:ss"),
+          uri: _slot.uri
+        },
+        className: "slot-material-" + _slot.color
+      };
+      slotsContainer.push(slot);
     }
 
     // Configuration for the Timeline
@@ -139,14 +132,23 @@ export default class VisTimeline extends Component {
     timeline.on("click", prop => {
       for (var _slot of slotsContainer) {
         if (_slot.id === prop.item) {
-          this.setState({ slotUri: _slot.body.uri });
+          this.props.selectSlotById(this.props.slots, _slot.id);
         }
       }
-      this.setState({ selectedSlotId: prop.item });
     });
   };
 
   render() {
     return <div id="timelineBox" ref="timelineBox" />;
   }
-}
+};
+
+const mapDispatchToProps = dispatch => {
+  return {
+    selectSlotById: (slots, slotId) => {
+      dispatch(selectSlotById(slots, slotId));
+    }
+  };
+};
+
+export default connect(null, mapDispatchToProps)(VisTimeline);

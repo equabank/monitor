@@ -27,8 +27,7 @@ const Timeline = class Timeline extends Component {
       showNotification: false,
       notificationMessage: "",
       stateDiscard: true,
-      slotUri: "",
-      slots: []
+      slotUri: ""
     };
   }
 
@@ -76,13 +75,6 @@ const Timeline = class Timeline extends Component {
       });
   };
 
-  componentWillReceiveProps(props) {
-    let _slots = props.slots;
-    if (_slots.length > 0) {
-      this.setState({ slots: _slots });
-    }
-  }
-
   render() {
     return (
       <MuiThemeProvider>
@@ -114,7 +106,7 @@ const Timeline = class Timeline extends Component {
             />
           </CardActions>
           <CardText expandable={false}>
-            <VisTimeline slots={this.state.slots} />
+            <VisTimeline slots={this.props.slots} />
           </CardText>
         </Card>
       </MuiThemeProvider>
