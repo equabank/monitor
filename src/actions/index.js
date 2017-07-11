@@ -1,9 +1,11 @@
 import * as types from "../constants/ActionTypes";
 
-const setShowSlotDialog = () => ({
-  type: types.TOGGLE_SLOT_DIALOG,
-  showDialog: true
-});
+export const openSlotDialog = () => dispatch => {
+  dispatch({
+    type: types.TOGGLE_SLOT_DIALOG,
+    showDialog: true
+  });
+};
 
 const setHideSlotDialog = () => ({
   type: types.TOGGLE_SLOT_DIALOG,
@@ -11,7 +13,7 @@ const setHideSlotDialog = () => ({
 });
 
 const setProgressSlotDialogSuccess = message => ({
-  type: types.PROGRESS_SLOT_DIALOG_SUCESS,
+  type: types.PROGRESS_SLOT_DIALOG_SUCCESS,
   showProgress: true,
   state: "success",
   message: message
@@ -46,6 +48,36 @@ export const selectSlotById = (slots, slotId) => dispatch => {
   });
 };
 
+const setDiscardSlotProgressWait = () => ({
+  type: types.DISCARD_PROGRESS_WAIT,
+  message: "",
+  discardState: false,
+  showProgress: true
+});
+
+const setDiscardSlotProgressSuccess = message => ({
+  type: types.DISCARD_PROGRESS_SUCCESS,
+  message: message,
+  discardState: true,
+  showProgress: true
+});
+
+const setDiscardSlotProgressFailed = message => ({
+  type: types.DISCARD_PROGRESS_FAILED,
+  message: message,
+  discardState: false,
+  showProgress: true
+});
+
+const setDiscardSlotProgressReset = () => ({
+  type: types.DISCARD_PROGRESS_RESET,
+  message: "",
+  discardState: false,
+  showProgress: false
+});
+
+const setUnselectSlot = () => ({ type: types.UNSELECT_SLOT });
+
 export const fetchSlotsFromServer = slots => dispatch => {
   dispatch({
     type: types.FETCH_SLOTS_FROM_SERVER,
@@ -53,8 +85,28 @@ export const fetchSlotsFromServer = slots => dispatch => {
   });
 };
 
-export const openSlotDialog = () => dispatch => {
-  dispatch(setShowSlotDialog());
+const setShowDeleteSlotDialog = () => ({
+  type: types.TOGGLE_DELETE_SLOT_DIALOG,
+  showDeleteDialog: true
+});
+
+const setHideDeleteSlotDialog = () => ({
+  type: types.TOGGLE_DELETE_SLOT_DIALOG,
+  showDeleteDialog: false
+});
+
+export const unselectSlot = () => dispatch => {
+  dispatch(setHideDeleteSlotDialog());
+  dispatch(setUnselectSlot());
+};
+
+export const showDeleteDialog = () => dispatch => {
+  dispatch(setShowDeleteSlotDialog());
+};
+
+export const hideDeleteDialog = () => dispatch => {
+  dispatch(setHideDeleteSlotDialog());
+  dispatch(setUnselectSlot());
 };
 
 export const closeSlotDialog = () => dispatch => {
@@ -76,4 +128,20 @@ export const progressSlotDialogReset = () => dispatch => {
 
 export const progressSlotDialogWait = () => dispatch => {
   dispatch(setProgressSlotDialogWait());
+};
+
+export const discardSlotProgressWait = () => dispatch => {
+  dispatch(setDiscardSlotProgressWait());
+};
+
+export const discardSlotProgressSuccess = message => dispatch => {
+  dispatch(setDiscardSlotProgressSuccess(message));
+};
+
+export const discardSlotProgressFailed = message => dispatch => {
+  dispatch(setDiscardSlotProgressFailed(message));
+};
+
+export const discardSlotProgressReset = () => dispatch => {
+  dispatch(setDiscardSlotProgressReset());
 };

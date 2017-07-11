@@ -19,7 +19,7 @@ export default class DeleteSlotButton extends Component {
           secondary={true}
           style={styles.button}
           icon={<DeleteForever />}
-          disabled={this.props.selectedSlotId == null ? true : false}
+          disabled={this.props.selectedSlot.id === undefined ? true : false}
           onClick={() => this.props.openDeleteDialog()}
         />
       </MuiThemeProvider>

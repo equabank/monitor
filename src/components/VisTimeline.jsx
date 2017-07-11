@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { selectSlotById } from "../actions";
+import { selectSlotById, unselectSlot } from "../actions";
 import ReactDOM from "react-dom";
 import vis from "../../node_modules/vis/dist/vis-timeline-graph2d.min.js";
 import moment from "moment";
@@ -135,6 +135,9 @@ const VisTimeline = class VisTimeline extends Component {
           this.props.selectSlotById(this.props.slots, _slot.id);
         }
       }
+      if (prop.item === null) {
+        this.props.unselectSlot();
+      }
     });
   };
 
@@ -147,6 +150,9 @@ const mapDispatchToProps = dispatch => {
   return {
     selectSlotById: (slots, slotId) => {
       dispatch(selectSlotById(slots, slotId));
+    },
+    unselectSlot: () => {
+      dispatch(unselectSlot());
     }
   };
 };

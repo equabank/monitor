@@ -14,3 +14,11 @@ export const getProgressSlotDialog = state => {
 export const getSlots = state => {
   return fromSlots.getSlots(state.slots.slots);
 };
+
+export const getSelectedSlot = state => {
+  return fromSlots.getSelectedSlot(state.slots.selectSlotById);
+};
+
+export const getStateDeleteSlotDialog = state => {
+  return fromSlots.getStateSlotDialog(state.slots.showDeleteSlotDialog);
+};

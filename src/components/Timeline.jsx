@@ -1,7 +1,20 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { openSlotDialog, closeSlotDialog } from "../actions";
-import { getStateSlotDialog } from "../reducers";
+import {
+  openSlotDialog,
+  closeSlotDialog,
+  showDeleteDialog,
+  hideDeleteDialog,
+  discardSlotProgressReset,
+  discardSlotProgressFailed,
+  discardSlotProgressSuccess,
+  discardSlotProgressWait
+} from "../actions";
+import {
+  getStateSlotDialog,
+  getSelectedSlot,
+  getStateDeleteSlotDialog
+} from "../reducers";
 import { Card, CardHeader, CardActions, CardText } from "material-ui/Card";
 import SlotDialog from "./timeline/SlotDialog";
 import DeleteDialog from "./timeline/DeleteDialog";
@@ -51,8 +64,10 @@ const Timeline = class Timeline extends Component {
   };
 
   discardSlot = () => {
-    this.closeDialogs();
-    fetch(`/api/slots/${this.state.selectedSlotId}`, {
+    this.props.hideDeleteDialog();
+    this.props.discardSlotProgressWait();
+
+    fetch(`/api/slots/${this.props.selectedSlot.id}`, {
       headers: new Headers({
         "Content-Type": "application/json"
       }),
@@ -64,13 +79,9 @@ const Timeline = class Timeline extends Component {
           response.elastic.found === true &&
           response.elastic.result === "deleted"
         ) {
-          this.setState({ notificationMessage: "Discard slot succesfull" });
-          this.setState({ stateDiscard: true });
-          this.setState({ showNotification: true });
+          this.props.discardSlotProgressSuccess("Discard slot succesfull");
         } else {
-          this.setState({ notificationMessage: "Discard not succesfull" });
-          this.setState({ stateDiscard: false });
-          this.setState({ showNotification: true });
+          this.props.discardSlotProgressFailed("Discard not succesfull");
         }
       });
   };
@@ -83,20 +94,20 @@ const Timeline = class Timeline extends Component {
           <CardActions>
             <CreateSlotButton openSlotDialog={this.props.openSlotDialog} />
             <DeleteSlotButton
-              selectedSlotId={this.state.selectedSlotId}
-              openDeleteDialog={this.openDeleteDialog}
+              selectedSlot={this.props.selectedSlot}
+              openDeleteDialog={this.props.showDeleteDialog}
             />
-            {this.state.selectedSlotId !== null &&
-              <ShowUri slotUri={this.state.slotUri} />}
+            {this.props.selectedSlot.uri !== undefined &&
+              <ShowUri slotUri={this.props.selectedSlot.uri} />}
             <SlotDialog
               isSlotDialogOpen={this.props.isSlotDialogOpen}
               closeSlotDialog={this.props.closeSlotDialog}
               slots={this.props.slots}
             />
             <DeleteDialog
-              openDeleteDialog={this.state.openDeleteDialog}
-              closeDeleteDialog={this.closeDialogs}
-              discardSlot={this.discardSlot}
+              isDeleteSlotDialogOpen={this.props.isDeleteSlotDialogOpen}
+              hideDeleteDialog={this.props.hideDeleteDialog}
+              discardSelectedSlot={this.discardSlot}
             />
             <SnackSlotDiscard
               stateDiscard={this.state.stateDiscard}
@@ -115,7 +126,9 @@ const Timeline = class Timeline extends Component {
 };
 
 const mapStateToProps = state => ({
-  isSlotDialogOpen: getStateSlotDialog(state)
+  isSlotDialogOpen: getStateSlotDialog(state),
+  selectedSlot: getSelectedSlot(state),
+  isDeleteSlotDialogOpen: getStateDeleteSlotDialog(state)
 });
 
 const mapDispatchToProps = dispatch => {
@@ -125,6 +138,24 @@ const mapDispatchToProps = dispatch => {
     },
     closeSlotDialog: () => {
       dispatch(closeSlotDialog());
+    },
+    showDeleteDialog: () => {
+      dispatch(showDeleteDialog());
+    },
+    hideDeleteDialog: () => {
+      dispatch(hideDeleteDialog());
+    },
+    discardSlotProgressSuccess: message => {
+      dispatch(discardSlotProgressSuccess(message));
+    },
+    discardSlotProgressFailed: message => {
+      dispatch(discardSlotProgressFailed(message));
+    },
+    discardSlotProgressWait: () => {
+      dispatch(discardSlotProgressWait());
+    },
+    discardSlotProgressReset: () => {
+      dispatch(discardSlotProgressReset());
     }
   };
 };
