@@ -83,7 +83,7 @@ const SlotDialog = class SlotDialog extends Component {
             if (data.message !== undefined) {
               this.props.progressSlotDialogSuccess(data.message);
             } else if (data.elastic.created === undefined) {
-              this.props.progressSlotDialogSuccess("Save slot failed.");
+              this.props.progressSlotDialogFailed("Save slot failed.");
             } else if (data.elastic.created === true) {
               this.props.progressSlotDialogSuccess("Slot succesfull saved.");
             } else {

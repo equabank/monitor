@@ -29,40 +29,8 @@ import MuiThemeProvider from "material-ui/styles/MuiThemeProvider";
 const Timeline = class Timeline extends Component {
   constructor(props) {
     super(props);
-    this.toggleOpenModal = this.toggleOpenModal.bind(this);
-    this.closeDialogs = this.closeDialogs.bind(this);
-    this.openDeleteDialog = this.openDeleteDialog.bind(this);
     this.discardSlot = this.discardSlot.bind(this);
-    this.closeNotificationHandle = this.closeNotificationHandle.bind(this);
-
-    this.state = {
-      selectedSlotId: null,
-      openDeleteDialog: false,
-      showNotification: false,
-      notificationMessage: "",
-      stateDiscard: true,
-      slotUri: ""
-    };
   }
-
-  closeNotificationHandle = () => {
-    this.setState({ showNotification: false });
-  };
-
-  toggleOpenModal = () => {
-    this.setState({ selectedSlotId: null });
-    this.setState({ openSlotDialog: true });
-  };
-
-  openDeleteDialog = () => {
-    this.setState({ openDeleteDialog: true });
-  };
-
-  closeDialogs = () => {
-    this.setState({ openSlotDialog: false });
-    this.setState({ openDeleteDialog: false });
-    this.setState({ selectedSlotId: null });
-  };
 
   discardSlot = () => {
     this.props.hideDeleteDialog();
