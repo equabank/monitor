@@ -13,7 +13,8 @@ import {
 import {
   getStateSlotDialog,
   getSelectedSlot,
-  getStateDeleteSlotDialog
+  getStateDeleteSlotDialog,
+  getProgressDiscardSlot
 } from "../reducers";
 import { Card, CardHeader, CardActions, CardText } from "material-ui/Card";
 import SlotDialog from "./timeline/SlotDialog";
@@ -110,10 +111,8 @@ const Timeline = class Timeline extends Component {
               discardSelectedSlot={this.discardSlot}
             />
             <SnackSlotDiscard
-              stateDiscard={this.state.stateDiscard}
-              notificationMessage={this.state.notificationMessage}
-              showNotification={this.state.showNotification}
-              closeNotificationHandle={this.closeNotificationHandle}
+              discardSlotProgress={this.props.discardSlotProgress}
+              discardSlotProgressReset={this.props.discardSlotProgressReset}
             />
           </CardActions>
           <CardText expandable={false}>
@@ -128,7 +127,8 @@ const Timeline = class Timeline extends Component {
 const mapStateToProps = state => ({
   isSlotDialogOpen: getStateSlotDialog(state),
   selectedSlot: getSelectedSlot(state),
-  isDeleteSlotDialogOpen: getStateDeleteSlotDialog(state)
+  isDeleteSlotDialogOpen: getStateDeleteSlotDialog(state),
+  discardSlotProgress: getProgressDiscardSlot(state)
 });
 
 const mapDispatchToProps = dispatch => {

@@ -135,6 +135,12 @@ export const getSlots = (state = initialState.slots) => {
   return state;
 };
 
+export const getProgressDiscardSlot = (
+  state = initialState.progressDiscard
+) => {
+  return state;
+};
+
 export const getStateDeleteSlotDialog = (
   state = initialState.showDeleteSlotDialog
 ) => {
@@ -146,5 +152,6 @@ export default combineReducers({
   progressSlotDialog,
   selectSlotById,
   slots,
-  showDeleteSlotDialog
+  showDeleteSlotDialog,
+  progressDiscard
 });

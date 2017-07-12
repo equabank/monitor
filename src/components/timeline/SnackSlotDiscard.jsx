@@ -6,7 +6,7 @@ import MuiThemeProvider from "material-ui/styles/MuiThemeProvider";
 
 export default class SnackSlotDiscard extends React.Component {
   render() {
-    let _s = this.props.stateDiscard;
+    let _s = this.props.discardSlotProgress.discardState;
 
     const iconStyles = {
       marginRight: 24
@@ -30,7 +30,7 @@ export default class SnackSlotDiscard extends React.Component {
           {_s === true ? "favorite_border" : "pan_tool"}
         </FontIcon>
         <span style={styleMessage}>
-          {this.props.notificationMessage}
+          {this.props.discardSlotProgress.message}
         </span>
       </div>
     );
@@ -40,10 +40,10 @@ export default class SnackSlotDiscard extends React.Component {
         <MuiThemeProvider>
           <Snackbar
             id="snackNotification"
-            open={this.props.showNotification}
+            open={this.props.discardSlotProgress.showProgress}
             message={_message}
             autoHideDuration={4000}
-            onRequestClose={this.props.closeNotificationHandle}
+            onRequestClose={this.props.discardSlotProgressReset}
             contentStyle={styleSnack}
             bodyStyle={styleSnack}
           />

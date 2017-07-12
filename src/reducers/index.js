@@ -22,3 +22,7 @@ export const getSelectedSlot = state => {
 export const getStateDeleteSlotDialog = state => {
   return fromSlots.getStateSlotDialog(state.slots.showDeleteSlotDialog);
 };
+
+export const getProgressDiscardSlot = state => {
+  return fromSlots.getProgressDiscardSlot(state.slots.progressDiscard);
+};
