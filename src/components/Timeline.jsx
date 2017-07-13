@@ -8,7 +8,8 @@ import {
   discardSlotProgressReset,
   discardSlotProgressFailed,
   discardSlotProgressSuccess,
-  discardSlotProgressWait
+  discardSlotProgressWait,
+  unselectSlot
 } from "../actions";
 import {
   getStateSlotDialog,
@@ -112,6 +113,7 @@ const mapDispatchToProps = dispatch => {
     },
     hideDeleteDialog: () => {
       dispatch(hideDeleteDialog());
+      dispatch(unselectSlot());
     },
     discardSlotProgressSuccess: message => {
       dispatch(discardSlotProgressSuccess(message));
