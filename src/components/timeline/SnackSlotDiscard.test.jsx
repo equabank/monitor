@@ -7,23 +7,23 @@ jest.useFakeTimers();
 
 describe("<SnackSlotDiscard />", () => {
   it("show snack notification", done => {
-    const stateDiscard = true;
-    const notificationMessage = "Some message";
-    const showNotification = true;
-    const closeNotificationHandle = spy();
+    const discardSlotProgress = {
+      discardState: true,
+      message: "Some message",
+      showProgress: true
+    };
+    const discardSlotProgressReset = spy();
     const wrapper = mount(
       <SnackSlotDiscard
-        stateDiscard={stateDiscard}
-        notificationMessage={notificationMessage}
-        showNotification={showNotification}
-        closeNotificationHandle={closeNotificationHandle}
+        discardSlotProgress={discardSlotProgress}
+        discardSlotProgressReset={discardSlotProgressReset}
       />
     );
     expect(wrapper.find("#discardNotification").text()).toBe(
       "favorite_borderSome message"
     );
     jest.runTimersToTime(4000);
-    expect(closeNotificationHandle.calledOnce).toBeTruthy();
+    expect(discardSlotProgressReset.calledOnce).toBeTruthy();
     done();
   });
 });

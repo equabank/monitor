@@ -10,11 +10,11 @@ injectTapEventPlugin();
 
 describe("<DeleteSlotButton />", () => {
   it("disabled openDeleteDialog button when not selected any slot", done => {
-    const selectedSlotId = null;
+    const selectedSlot = {};
     const openDeleteDialog = {};
     const button = mount(
       <DeleteSlotButton
-        selectedSlotId={selectedSlotId}
+        selectedSlot={selectedSlot}
         openDeleteDialog={openDeleteDialog}
       />
     );
@@ -26,11 +26,11 @@ describe("<DeleteSlotButton />", () => {
   });
 
   it("openDeleteDialog when select any slot", done => {
-    const selectedSlotId = 123;
+    const selectedSlot = { id: 123 };
     let openDeleteDialog = spy();
     const button = mount(
       <DeleteSlotButton
-        selectedSlotId={selectedSlotId}
+        selectedSlot={selectedSlot}
         openDeleteDialog={openDeleteDialog}
       />
     );

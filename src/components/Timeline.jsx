@@ -27,7 +27,7 @@ import ShowUri from "./timeline/ShowUri";
 import VisTimeline from "./VisTimeline";
 import MuiThemeProvider from "material-ui/styles/MuiThemeProvider";
 
-const Timeline = class Timeline extends Component {
+export class Timeline extends Component {
   constructor(props) {
     super(props);
     this.discardSlot = this.discardSlot.bind(this);
@@ -91,7 +91,7 @@ const Timeline = class Timeline extends Component {
       </MuiThemeProvider>
     );
   }
-};
+}
 
 const mapStateToProps = state => ({
   isSlotDialogOpen: getStateSlotDialog(state),
