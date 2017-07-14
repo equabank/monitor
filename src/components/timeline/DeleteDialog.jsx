@@ -9,12 +9,12 @@ export default class DeleteDialog extends React.Component {
       <FlatButton
         label="Cancel"
         primary={true}
-        onClick={() => this.props.closeDeleteDialog()}
+        onClick={() => this.props.hideDeleteDialog()}
       />,
       <FlatButton
         label="Discard"
         secondary={true}
-        onClick={() => this.props.discardSlot()}
+        onClick={() => this.props.discardSelectedSlot()}
         icon={<DeleteForever />}
       />
     ];
@@ -24,8 +24,8 @@ export default class DeleteDialog extends React.Component {
         <Dialog
           actions={actions}
           modal={false}
-          open={this.props.openDeleteDialog}
-          onRequestClose={() => this.props.closeDeleteDialog()}
+          open={this.props.isDeleteSlotDialogOpen}
+          onRequestClose={() => this.props.hideDeleteDialog()}
         >
           <h2>Discard this slot?</h2>
         </Dialog>

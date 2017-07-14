@@ -1,20 +1,11 @@
 import React, { Component } from "react";
+import { connect } from "react-redux";
+import { fetchSlotsFromServer } from "../actions";
+import { getSlots } from "../reducers";
 import Timeline from "../components/Timeline";
 
-export default class TimelineContainer extends Component {
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      slots: []
-    };
-  }
-
+const TimelineContainer = class TimelineContainer extends Component {
   componentDidMount() {
-    this.getSlots();
-  }
-
-  getSlots() {
     fetch("/api/slots", {
       headers: new Headers({
         "Content-Type": "application/json"
@@ -23,17 +14,42 @@ export default class TimelineContainer extends Component {
       .then(response => response.json())
       .then(data => {
         if (data.elastic.responses[0].hits !== undefined) {
-          this.setState({ slots: data.elastic.responses[0].hits.hits });
+          let slots = [];
+          for (let slot of data.elastic.responses[0].hits.hits) {
+            slots.push({
+              id: slot._id,
+              color: slot._source.color,
+              from: slot._source.from,
+              title: slot._source.title,
+              to: slot._source.to,
+              slotType: slot._source.type,
+              uri: slot._source.uri
+            });
+          }
+          this.props.fetchSlotsFromServer(slots);
         }
       });
   }
 
   render() {
-    const { slots } = this.state;
     return (
       <div>
-        <Timeline slots={slots} />
+        <Timeline slots={this.props.getSlots} />
       </div>
     );
   }
-}
+};
+
+const mapStateToProps = state => ({
+  getSlots: getSlots(state)
+});
+
+const mapDispatchToProps = dispatch => {
+  return {
+    fetchSlotsFromServer: slots => {
+      dispatch(fetchSlotsFromServer(slots));
+    }
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(TimelineContainer);

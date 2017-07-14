@@ -10,12 +10,10 @@ injectTapEventPlugin();
 
 describe("<CreateSlotButton />", () => {
   it("toogleModal", done => {
-    let toggleOpenModal = spy();
-    const button = mount(
-      <CreateSlotButton toggleOpenModal={toggleOpenModal} />
-    );
+    let openSlotDialog = spy();
+    const button = mount(<CreateSlotButton openSlotDialog={openSlotDialog} />);
     button.find("button#createSlotModalButton").simulate("click");
-    expect(toggleOpenModal.calledOnce).toBeTruthy();
+    expect(openSlotDialog.calledOnce).toBeTruthy();
     done();
   });
 });
