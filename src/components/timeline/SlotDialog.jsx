@@ -3,7 +3,8 @@ import { connect } from "react-redux";
 import {
   progressSlotDialogSuccess,
   progressSlotDialogFailed,
-  progressSlotDialogWait
+  progressSlotDialogWait,
+  progressSlotDialogReset
 } from "../../actions";
 import { getProgressSlotDialog } from "../../reducers";
 import FlatButton from "material-ui/FlatButton";
@@ -32,6 +33,7 @@ const SlotDialog = class SlotDialog extends Component {
   }
 
   handleClose = () => {
+    this.props.progressSlotDialogReset();
     this.props.closeSlotDialog();
   };
 
@@ -261,6 +263,9 @@ const mapDispatchToProps = dispatch => {
     },
     progressSlotDialogWait: () => {
       dispatch(progressSlotDialogWait());
+    },
+    progressSlotDialogReset: () => {
+      dispatch(progressSlotDialogReset());
     }
   };
 };
