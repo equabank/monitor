@@ -17,9 +17,7 @@ import {
 import tv4 from "tv4";
 import slotSchema from "./app/slotSchema";
 import generatorSlotSchema from "./app/generatorSlotSchema";
-import {
-  timeRangeSlotValidate
-} from "./src/components/timeline/libs/inputValidator";
+import { timeRangeSlotValidate } from "./src/components/timeline/libs/inputValidator";
 import { slotsGenerator } from "./src/components/timeline/libs/slotsGenerator";
 import "babel-polyfill";
 import moment from "moment";
@@ -133,6 +131,9 @@ router.route("/slots/generator").post((req, res) => {
         data[0].responses[0].hits.hits.length !== 0
       ) {
         let promises = data[1].timeSlots.map(generatedSlot => {
+          generatedSlot["timeRangeSlotValidator"] = true;
+          return generatedSlot;
+          /*
           return timeRangeSlotValidate(
             data[0].responses[0].hits.hits,
             generatedSlot.from,
@@ -148,6 +149,7 @@ router.route("/slots/generator").post((req, res) => {
               generatedSlot["message"] = JSON.stringify(err);
               return generatedSlot;
             });
+          */
         });
         return Promise.all(promises);
       } else {

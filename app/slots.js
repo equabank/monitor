@@ -17,7 +17,12 @@ export const getSlots = (client, cb) => {
     {
       body: [
         { index: "monitor-slots", type: "monitor-slots" },
-        { from: 0, size: 1000, query: { match_all: {} } }
+        {
+          from: 0,
+          size: 1000,
+          query: { match_all: {} },
+          sort: [{ timestamp: { order: "desc" } }]
+        }
       ]
     },
     cb
