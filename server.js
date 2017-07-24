@@ -14,6 +14,7 @@ import {
   deleteSlot,
   deleteAllSlots
 } from "./app/slots";
+import { initSettings, getSettings, updateSettings } from "./app/settings";
 import tv4 from "tv4";
 import slotSchema from "./app/slotSchema";
 import generatorSlotSchema from "./app/generatorSlotSchema";
@@ -31,6 +32,8 @@ let accessLogStream = rfs("access.log", {
 });
 
 const elasticUri = process.env.ELASTIC_URI || "http://localhost:9200";
+let generatorSlotValidatorAllow = true;
+let configurationDocumentId = null;
 
 let client = new elasticsearch.Client({
   host: elasticUri,
@@ -52,6 +55,7 @@ client.ping(
   function(error) {
     if (error) {
       console.trace("[Elasticsearch] cluster is down!");
+      process.exit();
     }
   }
 );
@@ -92,6 +96,37 @@ app.use((req, res, next) => {
 
 let router = express.Router();
 
+// init application
+getSettings(client, (error, elastic) => {
+  if (error) {
+    console.error(error);
+  }
+  if (elastic !== undefined) {
+    if (elastic.responses[0].status === 404) {
+      console.log("Index monitor-settings doesn't exist, will be created.");
+      initSettings(
+        client,
+        {
+          generatorSlotValidatorAllow: generatorSlotValidatorAllow
+        },
+        (error, elastic) => {
+          if (error) {
+            console.error(error);
+          }
+          configurationDocumentId = elastic._id;
+          if (elastic.created === true) {
+            console.log("Default setting has been saved");
+          }
+        }
+      );
+    } else if (elastic.responses[0].status === 200) {
+      let settings = elastic.responses[0].hits.hits[0]._source;
+      configurationDocumentId = elastic.responses[0].hits.hits[0]._id;
+      generatorSlotValidatorAllow = settings.generatorSlotValidatorAllow;
+    }
+  }
+});
+
 router.get("/", function(req, res) {
   res.sendFile(path.join(__dirname, "build", "index.html"));
 });
@@ -131,25 +166,26 @@ router.route("/slots/generator").post((req, res) => {
         data[0].responses[0].hits.hits.length !== 0
       ) {
         let promises = data[1].timeSlots.map(generatedSlot => {
-          generatedSlot["timeRangeSlotValidator"] = true;
-          return generatedSlot;
-          /*
-          return timeRangeSlotValidate(
-            data[0].responses[0].hits.hits,
-            generatedSlot.from,
-            generatedSlot.to,
-            "background"
-          )
-            .then(() => {
-              generatedSlot["timeRangeSlotValidator"] = true;
-              return generatedSlot;
-            })
-            .catch(err => {
-              generatedSlot["timeRangeSlotValidator"] = false;
-              generatedSlot["message"] = JSON.stringify(err);
-              return generatedSlot;
-            });
-          */
+          if (generatorSlotValidatorAllow) {
+            return timeRangeSlotValidate(
+              data[0].responses[0].hits.hits,
+              generatedSlot.from,
+              generatedSlot.to,
+              "background"
+            )
+              .then(() => {
+                generatedSlot["timeRangeSlotValidator"] = true;
+                return generatedSlot;
+              })
+              .catch(err => {
+                generatedSlot["timeRangeSlotValidator"] = false;
+                generatedSlot["message"] = JSON.stringify(err);
+                return generatedSlot;
+              });
+          } else {
+            generatedSlot["timeRangeSlotValidator"] = true;
+            return generatedSlot;
+          }
         });
         return Promise.all(promises);
       } else {
@@ -336,6 +372,49 @@ router
         elastic: response
       });
     });
+  });
+
+router
+  .route("/settings")
+  .post((req, res) => {
+    console.log(req.body);
+    res.json({
+      settings: req.body
+    });
+  })
+  .get((req, res) => {
+    getSettings(client, (error, response) => {
+      if (error) {
+        return res.status(500).end(
+          JSON.stringify({
+            elasticsearchError: { message: error.message }
+          })
+        );
+      }
+      res.json({
+        elastic: response
+      });
+    });
+  })
+  .put((req, res) => {
+    updateSettings(
+      client,
+      configurationDocumentId,
+      req.body,
+      (error, response) => {
+        if (error) {
+          return res.status(500).end(
+            JSON.stringify({
+              elasticsearchError: { message: error.message }
+            })
+          );
+        }
+        generatorSlotValidatorAllow = req.body.generatorSlotValidatorAllow;
+        res.json({
+          elastic: response
+        });
+      }
+    );
   });
 
 app.use("/api", router);
