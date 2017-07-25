@@ -120,8 +120,10 @@ describe("Slots", () => {
       res.should.have.status(200);
       if (res.body.elastic.responses[0].status !== 404) {
         chai.request(server).delete("/api/slots/").end((err, res) => {
+          if (err) {
+            done(err);
+          }
           res.should.have.status(200);
-          done(err);
         });
       } else {
         done(err);
@@ -136,9 +138,8 @@ describe("Slots", () => {
         slotPayload.from = getDateTime.from(increment.type);
         slotPayload.to = getDateTime.to(increment.type);
         slotPayload.type = increment.type;
-        slotPayload.color = increment.type == "range"
-          ? "default"
-          : "background";
+        slotPayload.color =
+          increment.type == "range" ? "default" : "background";
         slotPayload.uri = increment.uri;
         slotPayload.color = increment.color;
 
