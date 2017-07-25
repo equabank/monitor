@@ -376,12 +376,6 @@ router
 
 router
   .route("/settings")
-  .post((req, res) => {
-    console.log(req.body);
-    res.json({
-      settings: req.body
-    });
-  })
   .get((req, res) => {
     getSettings(client, (error, response) => {
       if (error) {
