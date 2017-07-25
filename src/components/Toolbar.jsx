@@ -1,8 +1,7 @@
 import React from "react";
 import IconMenu from "material-ui/IconMenu";
 import IconButton from "material-ui/IconButton";
-import NavigationExpandMoreIcon
-  from "material-ui/svg-icons/navigation/expand-more";
+import NavigationExpandMoreIcon from "material-ui/svg-icons/navigation/expand-more";
 import MenuItem from "material-ui/MenuItem";
 import DropDownMenu from "material-ui/DropDownMenu";
 import { Toolbar, ToolbarGroup, ToolbarTitle } from "material-ui/Toolbar";
@@ -35,6 +34,10 @@ export default class ToolbarExamplesSimple extends React.Component {
       if (index === 1) {
         hashHistory.push("/admin");
       }
+
+      if (index === 3) {
+        hashHistory.push("/settings");
+      }
     }
   };
 
@@ -62,6 +65,7 @@ export default class ToolbarExamplesSimple extends React.Component {
             onChange={this.rightMenuHandleChange}
           >
             <MenuItem value={1} primaryText="Admin" />
+            <MenuItem value={3} primaryText="Settings" />
             <MenuItem value={2} primaryText="About Monitor" />
           </IconMenu>
         </ToolbarGroup>

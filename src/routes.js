@@ -3,7 +3,8 @@ import { Router, Route, hashHistory, IndexRoute } from "react-router";
 import {
   PresentationContainer,
   TimelineContainer,
-  AboutContainer
+  AboutContainer,
+  SettingsContainer
 } from "./containers";
 import { Layout, PausePage } from "./components";
 import { Provider } from "react-redux";
@@ -34,6 +35,9 @@ const routes = (
       <Route path="/pause-page" component={PausePage} />
       <Route path="/about" component={Layout}>
         <IndexRoute component={AboutContainer} />
+      </Route>
+      <Route path="/settings" component={Layout}>
+        <IndexRoute component={SettingsContainer} />
       </Route>
     </Router>
   </Provider>
