@@ -1,7 +1,8 @@
 import { combineReducers } from "redux";
 import slots, * as fromSlots from "./slots";
+import settings, * as fromSettings from "./settings";
 
-export default combineReducers({ slots });
+export default combineReducers({ slots, settings });
 
 export const getStateSlotDialog = state => {
   return fromSlots.getStateSlotDialog(state.slots.showTimeSlotDialog);
@@ -25,4 +26,10 @@ export const getStateDeleteSlotDialog = state => {
 
 export const getProgressDiscardSlot = state => {
   return fromSlots.getProgressDiscardSlot(state.slots.progressDiscard);
+};
+
+export const getStateAllowSlotValidator = state => {
+  return fromSettings.getStateAllowSlotValidator(
+    state.settings.toggleSlotValidator
+  );
 };

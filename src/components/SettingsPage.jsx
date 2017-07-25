@@ -1,4 +1,7 @@
 import React, { Component } from "react";
+import { connect } from "react-redux";
+import { allowSlotValidator, disallowSlotValidator } from "../actions";
+import { getStateAllowSlotValidator } from "../reducers";
 import getMuiTheme from "material-ui/styles/getMuiTheme";
 import MuiThemeProvider from "material-ui/styles/MuiThemeProvider";
 import Toggle from "material-ui/Toggle";
@@ -27,7 +30,17 @@ const styles = {
 
 const muiTheme = getMuiTheme();
 
-export default class SettingsPage extends Component {
+const SettingsPage = class SettingsPage extends Component {
+  handleToggle = (event, isInputChecked) => {
+    if (this.props.getStateAllowSlotValidator) {
+      this.props.disallowSlotValidator();
+      this.props.saveSettings({ allowSlotValidator: false });
+    } else {
+      this.props.allowSlotValidator();
+      this.props.saveSettings({ allowSlotValidator: true });
+    }
+  };
+
   render() {
     return (
       <MuiThemeProvider muiTheme={muiTheme}>
@@ -41,6 +54,13 @@ export default class SettingsPage extends Component {
                   thumbSwitchedStyle={styles.thumbSwitched}
                   trackSwitchedStyle={styles.trackSwitched}
                   labelPosition="right"
+                  toggled={this.props.getStateAllowSlotValidator}
+                  onToggle={
+                    (
+                      event,
+                      isInputChecked => this.handleToggle(event, isInputChecked)
+                    )
+                  }
                 />
               </div>
             </div>
@@ -49,4 +69,21 @@ export default class SettingsPage extends Component {
       </MuiThemeProvider>
     );
   }
-}
+};
+
+const mapStateToProps = state => ({
+  getStateAllowSlotValidator: getStateAllowSlotValidator(state)
+});
+
+const mapDispatchToProps = dispatch => {
+  return {
+    allowSlotValidator: () => {
+      dispatch(allowSlotValidator());
+    },
+    disallowSlotValidator: () => {
+      dispatch(disallowSlotValidator());
+    }
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(SettingsPage);

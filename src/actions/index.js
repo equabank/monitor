@@ -116,3 +116,24 @@ export const hideDeleteDialog = () => {
     showDeleteDialog: false
   };
 };
+
+export const allowSlotValidator = () => {
+  return {
+    type: types.TOGGLE_ALLOW_SLOT_VALIDATOR,
+    allowSlotValidator: true
+  };
+};
+
+export const disallowSlotValidator = () => {
+  return {
+    type: types.TOGGLE_ALLOW_SLOT_VALIDATOR,
+    allowSlotValidator: false
+  };
+};
+
+export const fetchSettingsFromServer = settings => {
+  return {
+    type: types.FETCH_SETTINGS_FROM_SERVER,
+    settings: settings
+  };
+};
