@@ -1,6 +1,13 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { fetchSettingsFromServer } from "../actions";
+import {
+  allowSlotValidator,
+  disallowSlotValidator,
+  fetchSettingsFromServer,
+  progressSettingsSaveSuccess,
+  progressSettingsSaveFailed,
+  progressSettingsSaveReset
+} from "../actions";
 import SettingsPage from "../components/SettingsPage";
 
 const SettingsContainer = class SettingsContainer extends Component {
@@ -36,7 +43,25 @@ const SettingsContainer = class SettingsContainer extends Component {
       body: JSON.stringify(payload)
     })
       .then(response => response.json())
-      .then(data => {});
+      .then(data => {
+        if (data.elastic._shards.successful === 1) {
+          this.props.progressSettingsSaveSuccess(
+            "Settings successfully saved."
+          );
+        } else {
+          this.props.progressSettingsSaveFailed("Settings not saved.");
+        }
+        setTimeout(() => {
+          this.props.progressSettingsSaveReset();
+        }, 3000);
+      })
+      .catch(err => {
+        if (settings.allowSlotValidator) {
+          this.props.disallowSlotValidator();
+        } else {
+          this.props.allowSlotValidator();
+        }
+      });
   };
 
   render() {
@@ -55,6 +80,21 @@ const mapDispatchToProps = dispatch => {
   return {
     fetchSettingsFromServer: settings => {
       dispatch(fetchSettingsFromServer(settings));
+    },
+    allowSlotValidator: () => {
+      dispatch(allowSlotValidator());
+    },
+    disallowSlotValidator: () => {
+      dispatch(disallowSlotValidator());
+    },
+    progressSettingsSaveSuccess: message => {
+      dispatch(progressSettingsSaveSuccess(message));
+    },
+    progressSettingsSaveFailed: message => {
+      dispatch(progressSettingsSaveFailed(message));
+    },
+    progressSettingsSaveReset: () => {
+      dispatch(progressSettingsSaveReset());
     }
   };
 };

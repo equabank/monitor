@@ -137,3 +137,30 @@ export const fetchSettingsFromServer = settings => {
     settings: settings
   };
 };
+
+export const progressSettingsSaveSuccess = message => {
+  return {
+    type: types.PROGRESS_SETTINGS_SAVE_SUCCESS,
+    showProgress: true,
+    state: true,
+    message: message
+  };
+};
+
+export const progressSettingsSaveFailed = message => {
+  return {
+    type: types.PROGRESS_SETTINGS_SAVE_FAILED,
+    showProgress: true,
+    state: false,
+    message: message
+  };
+};
+
+export const progressSettingsSaveReset = () => {
+  return {
+    type: types.PROGRESS_SETTINGS_SAVE_RESET,
+    showProgress: false,
+    state: false,
+    message: "Reset progress"
+  };
+};

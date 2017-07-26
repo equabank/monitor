@@ -33,3 +33,7 @@ export const getStateAllowSlotValidator = state => {
     state.settings.toggleSlotValidator
   );
 };
+
+export const getProgressSettings = state => {
+  return fromSettings.getProgressSettings(state.settings.progressSettingsSave);
+};

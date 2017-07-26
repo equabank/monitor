@@ -1,11 +1,14 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { allowSlotValidator, disallowSlotValidator } from "../actions";
-import { getStateAllowSlotValidator } from "../reducers";
+import { getStateAllowSlotValidator, getProgressSettings } from "../reducers";
 import getMuiTheme from "material-ui/styles/getMuiTheme";
 import MuiThemeProvider from "material-ui/styles/MuiThemeProvider";
 import Toggle from "material-ui/Toggle";
-import { Card, CardTitle, CardText } from "material-ui/Card";
+import { Card, CardTitle, CardText, CardActions } from "material-ui/Card";
+import Favorite from "material-ui/svg-icons/action/favorite";
+import AlertError from "material-ui/svg-icons/alert/error";
+import { lightGreen400, red400 } from "material-ui/styles/colors";
 
 const styles = {
   block: {
@@ -26,6 +29,10 @@ const styles = {
   labelStyle: {
     color: "#9CCC65"
   }
+};
+
+const iconStyles = {
+  marginRight: 24
 };
 
 const muiTheme = getMuiTheme();
@@ -65,6 +72,22 @@ const SettingsPage = class SettingsPage extends Component {
               </div>
             </div>
           </CardText>
+          <CardActions>
+            <div style={styles.block} id="allertSettings">
+              {this.props.getProgressSettings.showProgress === true &&
+                <div>
+                  {this.props.getProgressSettings.state === true &&
+                    <div id="allertSettingsSuccess">
+                      <Favorite style={iconStyles} color={lightGreen400} />{" "}
+                      {this.props.getProgressSettings.message}
+                    </div>}
+                  {this.props.getProgressSettings.state === false &&
+                    <div id="allertSettingsFailed">
+                      <AlertError style={iconStyles} color={red400} />
+                    </div>}
+                </div>}
+            </div>
+          </CardActions>
         </Card>
       </MuiThemeProvider>
     );
@@ -72,7 +95,8 @@ const SettingsPage = class SettingsPage extends Component {
 };
 
 const mapStateToProps = state => ({
-  getStateAllowSlotValidator: getStateAllowSlotValidator(state)
+  getStateAllowSlotValidator: getStateAllowSlotValidator(state),
+  getProgressSettings: getProgressSettings(state)
 });
 
 const mapDispatchToProps = dispatch => {
