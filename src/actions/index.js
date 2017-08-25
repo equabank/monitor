@@ -164,3 +164,12 @@ export const progressSettingsSaveReset = () => {
     message: "Reset progress"
   };
 };
+
+export const toogleMessageBox = messageBoxSettings => {
+  return {
+    type: types.TOOGLE_MESSAGE_BOX,
+    message: messageBoxSettings.message,
+    color: messageBoxSettings.color,
+    endTime: messageBoxSettings.endTime
+  };
+};

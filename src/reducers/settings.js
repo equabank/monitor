@@ -4,8 +4,10 @@ import {
   FETCH_SETTINGS_FROM_SERVER,
   PROGRESS_SETTINGS_SAVE_SUCCESS,
   PROGRESS_SETTINGS_SAVE_FAILED,
-  PROGRESS_SETTINGS_SAVE_RESET
+  PROGRESS_SETTINGS_SAVE_RESET,
+  TOOGLE_MESSAGE_BOX
 } from "../constants/ActionTypes";
+import Moment from "moment";
 
 const initialState = {
   allowSlotValidator: false,
@@ -13,6 +15,11 @@ const initialState = {
     showProgress: false,
     state: false,
     message: ""
+  },
+  messageBox: {
+    message: "Without text message",
+    color: "notice",
+    endTime: Moment().format("HH:mm:ss")
   }
 };
 
@@ -25,6 +32,19 @@ export const toggleSlotValidator = (
       return action.allowSlotValidator;
     case FETCH_SETTINGS_FROM_SERVER:
       return action.settings[0]._source.generatorSlotValidatorAllow;
+    default:
+      return state;
+  }
+};
+
+export const toogleMessageBox = (state = initialState.messageBox, action) => {
+  switch (action.type) {
+    case TOOGLE_MESSAGE_BOX:
+      return Object.assign({}, state, {
+        message: action.message,
+        color: action.color,
+        endTime: action.endTime
+      });
     default:
       return state;
   }
@@ -61,7 +81,12 @@ export const getProgressSettings = (
   return state;
 };
 
+export const getMessageBoxSettings = (state = initialState.messageBox) => {
+  return state;
+};
+
 export default combineReducers({
   toggleSlotValidator,
-  progressSettingsSave
+  progressSettingsSave,
+  toogleMessageBox
 });
