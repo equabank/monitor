@@ -18,7 +18,7 @@ const initialState = {
   },
   messageBox: {
     message: "",
-    color: "#29B6F6",
+    color: "notice",
     endTime: Moment()
   }
 };

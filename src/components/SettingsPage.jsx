@@ -18,12 +18,13 @@ import Slider from "material-ui/Slider";
 import { RadioButton, RadioButtonGroup } from "material-ui/RadioButton";
 import { Card, CardTitle, CardText, CardActions } from "material-ui/Card";
 import Favorite from "material-ui/svg-icons/action/favorite";
-import FavoriteBorder from "material-ui/svg-icons/action/favorite-border";
 import AlertError from "material-ui/svg-icons/alert/error";
-import Info from "material-ui/svg-icons/action/info";
-import InfoOutline from "material-ui/svg-icons/action/info-outline";
-import Warning from "material-ui/svg-icons/alert/warning";
+import NonSelectColorMessage from "material-ui/svg-icons/action/done";
+import SelectColorMessage from "material-ui/svg-icons/action/check-circle";
+import Schedule from "material-ui/svg-icons/action/schedule";
+import Snooze from "material-ui/svg-icons/av/snooze";
 import { lightGreen400, red400 } from "material-ui/styles/colors";
+import FlatButton from "material-ui/FlatButton";
 import Moment from "moment";
 
 const styles = {
@@ -80,6 +81,22 @@ const SettingsPage = class SettingsPage extends Component {
       message: this.props.getMessageBoxSettings.message,
       color: this.props.getMessageBoxSettings.color,
       endTime: Moment().add(value, "seconds")
+    });
+  };
+
+  handleChangeMessageBoxMaxDuration = duration => {
+    this.props.toogleMessageBox({
+      message: this.props.getMessageBoxSettings.message,
+      color: this.props.getMessageBoxSettings.color,
+      endTime: Moment().add(duration, "seconds")
+    });
+  };
+
+  handleChangeMessageBoxColor = (event, value) => {
+    this.props.toogleMessageBox({
+      message: this.props.getMessageBoxSettings.message,
+      color: value,
+      endTime: this.props.getMessageBoxSettings.endTime
     });
   };
 
@@ -163,29 +180,30 @@ const SettingsPage = class SettingsPage extends Component {
                   <div>
                     <RadioButtonGroup
                       name="shipSpeed"
-                      defaultSelected="not_light"
+                      defaultSelected="notice"
+                      onChange={this.handleChangeMessageBoxColor}
                     >
                       <RadioButton
                         value="notice"
                         label="Notice message"
-                        checkedIcon={<Info />}
-                        uncheckedIcon={<InfoOutline />}
+                        checkedIcon={<SelectColorMessage />}
+                        uncheckedIcon={<NonSelectColorMessage />}
                         style={styles.radioButton}
                         labelStyle={{ color: "#29B6F6" }}
                       />
                       <RadioButton
                         value="warning"
                         label="Warning message"
-                        checkedIcon={<Warning />}
-                        uncheckedIcon={<Warning />}
+                        checkedIcon={<SelectColorMessage />}
+                        uncheckedIcon={<NonSelectColorMessage />}
                         style={styles.radioButton}
                         labelStyle={{ color: "#EF5350" }}
                       />
                       <RadioButton
                         value="success"
                         label="Success message"
-                        checkedIcon={<Favorite />}
-                        uncheckedIcon={<FavoriteBorder />}
+                        checkedIcon={<SelectColorMessage />}
+                        uncheckedIcon={<NonSelectColorMessage />}
                         style={styles.radioButton}
                         labelStyle={{ color: "#9CCC65" }}
                       />
@@ -195,21 +213,33 @@ const SettingsPage = class SettingsPage extends Component {
                 <br />
                 <br />
                 <div id="messageBoxDurationnSlider">
-                  Duration {durationDiff} s
-                  <br />
-                  End{" "}
-                  {Moment(this.props.getMessageBoxSettings.endTime).format(
-                    "HH:mm:ss"
-                  )}
+                  Duration {durationDiff}s {" "}
+                  {durationDiff > 0 &&
+                    <span id="endTime">
+                      ({Moment(this.props.getMessageBoxSettings.endTime).format(
+                        "HH:mm:ss"
+                      )})
+                    </span>}
                   <Slider
                     step={1}
                     min={0}
-                    max={60}
+                    max={120}
                     value={durationDiff}
                     onChange={this.handleChangeMessageBoxDuration}
                   />
-                  <br />
-                  <span>Slide the slider to display the message box.</span>
+                  <FlatButton
+                    label="Set duration 120s"
+                    primary={true}
+                    onClick={() => this.handleChangeMessageBoxMaxDuration(120)}
+                    icon={<Schedule />}
+                  />
+                  {durationDiff > 0 &&
+                    <FlatButton
+                      label="Clear"
+                      secondary={true}
+                      onClick={() => this.handleChangeMessageBoxMaxDuration(0)}
+                      icon={<Snooze />}
+                    />}
                 </div>
               </div>
             </CardText>
