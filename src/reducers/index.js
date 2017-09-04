@@ -39,5 +39,5 @@ export const getProgressSettings = state => {
 };
 
 export const getMessageBoxSettings = state => {
-  return fromSettings.getMessageBoxSettings(state.settings.messageBox);
+  return fromSettings.getMessageBoxSettings(state.settings.toogleMessageBox);
 };

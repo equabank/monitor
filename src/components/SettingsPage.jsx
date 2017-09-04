@@ -70,20 +70,32 @@ const SettingsPage = class SettingsPage extends Component {
   handleChangeMessageBoxMessage = event => {
     this.props.toogleMessageBox({
       message: event.target.value,
-      color: this.props.getProgressSettings.color,
+      color: this.props.getMessageBoxSettings.color,
       endTime: this.props.getMessageBoxSettings.endTime
     });
   };
 
   handleChangeMessageBoxDuration = (event, value) => {
     this.props.toogleMessageBox({
-      message: this.props.getProgressSettings.message,
-      color: this.props.getProgressSettings.color,
-      endTime: Moment().add(value, "seconds").format("HH:mm:ss")
+      message: this.props.getMessageBoxSettings.message,
+      color: this.props.getMessageBoxSettings.color,
+      endTime: Moment().add(value, "seconds")
     });
   };
 
+  componentDidMount() {
+    setInterval(() => {
+      this.forceUpdate();
+    }, 1000);
+  }
+
   render() {
+    let endTimeNow = Moment();
+    let endTimeSet = Moment(this.props.getMessageBoxSettings.endTime);
+    let durationDiff = endTimeSet.diff(endTimeNow, "seconds");
+    if (durationDiff < 0) {
+      durationDiff = 0;
+    }
     return (
       <MuiThemeProvider muiTheme={muiTheme}>
         <div>
@@ -183,12 +195,17 @@ const SettingsPage = class SettingsPage extends Component {
                 <br />
                 <br />
                 <div id="messageBoxDurationnSlider">
-                  Duration 0s
+                  Duration {durationDiff} s
+                  <br />
+                  End{" "}
+                  {Moment(this.props.getMessageBoxSettings.endTime).format(
+                    "HH:mm:ss"
+                  )}
                   <Slider
                     step={1}
                     min={0}
                     max={60}
-                    value={0}
+                    value={durationDiff}
                     onChange={this.handleChangeMessageBoxDuration}
                   />
                   <br />
@@ -236,8 +253,8 @@ const mapDispatchToProps = dispatch => {
     disallowSlotValidator: () => {
       dispatch(disallowSlotValidator());
     },
-    toogleMessageBox: messageBoxSettings => {
-      dispatch(toogleMessageBox(messageBoxSettings));
+    toogleMessageBox: message => {
+      dispatch(toogleMessageBox(message));
     }
   };
 };

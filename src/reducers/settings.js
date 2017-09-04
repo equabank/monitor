@@ -17,9 +17,9 @@ const initialState = {
     message: ""
   },
   messageBox: {
-    message: "Without text message",
-    color: "notice",
-    endTime: Moment().format("HH:mm:ss")
+    message: "",
+    color: "#29B6F6",
+    endTime: Moment()
   }
 };
 
