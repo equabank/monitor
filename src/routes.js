@@ -19,7 +19,6 @@ if (process.env.NODE_ENV !== "production") {
 }
 
 const store = createStore(reducers, applyMiddleware(...middleware));
-
 //console.log(store.getState());
 
 // Use hashHistory for easier development

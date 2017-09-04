@@ -1,4 +1,5 @@
 import * as types from "../constants/ActionTypes";
+import { save } from "../components/settings/libs/settingsApi";
 
 export const openSlotDialog = () => {
   return {
@@ -138,16 +139,16 @@ export const fetchSettingsFromServer = settings => {
   };
 };
 
-export const progressSettingsSaveSuccess = message => {
+const progressSettingsSaveSuccess = () => {
   return {
     type: types.PROGRESS_SETTINGS_SAVE_SUCCESS,
     showProgress: true,
     state: true,
-    message: message
+    message: "Settings successfully saved."
   };
 };
 
-export const progressSettingsSaveFailed = message => {
+const progressSettingsSaveFailed = message => {
   return {
     type: types.PROGRESS_SETTINGS_SAVE_FAILED,
     showProgress: true,
@@ -156,7 +157,7 @@ export const progressSettingsSaveFailed = message => {
   };
 };
 
-export const progressSettingsSaveReset = () => {
+const progressSettingsSaveReset = () => {
   return {
     type: types.PROGRESS_SETTINGS_SAVE_RESET,
     showProgress: false,
@@ -172,4 +173,33 @@ export const toogleMessageBox = messageBoxSettings => {
     color: messageBoxSettings.color,
     endTime: messageBoxSettings.endTime
   };
+};
+
+export const saveSettings = () => (dispatch, getState) => {
+  const { settings } = getState();
+  const payload = {
+    generatorSlotValidatorAllow: settings.toggleSlotValidator,
+    message: settings.toogleMessageBox.message,
+    color: settings.toogleMessageBox.color,
+    endTime: settings.toogleMessageBox.endTime
+  };
+  save(payload)
+    .then(data => {
+      if (data.elastic._shards.successful === 1) {
+        dispatch(progressSettingsSaveSuccess());
+      } else {
+        dispatch(progressSettingsSaveFailed());
+      }
+    })
+    .catch(err => {
+      if (payload.generatorSlotValidatorAllow.allowSlotValidator) {
+        dispatch(disallowSlotValidator());
+      } else {
+        dispatch(allowSlotValidator());
+      }
+    });
+
+  setTimeout(() => {
+    dispatch(progressSettingsSaveReset());
+  }, 3000);
 };

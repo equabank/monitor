@@ -34,6 +34,9 @@ let accessLogStream = rfs("access.log", {
 const elasticUri = process.env.ELASTIC_URI || "http://localhost:9200";
 let generatorSlotValidatorAllow = true;
 let configurationDocumentId = null;
+let message = "";
+let color = "notice";
+let endTime = moment().format("HH:mm:ss");
 
 let client = new elasticsearch.Client({
   host: elasticUri,
@@ -107,7 +110,10 @@ getSettings(client, (error, elastic) => {
       initSettings(
         client,
         {
-          generatorSlotValidatorAllow: generatorSlotValidatorAllow
+          generatorSlotValidatorAllow: generatorSlotValidatorAllow,
+          message: message,
+          color: color,
+          endTime: endTime
         },
         (error, elastic) => {
           if (error) {

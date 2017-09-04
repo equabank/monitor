@@ -3,7 +3,8 @@ import { connect } from "react-redux";
 import {
   allowSlotValidator,
   disallowSlotValidator,
-  toogleMessageBox
+  toogleMessageBox,
+  saveSettings
 } from "../actions";
 import {
   getStateAllowSlotValidator,
@@ -61,10 +62,10 @@ const SettingsPage = class SettingsPage extends Component {
   handleToggle = (event, isInputChecked) => {
     if (this.props.getStateAllowSlotValidator) {
       this.props.disallowSlotValidator();
-      this.props.saveSettings({ allowSlotValidator: false });
+      this.props.saveSettings();
     } else {
       this.props.allowSlotValidator();
-      this.props.saveSettings({ allowSlotValidator: true });
+      this.props.saveSettings();
     }
   };
 
@@ -90,6 +91,7 @@ const SettingsPage = class SettingsPage extends Component {
       color: this.props.getMessageBoxSettings.color,
       endTime: Moment().add(duration, "seconds")
     });
+    this.props.saveSettings();
   };
 
   handleChangeMessageBoxColor = (event, value) => {
@@ -138,25 +140,6 @@ const SettingsPage = class SettingsPage extends Component {
                 </div>
               </div>
             </CardText>
-            <CardActions>
-              <div style={styles.block} id="allertSettings">
-                {this.props.getProgressSettings.showProgress === true &&
-                  <div>
-                    {this.props.getProgressSettings.state === true &&
-                      <div id="allertSettingsSuccess">
-                        <Favorite
-                          style={iconStyles}
-                          color={lightGreen400}
-                        />{" "}
-                        {this.props.getProgressSettings.message}
-                      </div>}
-                    {this.props.getProgressSettings.state === false &&
-                      <div id="allertSettingsFailed">
-                        <AlertError style={iconStyles} color={red400} />
-                      </div>}
-                  </div>}
-              </div>
-            </CardActions>
           </Card>
 
           <Card>
@@ -226,6 +209,7 @@ const SettingsPage = class SettingsPage extends Component {
                     max={120}
                     value={durationDiff}
                     onChange={this.handleChangeMessageBoxDuration}
+                    onDragStop={this.props.saveSettings}
                   />
                   <FlatButton
                     label="Set duration 120s"
@@ -235,7 +219,7 @@ const SettingsPage = class SettingsPage extends Component {
                   />
                   {durationDiff > 0 &&
                     <FlatButton
-                      label="Clear"
+                      label="Snooze"
                       secondary={true}
                       onClick={() => this.handleChangeMessageBoxMaxDuration(0)}
                       icon={<Snooze />}
@@ -285,6 +269,9 @@ const mapDispatchToProps = dispatch => {
     },
     toogleMessageBox: message => {
       dispatch(toogleMessageBox(message));
+    },
+    saveSettings: () => {
+      dispatch(saveSettings());
     }
   };
 };
