@@ -45,6 +45,13 @@ export const toogleMessageBox = (state = initialState.messageBox, action) => {
         color: action.color,
         endTime: action.endTime
       });
+    case FETCH_SETTINGS_FROM_SERVER:
+      const { message, color, endTime } = action.settings[0]._source;
+      return Object.assign({}, state, {
+        message: message,
+        color: color,
+        endTime: Moment(endTime, "HH:mm:ss")
+      });
     default:
       return state;
   }

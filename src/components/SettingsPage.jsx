@@ -164,6 +164,7 @@ const SettingsPage = class SettingsPage extends Component {
                       name="shipSpeed"
                       defaultSelected="notice"
                       onChange={this.handleChangeMessageBoxColor}
+                      valueSelected={this.props.getMessageBoxSettings.color}
                     >
                       <RadioButton
                         value="notice"
