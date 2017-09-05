@@ -18,13 +18,12 @@ import TextField from "material-ui/TextField";
 import Slider from "material-ui/Slider";
 import { RadioButton, RadioButtonGroup } from "material-ui/RadioButton";
 import { Card, CardTitle, CardText, CardActions } from "material-ui/Card";
-import Favorite from "material-ui/svg-icons/action/favorite";
 import AlertError from "material-ui/svg-icons/alert/error";
 import NonSelectColorMessage from "material-ui/svg-icons/action/done";
 import SelectColorMessage from "material-ui/svg-icons/action/check-circle";
 import Schedule from "material-ui/svg-icons/action/schedule";
 import Snooze from "material-ui/svg-icons/av/snooze";
-import { lightGreen400, red400 } from "material-ui/styles/colors";
+import { red400 } from "material-ui/styles/colors";
 import FlatButton from "material-ui/FlatButton";
 import Moment from "moment";
 
@@ -231,14 +230,6 @@ const SettingsPage = class SettingsPage extends Component {
               <div style={styles.block} id="allertSettings">
                 {this.props.getProgressSettings.showProgress === true &&
                   <div>
-                    {this.props.getProgressSettings.state === true &&
-                      <div id="allertSettingsSuccess">
-                        <Favorite
-                          style={iconStyles}
-                          color={lightGreen400}
-                        />{" "}
-                        {this.props.getProgressSettings.message}
-                      </div>}
                     {this.props.getProgressSettings.state === false &&
                       <div id="allertSettingsFailed">
                         <AlertError style={iconStyles} color={red400} />
