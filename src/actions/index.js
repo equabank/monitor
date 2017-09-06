@@ -1,5 +1,5 @@
 import * as types from "../constants/ActionTypes";
-import { save } from "../components/settings/libs/settingsApi";
+import { save, load } from "../components/settings/libs/settingsApi";
 
 export const openSlotDialog = () => {
   return {
@@ -132,11 +132,20 @@ export const disallowSlotValidator = () => {
   };
 };
 
-export const fetchSettingsFromServer = settings => {
+const fetchSettingsFromServer = settings => {
   return {
     type: types.FETCH_SETTINGS_FROM_SERVER,
     settings: settings
   };
+};
+
+export const loadSettingsFromServer = () => dispatch => {
+  load().then(data => {
+    if (data.elastic.responses[0].hits !== undefined) {
+      let settings = data.elastic.responses[0].hits.hits;
+      dispatch(fetchSettingsFromServer(settings));
+    }
+  });
 };
 
 const progressSettingsSaveSuccess = () => {

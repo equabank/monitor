@@ -167,7 +167,7 @@ const SettingsPage = class SettingsPage extends Component {
                       valueSelected={this.props.getMessageBoxSettings.color}
                     >
                       <RadioButton
-                        value="notice"
+                        value="Notice"
                         label="Notice message"
                         checkedIcon={<SelectColorMessage />}
                         uncheckedIcon={<NonSelectColorMessage />}
@@ -175,7 +175,7 @@ const SettingsPage = class SettingsPage extends Component {
                         labelStyle={{ color: "#29B6F6" }}
                       />
                       <RadioButton
-                        value="warning"
+                        value="Warning"
                         label="Warning message"
                         checkedIcon={<SelectColorMessage />}
                         uncheckedIcon={<NonSelectColorMessage />}
@@ -183,7 +183,7 @@ const SettingsPage = class SettingsPage extends Component {
                         labelStyle={{ color: "#EF5350" }}
                       />
                       <RadioButton
-                        value="success"
+                        value="Success"
                         label="Success message"
                         checkedIcon={<SelectColorMessage />}
                         uncheckedIcon={<NonSelectColorMessage />}
@@ -212,7 +212,19 @@ const SettingsPage = class SettingsPage extends Component {
                     onDragStop={this.props.saveSettings}
                   />
                   <FlatButton
-                    label="Set duration 120s"
+                    label="10s"
+                    primary={true}
+                    onClick={() => this.handleChangeMessageBoxMaxDuration(10)}
+                    icon={<Schedule />}
+                  />
+                  <FlatButton
+                    label="60s"
+                    primary={true}
+                    onClick={() => this.handleChangeMessageBoxMaxDuration(60)}
+                    icon={<Schedule />}
+                  />
+                  <FlatButton
+                    label="120s"
                     primary={true}
                     onClick={() => this.handleChangeMessageBoxMaxDuration(120)}
                     icon={<Schedule />}

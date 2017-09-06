@@ -35,7 +35,7 @@ const elasticUri = process.env.ELASTIC_URI || "http://localhost:9200";
 let generatorSlotValidatorAllow = true;
 let configurationDocumentId = null;
 let message = "";
-let color = "notice";
+let color = "Notice";
 let endTime = moment().format("HH:mm:ss");
 
 let client = new elasticsearch.Client({

@@ -3,7 +3,7 @@ import { connect } from "react-redux";
 import {
   allowSlotValidator,
   disallowSlotValidator,
-  fetchSettingsFromServer,
+  loadSettingsFromServer,
   progressSettingsSaveSuccess,
   progressSettingsSaveFailed,
   progressSettingsSaveReset
@@ -12,18 +12,7 @@ import SettingsPage from "../components/SettingsPage";
 
 const SettingsContainer = class SettingsContainer extends Component {
   componentDidMount() {
-    fetch("/api/settings", {
-      headers: new Headers({
-        "Content-Type": "application/json"
-      })
-    })
-      .then(response => response.json())
-      .then(data => {
-        if (data.elastic.responses[0].hits !== undefined) {
-          let settings = data.elastic.responses[0].hits.hits;
-          this.props.fetchSettingsFromServer(settings);
-        }
-      });
+    this.props.loadSettingsFromServer();
   }
 
   render() {
@@ -39,8 +28,8 @@ const SettingsContainer = class SettingsContainer extends Component {
 
 const mapDispatchToProps = dispatch => {
   return {
-    fetchSettingsFromServer: settings => {
-      dispatch(fetchSettingsFromServer(settings));
+    loadSettingsFromServer: settings => {
+      dispatch(loadSettingsFromServer(settings));
     },
     allowSlotValidator: () => {
       dispatch(allowSlotValidator());

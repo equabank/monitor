@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import Presentation from "../components/Presentation";
 import Moment from "moment";
 import { extendMoment } from "moment-range";
+import { load } from "../components/settings/libs/settingsApi";
 
 const moment = extendMoment(Moment);
 
@@ -16,14 +17,15 @@ export default class PresentationContainer extends Component {
       showBanner: false,
       bannerUri: null,
       bannerTitle: null,
-      bannerNoticeShow: true,
-      bannerNoticeText: "PERF >>> TEST2 >>> TAURUS >>> DONE",
+      bannerNoticeShow: false,
+      bannerNoticeText: "START APPLICATION",
       bannerNoticeType: "noticeBannnerSuccess"
     };
   }
 
   componentDidMount() {
     this.getSlots();
+    this.getSettings();
 
     let showSlotRangeType = true;
     let backgroundEndTime = null;
@@ -100,6 +102,31 @@ export default class PresentationContainer extends Component {
           this.setState({ slots: data.elastic.responses[0].hits.hits });
         }
       });
+  }
+
+  getSettings() {
+    setInterval(() => {
+      load().then(data => {
+        if (data.elastic.responses[0].hits !== undefined) {
+          let settings = data.elastic.responses[0].hits.hits;
+          let endTime = Moment(settings[0]._source.endTime, "HH:mm:ss");
+          let endTimeNow = Moment();
+          let endTimeSet = Moment(endTime);
+          let durationDiff = endTimeSet.diff(endTimeNow, "seconds");
+          if (durationDiff < 0) {
+            this.setState({
+              bannerNoticeShow: false
+            });
+          } else {
+            this.setState({
+              bannerNoticeShow: true,
+              bannerNoticeText: settings[0]._source.message,
+              bannerNoticeType: "noticeBannner" + settings[0]._source.color
+            });
+          }
+        }
+      });
+    }, 3000);
   }
 
   render() {
