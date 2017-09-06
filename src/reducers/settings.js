@@ -5,7 +5,8 @@ import {
   PROGRESS_SETTINGS_SAVE_SUCCESS,
   PROGRESS_SETTINGS_SAVE_FAILED,
   PROGRESS_SETTINGS_SAVE_RESET,
-  TOOGLE_MESSAGE_BOX
+  TOOGLE_MESSAGE_BOX,
+  LOAD_MESSAGES_FROM_LOCALSTORAGE
 } from "../constants/ActionTypes";
 import Moment from "moment";
 
@@ -20,7 +21,8 @@ const initialState = {
     message: "",
     color: "Notice",
     endTime: Moment()
-  }
+  },
+  messageBoxChips: []
 };
 
 export const toggleSlotValidator = (
@@ -82,6 +84,18 @@ export const progressSettingsSave = (
   }
 };
 
+export const messageBoxChips = (
+  state = initialState.messageBoxChips,
+  action
+) => {
+  switch (action.type) {
+    case LOAD_MESSAGES_FROM_LOCALSTORAGE:
+      return action.messageBoxChips;
+    default:
+      return state;
+  }
+};
+
 export const getProgressSettings = (
   state = initialState.progressSettingsSave
 ) => {
@@ -92,8 +106,13 @@ export const getMessageBoxSettings = (state = initialState.messageBox) => {
   return state;
 };
 
+export const getMessageBoxChips = (state = initialState.messageBoxChips) => {
+  return state;
+};
+
 export default combineReducers({
   toggleSlotValidator,
   progressSettingsSave,
-  toogleMessageBox
+  toogleMessageBox,
+  messageBoxChips
 });

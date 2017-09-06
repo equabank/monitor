@@ -4,12 +4,15 @@ import {
   allowSlotValidator,
   disallowSlotValidator,
   toogleMessageBox,
-  saveSettings
+  saveSettings,
+  saveToLocalstorage,
+  deleteFromLocalstorage
 } from "../actions";
 import {
   getStateAllowSlotValidator,
   getProgressSettings,
-  getMessageBoxSettings
+  getMessageBoxSettings,
+  getMessageBoxChips
 } from "../reducers";
 import getMuiTheme from "material-ui/styles/getMuiTheme";
 import MuiThemeProvider from "material-ui/styles/MuiThemeProvider";
@@ -25,6 +28,7 @@ import Schedule from "material-ui/svg-icons/action/schedule";
 import Snooze from "material-ui/svg-icons/av/snooze";
 import { red400 } from "material-ui/styles/colors";
 import FlatButton from "material-ui/FlatButton";
+import Chip from "material-ui/Chip";
 import Moment from "moment";
 
 const styles = {
@@ -48,6 +52,13 @@ const styles = {
   },
   radioButton: {
     marginBottom: 16
+  },
+  chipWrapper: {
+    display: "flex",
+    flexWrap: "wrap"
+  },
+  chip: {
+    margin: 4
   }
 };
 
@@ -91,12 +102,25 @@ const SettingsPage = class SettingsPage extends Component {
       endTime: Moment().add(duration, "seconds")
     });
     this.props.saveSettings();
+    this.props.saveToLocalstorage();
   };
 
   handleChangeMessageBoxColor = (event, value) => {
     this.props.toogleMessageBox({
       message: this.props.getMessageBoxSettings.message,
       color: value,
+      endTime: this.props.getMessageBoxSettings.endTime
+    });
+  };
+
+  handleDeleteChip = message => {
+    this.props.deleteFromLocalstorage(message);
+  };
+
+  handleChangeMessageFromChip = message => {
+    this.props.toogleMessageBox({
+      message: message,
+      color: this.props.getMessageBoxSettings.color,
       endTime: this.props.getMessageBoxSettings.endTime
     });
   };
@@ -146,6 +170,20 @@ const SettingsPage = class SettingsPage extends Component {
             <CardText>
               <div id="messageBannerBox">
                 <div id="messageBoxTextarea">
+                  <div id="messageBoxTextareaChips" style={styles.chipWrapper}>
+                    {this.props.getMessageBoxChips.map((chip, index) =>
+                      <div id={index} key={index}>
+                        <Chip
+                          key={index}
+                          onRequestDelete={() => this.handleDeleteChip(chip)}
+                          onClick={() => this.handleChangeMessageFromChip(chip)}
+                          style={styles.chip}
+                        >
+                          {chip}
+                        </Chip>
+                      </div>
+                    )}
+                  </div>
                   <TextField
                     hintText="Message"
                     multiLine={true}
@@ -260,7 +298,8 @@ const SettingsPage = class SettingsPage extends Component {
 const mapStateToProps = state => ({
   getStateAllowSlotValidator: getStateAllowSlotValidator(state),
   getProgressSettings: getProgressSettings(state),
-  getMessageBoxSettings: getMessageBoxSettings(state)
+  getMessageBoxSettings: getMessageBoxSettings(state),
+  getMessageBoxChips: getMessageBoxChips(state)
 });
 
 const mapDispatchToProps = dispatch => {
@@ -276,6 +315,12 @@ const mapDispatchToProps = dispatch => {
     },
     saveSettings: () => {
       dispatch(saveSettings());
+    },
+    saveToLocalstorage: () => {
+      dispatch(saveToLocalstorage());
+    },
+    deleteFromLocalstorage: message => {
+      dispatch(deleteFromLocalstorage(message));
     }
   };
 };

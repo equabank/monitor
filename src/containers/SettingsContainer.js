@@ -6,13 +6,15 @@ import {
   loadSettingsFromServer,
   progressSettingsSaveSuccess,
   progressSettingsSaveFailed,
-  progressSettingsSaveReset
+  progressSettingsSaveReset,
+  loadMessagesFromLocalstorage
 } from "../actions";
 import SettingsPage from "../components/SettingsPage";
 
 const SettingsContainer = class SettingsContainer extends Component {
   componentDidMount() {
     this.props.loadSettingsFromServer();
+    this.props.loadMessagesFromLocalstorage();
   }
 
   render() {
@@ -45,6 +47,9 @@ const mapDispatchToProps = dispatch => {
     },
     progressSettingsSaveReset: () => {
       dispatch(progressSettingsSaveReset());
+    },
+    loadMessagesFromLocalstorage: () => {
+      dispatch(loadMessagesFromLocalstorage());
     }
   };
 };

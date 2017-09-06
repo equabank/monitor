@@ -1,5 +1,10 @@
 import * as types from "../constants/ActionTypes";
 import { save, load } from "../components/settings/libs/settingsApi";
+import {
+  saveMessage,
+  loadMessage,
+  deleteMessage
+} from "../components/settings/libs/localStorage";
 
 export const openSlotDialog = () => {
   return {
@@ -139,6 +144,13 @@ const fetchSettingsFromServer = settings => {
   };
 };
 
+const loadMessageBoxChips = messageBoxChips => {
+  return {
+    type: types.LOAD_MESSAGES_FROM_LOCALSTORAGE,
+    messageBoxChips: messageBoxChips
+  };
+};
+
 export const loadSettingsFromServer = () => dispatch => {
   load().then(data => {
     if (data.elastic.responses[0].hits !== undefined) {
@@ -211,4 +223,19 @@ export const saveSettings = () => (dispatch, getState) => {
   setTimeout(() => {
     dispatch(progressSettingsSaveReset());
   }, 3000);
+};
+
+export const loadMessagesFromLocalstorage = () => dispatch => {
+  dispatch(loadMessageBoxChips(loadMessage()));
+};
+
+export const saveToLocalstorage = () => (dispatch, getState) => {
+  const { settings } = getState();
+  saveMessage(settings.toogleMessageBox.message);
+  dispatch(loadMessageBoxChips(loadMessage()));
+};
+
+export const deleteFromLocalstorage = message => dispatch => {
+  deleteMessage(message);
+  dispatch(loadMessageBoxChips(loadMessage()));
 };

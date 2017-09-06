@@ -41,3 +41,7 @@ export const getProgressSettings = state => {
 export const getMessageBoxSettings = state => {
   return fromSettings.getMessageBoxSettings(state.settings.toogleMessageBox);
 };
+
+export const getMessageBoxChips = state => {
+  return fromSettings.getMessageBoxChips(state.settings.messageBoxChips);
+};
