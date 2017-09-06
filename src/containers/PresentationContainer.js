@@ -15,7 +15,10 @@ export default class PresentationContainer extends Component {
       usedSlotId: 0,
       showBanner: false,
       bannerUri: null,
-      bannerTitle: null
+      bannerTitle: null,
+      bannerNoticeShow: true,
+      bannerNoticeText: "PERF >>> TEST2 >>> TAURUS >>> DONE",
+      bannerNoticeType: "noticeBannnerSuccess"
     };
   }
 
@@ -107,6 +110,9 @@ export default class PresentationContainer extends Component {
           showBanner={this.state.showBanner}
           bannerUri={this.state.bannerUri}
           bannerTitle={this.state.bannerTitle}
+          bannerNoticeShow={this.state.bannerNoticeShow}
+          bannerNoticeText={this.state.bannerNoticeText}
+          bannerNoticeType={this.state.bannerNoticeType}
         />
       </div>
     );

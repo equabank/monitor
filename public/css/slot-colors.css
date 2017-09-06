@@ -1,145 +1,184 @@
 .vis-item.vis-selected {
-    background-color: #8BC34A;
-    border-color: #ffffff;
-    border-style: dashed;
-    height: 80px;
-    border-radius: 2px;
-    top: 0px;
+  background-color: #8bc34a;
+  border-color: #ffffff;
+  border-style: dashed;
+  height: 80px;
+  border-radius: 2px;
+  top: 0px;
 }
 
 .vis-item.vis-background {
-    background-color: #F8BBD0;
-    border-color: #F8BBD0;
-    height: 80px;
-    border-radius: 2px;
-    top: 0px;
+  background-color: #f8bbd0;
+  border-color: #f8bbd0;
+  height: 80px;
+  border-radius: 2px;
+  top: 0px;
 }
 
 .slot-material-default {
-    background-color: #64B5F6;
-    border-color: #64B5F6;
-    height: 80px;
-    border-radius: 2px;
-    top: 0px;
+  background-color: #64b5f6;
+  border-color: #64b5f6;
+  height: 80px;
+  border-radius: 2px;
+  top: 0px;
 }
 
 .slot-material-green {
-    background-color: #8BC34A;
-    border-color: #8BC34A;
-    height: 80px;
-    border-radius: 2px;
-    top: 0px;
+  background-color: #8bc34a;
+  border-color: #8bc34a;
+  height: 80px;
+  border-radius: 2px;
+  top: 0px;
 }
 
 .slot-material-pink {
-    background-color: #E91E63;
-    border-color: #E91E63;
-    height: 80px;
-    border-radius: 2px;
-    top: 0px;
+  background-color: #e91e63;
+  border-color: #e91e63;
+  height: 80px;
+  border-radius: 2px;
+  top: 0px;
 }
 
 .slot-material-cyan {
-    background-color: #00BCD4;
-    border-color: #00BCD4;
-    height: 80px;
-    border-radius: 2px;
-    top: 0px;
+  background-color: #00bcd4;
+  border-color: #00bcd4;
+  height: 80px;
+  border-radius: 2px;
+  top: 0px;
 }
 
 .slot-material-orange {
-    background-color: #FF5722;
-    border-color: #FF5722;
-    height: 80px;
-    border-radius: 2px;
-    top: 0px;
+  background-color: #ff5722;
+  border-color: #ff5722;
+  height: 80px;
+  border-radius: 2px;
+  top: 0px;
 }
 
 .slotTitle {
-    position: relative;
-    opacity: 1;
-    font-size: 18px;
-    letter-spacing: 0px;
-    font-weight: 500;
-    margin: 0px;
-    user-select: none;
-    padding-left: 16px;
-    padding-right: 16px;
-    color: aliceblue;
-    font-family: 'Roboto', sans-serif;
+  position: relative;
+  opacity: 1;
+  font-size: 18px;
+  letter-spacing: 0px;
+  font-weight: 500;
+  margin: 0px;
+  user-select: none;
+  padding-left: 16px;
+  padding-right: 16px;
+  color: aliceblue;
+  font-family: 'Roboto', sans-serif;
 }
 
 .slotRange {
-    position: relative;
-    opacity: 1;
-    font-size: 14px;
-    letter-spacing: 0px;
-    font-weight: 100;
-    margin: 0px;
-    user-select: none;
-    padding-left: 16px;
-    padding-right: 16px;
-    color: aliceblue;
-    font-family: 'Roboto', sans-serif;
+  position: relative;
+  opacity: 1;
+  font-size: 14px;
+  letter-spacing: 0px;
+  font-weight: 100;
+  margin: 0px;
+  user-select: none;
+  padding-left: 16px;
+  padding-right: 16px;
+  color: aliceblue;
+  font-family: 'Roboto', sans-serif;
 }
 
 .slotUri {
-    position: relative;
-    opacity: 1;
-    font-size: 12px;
-    letter-spacing: 0px;
-    font-weight: 100;
-    margin: 0px;
-    user-select: none;
-    padding-left: 16px;
-    padding-right: 16px;
-    color: aliceblue;
-    font-family: 'Roboto', sans-serif;
+  position: relative;
+  opacity: 1;
+  font-size: 12px;
+  letter-spacing: 0px;
+  font-weight: 100;
+  margin: 0px;
+  user-select: none;
+  padding-left: 16px;
+  padding-right: 16px;
+  color: aliceblue;
+  font-family: 'Roboto', sans-serif;
 }
 
 #presentationContainer {
-    position:fixed;
-    left:0;
-    width:100%;
-    top:0;
-    height:100%;
+  position: fixed;
+  left: 0;
+  width: 100%;
+  top: 0;
+  height: 100%;
 }
-#iframe { display: block; width:100%; height:100%; }
+#iframe {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
 
 h1 {
-    color: rgb(72, 72, 72);
-    font-size: 36px;
+  color: rgb(72, 72, 72);
+  font-size: 36px;
 }
 
 h2 {
-    color: rgb(72, 72, 72);
-    font-size: 24px;
+  color: rgb(72, 72, 72);
+  font-size: 24px;
 }
 
 #presentationTitleBanner {
-    background-color: #4FC3F7;
-    display: block;
-    height: 5%;
-    width: 50%;
-    margin: 0 auto;
-    z-index: 9999;
-    position: relative;
-    top:0;
-    right: 0;
-    left: 0;
-    text-align: center;
-    vertical-align: middle;
-    border: 1px solid white;
-    word-wrap: break-word;
+  background-color: #4fc3f7;
+  display: block;
+  height: 5%;
+  width: 50%;
+  margin: 0 auto;
+  z-index: 9998;
+  position: relative;
+  top: 0;
+  right: 0;
+  left: 0;
+  text-align: center;
+  vertical-align: middle;
+  border: 1px solid white;
+  word-wrap: break-word;
 }
 
 #presentationTitleBannerTitleApp {
-    color: white;
-    font-size: 36px;
-    line-height: 0.9;
+  color: white;
+  font-size: 36px;
+  line-height: 0.9;
 }
 
 #presentationTitleBannerUriApp {
-    color: white;
-    font-size: 18px;
+  color: white;
+  font-size: 18px;
+}
+
+#presentationTitleNoticeBannerContent {
+  display: block;
+  height: 150px;
+  width: 90%;
+  margin: 0 auto;
+  margin-bottom: 10px;
+  z-index: 9999;
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  left: 0;
+  text-align: center;
+  vertical-align: middle;
+  border: 1px solid white;
+  word-wrap: break-word;
+}
+
+#presentationTitleNoticeBannerText {
+  color: white;
+  font-size: 46px;
+  line-height: 0.9;
+}
+
+.noticeBannnerWarning {
+  background-color: #ef5350;
+}
+
+.noticeBannnerSuccess {
+  background-color: #9ccc65;
+}
+
+.noticeBannnerNotice {
+  background-color: #29b6f6;
 }
