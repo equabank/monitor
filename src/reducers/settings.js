@@ -20,7 +20,7 @@ const initialState = {
   messageBox: {
     message: "",
     color: "Notice",
-    endTime: Moment()
+    endTime: Moment().format("YYYY-MM-DDTHH:mm:ss")
   },
   messageBoxChips: []
 };
@@ -52,7 +52,7 @@ export const toogleMessageBox = (state = initialState.messageBox, action) => {
       return Object.assign({}, state, {
         message: message,
         color: color,
-        endTime: Moment(endTime, "HH:mm:ss")
+        endTime: Moment(endTime)
       });
     default:
       return state;

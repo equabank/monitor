@@ -109,7 +109,7 @@ export default class PresentationContainer extends Component {
       load().then(data => {
         if (data.elastic.responses[0].hits !== undefined) {
           let settings = data.elastic.responses[0].hits.hits;
-          let endTime = Moment(settings[0]._source.endTime, "HH:mm:ss");
+          let endTime = Moment(settings[0]._source.endTime);
           let endTimeNow = Moment();
           let endTimeSet = Moment(endTime);
           let durationDiff = endTimeSet.diff(endTimeNow, "seconds");

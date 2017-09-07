@@ -382,6 +382,49 @@ The reply contains the generator job report. Each time slot is completed in gene
 
 The Time Slot Generator generate only Background Time Slots.
 
+
+#### Settings endpoint
+
+Api contains endpoint `PUT /api/settings` update settings and unpause Message Box on Presentation page.
+
+You can use REST-API endpoint `IP:3001/api/settings` and send this payload
+
+**Request**
+```
+{
+	"generatorSlotValidatorAllow": false,
+	"color": "Warning",
+	"endTime": "2017-09-07T13:54:30",
+	"message": "TEST2 is down!"
+}
+```
+
+The form of this payload must remain unchanged. You can change only:
+
+- `generatorSlotValidatorAllow` [false|true] allow turn on slot validator for new time slots generator
+- `color` ["Warning"|"Success"|"Notice"] - color of Message Box
+- `endTime` from now to endTime
+- `message` Message box text
+
+**Response**
+```
+{
+    "elastic": {
+        "_index": "monitor-settings",
+        "_type": "monitor-settings",
+        "_id": "1504784963509",
+        "_version": 12,
+        "result": "updated",
+        "_shards": {
+            "total": 2,
+            "successful": 1,
+            "failed": 0
+        }
+    }
+}
+```
+- `"successful": 1` update was successful
+
 ## Elasticsearch
 
 Time Slots and Background Time Slots is stored in elasticsearch  in `monitor-slots` index. If not exist, it will be automatically created.

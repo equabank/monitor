@@ -36,7 +36,7 @@ let generatorSlotValidatorAllow = true;
 let configurationDocumentId = null;
 let message = "";
 let color = "Notice";
-let endTime = moment().format("HH:mm:ss");
+let endTime = moment().format("YYYY-MM-DDTHH:mm:ss");
 
 let client = new elasticsearch.Client({
   host: elasticUri,
