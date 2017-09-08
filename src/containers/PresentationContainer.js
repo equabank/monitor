@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import Presentation from "../components/Presentation";
 import Moment from "moment";
 import { extendMoment } from "moment-range";
+import { load } from "../components/settings/libs/settingsApi";
 
 const moment = extendMoment(Moment);
 
@@ -15,12 +16,16 @@ export default class PresentationContainer extends Component {
       usedSlotId: 0,
       showBanner: false,
       bannerUri: null,
-      bannerTitle: null
+      bannerTitle: null,
+      bannerNoticeShow: false,
+      bannerNoticeText: "START APPLICATION",
+      bannerNoticeType: "noticeBannnerSuccess"
     };
   }
 
   componentDidMount() {
     this.getSlots();
+    this.getSettings();
 
     let showSlotRangeType = true;
     let backgroundEndTime = null;
@@ -99,6 +104,31 @@ export default class PresentationContainer extends Component {
       });
   }
 
+  getSettings() {
+    setInterval(() => {
+      load().then(data => {
+        if (data.elastic.responses[0].hits !== undefined) {
+          let settings = data.elastic.responses[0].hits.hits;
+          let endTime = Moment(settings[0]._source.endTime);
+          let endTimeNow = Moment();
+          let endTimeSet = Moment(endTime);
+          let durationDiff = endTimeSet.diff(endTimeNow, "seconds");
+          if (durationDiff < 0) {
+            this.setState({
+              bannerNoticeShow: false
+            });
+          } else {
+            this.setState({
+              bannerNoticeShow: true,
+              bannerNoticeText: settings[0]._source.message,
+              bannerNoticeType: "noticeBannner" + settings[0]._source.color
+            });
+          }
+        }
+      });
+    }, 3000);
+  }
+
   render() {
     return (
       <div>
@@ -107,6 +137,9 @@ export default class PresentationContainer extends Component {
           showBanner={this.state.showBanner}
           bannerUri={this.state.bannerUri}
           bannerTitle={this.state.bannerTitle}
+          bannerNoticeShow={this.state.bannerNoticeShow}
+          bannerNoticeText={this.state.bannerNoticeText}
+          bannerNoticeType={this.state.bannerNoticeType}
         />
       </div>
     );

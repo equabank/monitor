@@ -1,4 +1,10 @@
 import * as types from "../constants/ActionTypes";
+import { save, load } from "../components/settings/libs/settingsApi";
+import {
+  saveMessage,
+  loadMessage,
+  deleteMessage
+} from "../components/settings/libs/localStorage";
 
 export const openSlotDialog = () => {
   return {
@@ -131,23 +137,39 @@ export const disallowSlotValidator = () => {
   };
 };
 
-export const fetchSettingsFromServer = settings => {
+const fetchSettingsFromServer = settings => {
   return {
     type: types.FETCH_SETTINGS_FROM_SERVER,
     settings: settings
   };
 };
 
-export const progressSettingsSaveSuccess = message => {
+const loadMessageBoxChips = messageBoxChips => {
+  return {
+    type: types.LOAD_MESSAGES_FROM_LOCALSTORAGE,
+    messageBoxChips: messageBoxChips
+  };
+};
+
+export const loadSettingsFromServer = () => dispatch => {
+  load().then(data => {
+    if (data.elastic.responses[0].hits !== undefined) {
+      let settings = data.elastic.responses[0].hits.hits;
+      dispatch(fetchSettingsFromServer(settings));
+    }
+  });
+};
+
+const progressSettingsSaveSuccess = () => {
   return {
     type: types.PROGRESS_SETTINGS_SAVE_SUCCESS,
     showProgress: true,
     state: true,
-    message: message
+    message: "Settings successfully saved."
   };
 };
 
-export const progressSettingsSaveFailed = message => {
+const progressSettingsSaveFailed = message => {
   return {
     type: types.PROGRESS_SETTINGS_SAVE_FAILED,
     showProgress: true,
@@ -156,11 +178,64 @@ export const progressSettingsSaveFailed = message => {
   };
 };
 
-export const progressSettingsSaveReset = () => {
+const progressSettingsSaveReset = () => {
   return {
     type: types.PROGRESS_SETTINGS_SAVE_RESET,
     showProgress: false,
     state: false,
     message: "Reset progress"
   };
+};
+
+export const toogleMessageBox = messageBoxSettings => {
+  return {
+    type: types.TOOGLE_MESSAGE_BOX,
+    message: messageBoxSettings.message,
+    color: messageBoxSettings.color,
+    endTime: messageBoxSettings.endTime
+  };
+};
+
+export const saveSettings = () => (dispatch, getState) => {
+  const { settings } = getState();
+  const payload = {
+    generatorSlotValidatorAllow: settings.toggleSlotValidator,
+    message: settings.toogleMessageBox.message,
+    color: settings.toogleMessageBox.color,
+    endTime: settings.toogleMessageBox.endTime
+  };
+  save(payload)
+    .then(data => {
+      if (data.elastic._shards.successful === 1) {
+        dispatch(progressSettingsSaveSuccess());
+      } else {
+        dispatch(progressSettingsSaveFailed());
+      }
+    })
+    .catch(err => {
+      if (payload.generatorSlotValidatorAllow.allowSlotValidator) {
+        dispatch(disallowSlotValidator());
+      } else {
+        dispatch(allowSlotValidator());
+      }
+    });
+
+  setTimeout(() => {
+    dispatch(progressSettingsSaveReset());
+  }, 3000);
+};
+
+export const loadMessagesFromLocalstorage = () => dispatch => {
+  dispatch(loadMessageBoxChips(loadMessage()));
+};
+
+export const saveToLocalstorage = () => (dispatch, getState) => {
+  const { settings } = getState();
+  saveMessage(settings.toogleMessageBox.message);
+  dispatch(loadMessageBoxChips(loadMessage()));
+};
+
+export const deleteFromLocalstorage = message => dispatch => {
+  deleteMessage(message);
+  dispatch(loadMessageBoxChips(loadMessage()));
 };

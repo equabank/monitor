@@ -37,3 +37,11 @@ export const getStateAllowSlotValidator = state => {
 export const getProgressSettings = state => {
   return fromSettings.getProgressSettings(state.settings.progressSettingsSave);
 };
+
+export const getMessageBoxSettings = state => {
+  return fromSettings.getMessageBoxSettings(state.settings.toogleMessageBox);
+};
+
+export const getMessageBoxChips = state => {
+  return fromSettings.getMessageBoxChips(state.settings.messageBoxChips);
+};

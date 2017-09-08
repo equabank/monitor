@@ -21,7 +21,20 @@ export default class Presentation extends Component {
                 <p id="presentationTitleBannerTitleApp">
                   {this.props.bannerTitle}
                 </p>
-                <p id="presentationTitleBannerUriApp">{this.props.bannerUri}</p>
+                <p id="presentationTitleBannerUriApp">
+                  {this.props.bannerUri}
+                </p>
+              </div>
+            </div>}
+          {this.props.bannerNoticeShow &&
+            <div id="presentationTitleNoticeBanner">
+              <div
+                id="presentationTitleNoticeBannerContent"
+                className={this.props.bannerNoticeType}
+              >
+                <p id="presentationTitleNoticeBannerText">
+                  {this.props.bannerNoticeText}
+                </p>
               </div>
             </div>}
           <div id="presentationContainer">
