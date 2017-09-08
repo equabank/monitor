@@ -3,9 +3,9 @@
   "description": "",
   "main": "index.js",
   "author": "Radim Daniel Panek",
-  "homepage": "https://github.com/test-stack/monitor",
+  "homepage": "https://github.com/equabank/monitor",
   "license": "MIT",
-  "version": "0.4.0",
+  "version": "0.5.0",
   "flow": "flow",
   "jest": {
     "verbose": true,
