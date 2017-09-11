@@ -5,7 +5,7 @@ Dockerized application for planned of switching between another diagnostic web a
 
 ## Sending Feedback
 Milestones, Issue, Pull Requests, IDEAS / Backlog
-[Issue tracker, questions or ideas.](https://github.com/test-stack/monitor/issues)
+[Issue tracker, questions or ideas.](https://github.com/equabank/monitor/issues)
 
 ## Table of Contents
 
@@ -35,7 +35,7 @@ Currently this application contains many amazing community projects, such as:
 - [NodeJS](https://nodejs.org/en/)
 - [create-react-app](https://github.com/facebookincubator/create-react-app)
 
-This application is [dockerized](https://hub.docker.com/r/rdpanek/monitor/) and here is [Kubernetes](https://kubernetes.io/) [recipe](https://github.com/test-stack/monitor/blob/master/kubernetes.yaml)
+This application is [dockerized](https://hub.docker.com/r/rdpanek/monitor/) and here is [Kubernetes](https://kubernetes.io/) [recipe](https://github.com/equabank/monitor/blob/master/kubernetes.yaml)
 
 ## Folder Structure
 

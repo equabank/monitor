@@ -19,7 +19,7 @@ export default class AboutPage extends Component {
             <h1>Monitor 0.5.0</h1>
             <ul>
               <li>
-                <a href="https://github.com/test-stack/monitor" target="_blank">
+                <a href="https://github.com/equabank/monitor" target="_blank">
                   Github repository
                 </a>
               </li>
@@ -33,7 +33,7 @@ export default class AboutPage extends Component {
               </li>
               <li>
                 <a
-                  href="https://github.com/test-stack/monitor/blob/develop/README.md"
+                  href="https://github.com/equabank/monitor/blob/develop/README.md"
                   target="_blank"
                 >
                   Documentation
