@@ -126,9 +126,13 @@ const SettingsPage = class SettingsPage extends Component {
   };
 
   componentDidMount() {
-    setInterval(() => {
+    this.intervalId = setInterval(() => {
       this.forceUpdate();
     }, 1000);
+  }
+
+  componentWillUnmount() {
+    clearInterval(this.intervalId);
   }
 
   render() {

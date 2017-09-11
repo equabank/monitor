@@ -30,7 +30,7 @@ export default class PresentationContainer extends Component {
     let showSlotRangeType = true;
     let backgroundEndTime = null;
     let BreakException = {};
-    setInterval(() => {
+    this.intervalSlotsId = setInterval(() => {
       this.getSlots();
       let slotAvailable = false;
 
@@ -85,9 +85,15 @@ export default class PresentationContainer extends Component {
       }
     }, 1000);
 
-    setInterval(() => {
+    this.intervalBannerId = setInterval(() => {
       this.setState({ showBanner: false });
     }, 3000);
+  }
+
+  componentWillUnmount() {
+    clearInterval(this.intervalSettingsId);
+    clearInterval(this.intervalSlotsId);
+    clearInterval(this.intervalBannerId);
   }
 
   getSlots() {
@@ -105,7 +111,7 @@ export default class PresentationContainer extends Component {
   }
 
   getSettings() {
-    setInterval(() => {
+    this.intervalSettingsId = setInterval(() => {
       load().then(data => {
         if (data.elastic.responses[0].hits !== undefined) {
           let settings = data.elastic.responses[0].hits.hits;
