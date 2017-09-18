@@ -77,7 +77,7 @@ describe("Settings", () => {
     });
 
     it("property generatorSlotValidatorAllow is false", done => {
-      sleep(1000);
+      sleep(2000);
       chai.request(server).get("/api/settings").end((err, res) => {
         if (err) {
           done(err);

@@ -17,6 +17,7 @@ import {
 import { initSettings, getSettings, updateSettings } from "./app/settings";
 import tv4 from "tv4";
 import slotSchema from "./app/slotSchema";
+import settingsSchema from "./app/settingsSchema";
 import generatorSlotSchema from "./app/generatorSlotSchema";
 import { timeRangeSlotValidate } from "./src/components/timeline/libs/inputValidator";
 import { slotsGenerator } from "./src/components/timeline/libs/slotsGenerator";
@@ -397,6 +398,15 @@ router
     });
   })
   .put((req, res) => {
+    let valid = tv4.validateResult(req.body, settingsSchema);
+
+    if (!valid.valid)
+      return res.status(500).send({
+        message: valid.error.message,
+        dataPath: valid.error.dataPath,
+        params: valid.error.params
+      });
+
     updateSettings(
       client,
       configurationDocumentId,
