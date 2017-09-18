@@ -401,7 +401,7 @@ router
     let valid = tv4.validateResult(req.body, settingsSchema);
 
     if (!valid.valid)
-      return res.status(500).send({
+      return res.status(400).send({
         message: valid.error.message,
         dataPath: valid.error.dataPath,
         params: valid.error.params

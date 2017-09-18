@@ -51,6 +51,218 @@ describe("Settings", () => {
           done();
         });
     });
+
+    it("property generatorSlotValidatorAllow is required", done => {
+      chai
+        .request(server)
+        .put("/api/settings")
+        .send({
+          message: message,
+          color: color,
+          endTime: endTime
+        })
+        .end((err, res) => {
+          const errMessage = {
+            message: "Missing required property: generatorSlotValidatorAllow",
+            dataPath: "",
+            params: { key: "generatorSlotValidatorAllow" }
+          };
+          err.response.error.should.have.status(400);
+          chai
+            .expect(JSON.parse(err.response.error.text))
+            .to.have.eql(errMessage);
+          done();
+        });
+    });
+
+    it("property message is required", done => {
+      chai
+        .request(server)
+        .put("/api/settings")
+        .send({
+          generatorSlotValidatorAllow: true,
+          color: color,
+          endTime: endTime
+        })
+        .end((err, res) => {
+          const errMessage = {
+            message: "Missing required property: message",
+            dataPath: "",
+            params: { key: "message" }
+          };
+          err.response.error.should.have.status(400);
+          chai
+            .expect(JSON.parse(err.response.error.text))
+            .to.have.eql(errMessage);
+          done();
+        });
+    });
+
+    it("property color is required", done => {
+      chai
+        .request(server)
+        .put("/api/settings")
+        .send({
+          generatorSlotValidatorAllow: true,
+          message: message,
+          endTime: endTime
+        })
+        .end((err, res) => {
+          const errMessage = {
+            message: "Missing required property: color",
+            dataPath: "",
+            params: { key: "color" }
+          };
+          err.response.error.should.have.status(400);
+          chai
+            .expect(JSON.parse(err.response.error.text))
+            .to.have.eql(errMessage);
+          done();
+        });
+    });
+
+    it("property endTime is required", done => {
+      chai
+        .request(server)
+        .put("/api/settings")
+        .send({
+          generatorSlotValidatorAllow: true,
+          message: message,
+          color: color
+        })
+        .end((err, res) => {
+          const errMessage = {
+            message: "Missing required property: endTime",
+            dataPath: "",
+            params: { key: "endTime" }
+          };
+          err.response.error.should.have.status(400);
+          chai
+            .expect(JSON.parse(err.response.error.text))
+            .to.have.eql(errMessage);
+          done();
+        });
+    });
+
+    it("property generatorSlotValidatorAllow is boolean", done => {
+      chai
+        .request(server)
+        .put("/api/settings")
+        .send({
+          generatorSlotValidatorAllow: "true",
+          message: message,
+          color: color,
+          endTime: endTime
+        })
+        .end((err, res) => {
+          const errMessage = {
+            message: "Invalid type: string (expected boolean)",
+            dataPath: "/generatorSlotValidatorAllow",
+            params: { type: "string", expected: "boolean" }
+          };
+          err.response.error.should.have.status(400);
+          chai
+            .expect(JSON.parse(err.response.error.text))
+            .to.have.eql(errMessage);
+          done();
+        });
+    });
+
+    it("property message is string", done => {
+      chai
+        .request(server)
+        .put("/api/settings")
+        .send({
+          generatorSlotValidatorAllow: true,
+          message: true,
+          color: color,
+          endTime: endTime
+        })
+        .end((err, res) => {
+          const errMessage = {
+            message: "Invalid type: boolean (expected string)",
+            dataPath: "/message",
+            params: { type: "boolean", expected: "string" }
+          };
+          err.response.error.should.have.status(400);
+          chai
+            .expect(JSON.parse(err.response.error.text))
+            .to.have.eql(errMessage);
+          done();
+        });
+    });
+
+    it("property color is string", done => {
+      chai
+        .request(server)
+        .put("/api/settings")
+        .send({
+          generatorSlotValidatorAllow: true,
+          message: message,
+          color: 12,
+          endTime: endTime
+        })
+        .end((err, res) => {
+          const errMessage = {
+            message: "Invalid type: number (expected string)",
+            dataPath: "/color",
+            params: { type: "number", expected: "string" }
+          };
+          err.response.error.should.have.status(400);
+          chai
+            .expect(JSON.parse(err.response.error.text))
+            .to.have.eql(errMessage);
+          done();
+        });
+    });
+
+    it("property endTime is string", done => {
+      chai
+        .request(server)
+        .put("/api/settings")
+        .send({
+          generatorSlotValidatorAllow: true,
+          message: message,
+          color: color,
+          endTime: 12
+        })
+        .end((err, res) => {
+          const errMessage = {
+            message: "Invalid type: number (expected string)",
+            dataPath: "/endTime",
+            params: { type: "number", expected: "string" }
+          };
+          err.response.error.should.have.status(400);
+          chai
+            .expect(JSON.parse(err.response.error.text))
+            .to.have.eql(errMessage);
+          done();
+        });
+    });
+
+    it("property color can conntains value Warning, Notice or Success", done => {
+      chai
+        .request(server)
+        .put("/api/settings")
+        .send({
+          generatorSlotValidatorAllow: true,
+          message: message,
+          color: "Info",
+          endTime: endTime
+        })
+        .end((err, res) => {
+          const errMessage = {
+            message: 'No enum match for: "Info"',
+            dataPath: "/color",
+            params: { value: '"Info"' }
+          };
+          err.response.error.should.have.status(400);
+          chai
+            .expect(JSON.parse(err.response.error.text))
+            .to.have.eql(errMessage);
+          done();
+        });
+    });
   });
 
   describe("GET /api/settings", () => {
