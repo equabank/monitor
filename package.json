@@ -5,7 +5,7 @@
   "author": "Radim Daniel Panek",
   "homepage": "https://github.com/equabank/monitor",
   "license": "MIT",
-  "version": "0.5.0",
+  "version": "0.5.1",
   "flow": "flow",
   "jest": {
     "verbose": true,

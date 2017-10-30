@@ -16,7 +16,7 @@ export default class AboutPage extends Component {
       <MuiThemeProvider muiTheme={muiTheme}>
         <div style={styles.container}>
           <div id="aboutPage">
-            <h1>Monitor 0.5.0</h1>
+            <h1>Monitor 0.5.1</h1>
             <ul>
               <li>
                 <a href="https://github.com/equabank/monitor" target="_blank">

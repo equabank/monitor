@@ -1,4 +1,4 @@
-# VERSION 0.5.0
+# VERSION 0.5.1
 
 FROM node:7-alpine
 MAINTAINER Radim Daniel Pánek <rdpanek@gmail.com>
