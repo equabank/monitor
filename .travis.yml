@@ -39,8 +39,3 @@ notifications:
     - 'Build details: %{build_url}'
     - Build <%{build_number}> (<%{compare_url}|%{commit}>) of %{repository}@%{branch}
       by %{author} %{result} in %{duration}
-branches:
-  only:
-  - develop
-  - release
-  - master
