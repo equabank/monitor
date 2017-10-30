@@ -2,7 +2,6 @@
 
 Dockerized application for planned of switching between another diagnostic web applications.
 
-
 ## Sending Feedback
 Milestones, Issue, Pull Requests, IDEAS / Backlog
 [Issue tracker, questions or ideas.](https://github.com/equabank/monitor/issues)
