@@ -33,6 +33,7 @@ let accessLogStream = rfs("access.log", {
 });
 
 const elasticUri = process.env.ELASTIC_URI || "http://localhost:9200";
+console.log(elasticUri);
 let generatorSlotValidatorAllow = true;
 let configurationDocumentId = null;
 let message = "";
