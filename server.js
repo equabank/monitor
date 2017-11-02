@@ -42,11 +42,6 @@ let endTime = moment().format("YYYY-MM-DDTHH:mm:ss");
 
 let client = new elasticsearch.Client({
   host: elasticUri,
-  log: {
-    type: "file",
-    level: ["error"],
-    path: "./logs/elasticsearch.log"
-  },
   apiVersion: "5.0",
   requestTimeout: 5000,
   keepAlive: true,
